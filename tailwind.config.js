@@ -8,14 +8,18 @@ module.exports = {
     extend: {
       colors: {
         brand: colors.violet,
-        orange: colors.orange,
-        rose: colors.rose,
-        accent: colors.orange,
+        accent: colors.red,
+        idea: colors.yellow,
+        do: colors.red,
+        doing: colors.purple,
+        review: colors.blue,
+        done: colors.teal,
+        accomplished: colors.lime,
       },
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/line-clamp")],
 };

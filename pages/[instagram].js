@@ -68,7 +68,7 @@ const Client = (props) => {
         ) : (
           <div>
             <div className="p-8 text-brand-400 bg-gray-800 rounded-2xl mb-12">
-              {JSON.stringify(data.user)}
+              <pre>{JSON.stringify(data.user, null, 2)}</pre>
             </div>
           </div>
         )}
