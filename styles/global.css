@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply text-gray-500 font-light;
+  font-family: museo-sans-rounded, sans-serif;
+}
+
+p {
+  @apply leading-normal mb-2;
+}
+
+@layer components {
+  .loader {
+    @apply p-4 relative flex justify-center animate-spin;
+    animation-duration: 2s;
+  }
+
+  .loader .circle {
+    @apply h-12 w-12 rounded-full border-4 border-transparent absolute animate-spin;
+    border-top-color: theme("colors.brand.600");
+    animation-timing-function: ease-in-out;
+  }
+
+  .loader.loader-small {
+    @apply p-0;
+  }
+
+  .loader.loader-small .circle {
+    @apply h-6 w-6;
+    animation-duration: 0.8;
+  }
+
+  .loader .circle:last-child {
+    @apply relative;
+  }
+
+  .input {
+    @apply py-3 px-4 border rounded-xl outline-none focus:border-brand-600 focus:ring-4 focus:ring-brand-200 focus:text-gray-800 w-full;
+  }
+
+  .input-error {
+    @apply border-red-400 ring-4 ring-red-100;
+  }
+
+  .button {
+    @apply py-3 px-4 rounded-xl outline-none flex border focus:ring-4 bg-gray-100  border-gray-100 hover:bg-brand-600 hover:text-white focus:bg-brand-600  focus:ring-brand-200  focus:text-white shadow transition-colors;
+  }
+
+  .button-primary {
+    @apply text-white bg-brand-600  border-brand-600 hover:bg-brand-500 hover:text-white focus:bg-brand-500  focus:ring-brand-200  focus:text-white;
+    box-shadow: 0 1px 3px 0 theme("colors.brand.300"),
+      0 1px 2px 0 theme("colors.brand.300");
+  }
+}
