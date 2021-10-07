@@ -67,7 +67,19 @@ h5 {
   }
 
   .button {
-    @apply py-3 px-4 rounded-xl outline-none flex items-center justify-center space-x-2 border focus:ring-4 bg-gray-100  border-gray-100 hover:bg-brand-600 hover:text-white focus:bg-brand-600  focus:ring-brand-200  focus:text-white shadow transition-colors;
+    @apply py-3 px-4 rounded-xl outline-none flex items-center justify-center space-x-2 border focus:ring-4 bg-gray-100  border-gray-100 hover:bg-gray-200  focus:bg-gray-200  focus:ring-brand-200   shadow transition-colors;
+  }
+
+  .button-small {
+    @apply text-sm py-2 px-2 rounded-lg;
+  }
+
+  .button-ghost {
+    @apply shadow-none border-transparent bg-transparent;
+  }
+
+  .button-text {
+    @apply shadow-none border bg-transparent p-0 hover:bg-transparent focus:bg-transparent hover:text-gray-700;
   }
 
   /* .button svg {
@@ -93,27 +105,27 @@ h5 {
 }
 
 .idea-bg {
-  @apply bg-idea-400 text-white;
+  @apply bg-idea-400 text-idea-100;
   /* text-shadow: 0 1px 10px theme("colors.idea.900"); */
 }
 .do-bg {
-  @apply bg-do-400 text-white;
+  @apply bg-do-400 text-do-100;
   /* text-shadow: 0 1px 10px theme("colors.do.900"); */
 }
 .doing-bg {
-  @apply bg-doing-600 text-white;
+  @apply bg-doing-600 text-doing-100;
   /* text-shadow: 0 1px 10px theme("colors.doing.900"); */
 }
 .review-bg {
-  @apply bg-review-500 text-white;
+  @apply bg-review-500 text-review-100;
   /* text-shadow: 0 1px 10px theme("colors.review.900"); */
 }
 .done-bg {
-  @apply bg-done-400 text-white;
+  @apply bg-done-400 text-done-100;
   /* text-shadow: 0 1px 10px theme("colors.done.900"); */
 }
 .accomplished-bg {
-  @apply bg-accomplished-400 text-white;
+  @apply bg-accomplished-400 text-accomplished-100;
   /* text-shadow: 0 1px 10px theme("colors.accomplished.900"); */
 }
 

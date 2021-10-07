@@ -1,40 +1,12 @@
-import { useEffect } from "react";
+import React from "react";
 import { Menu } from "@headlessui/react";
-import { useRouter } from "next/router";
+import nookies from "nookies";
 import Link from "next/link";
 import Logo from "./Logo.js";
 import Loader from "./Loader";
-import useGQL from "../lib/useGQL.js";
-import useUser from "../lib/useUser.js";
 
-const Layout = ({ QUERY, children }) => {
-  const user = null;
-  const { data, loading, error } = useGQL(QUERY);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  if (!user) {
-    return (
-      <div className="flex justify-center items-center p-8 h-screen bg-gray-100">
-        <Loader />
-      </div>
-    );
-  }
-
-  const router = useRouter();
+const Layout = ({ children, user }) => {
   let { client, clients } = user || {};
-
-  // if (QUERY) {
-  //   const { data, error, loading } = useGQL(QUERY);
-
-  //   if (error) return error;
-
-  //   useEffect(() => {
-  //     console.log(data);
-  //   }, [data]);
-  // }
 
   return (
     <div className="bg-gray-100 overflow-x-hidden">

@@ -10,9 +10,7 @@ const Authentication = ({ children }) => {
 
   useEffect(() => {
     if (loading) return <Loader />;
-    if (user) {
-      console.log(user);
-    } else {
+    if (!user) {
       router.push("/login");
       return false;
     }
