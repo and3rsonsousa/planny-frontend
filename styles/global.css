@@ -67,8 +67,12 @@ h5 {
   }
 
   .button {
-    @apply py-3 px-4 rounded-xl outline-none flex border focus:ring-4 bg-gray-100  border-gray-100 hover:bg-brand-600 hover:text-white focus:bg-brand-600  focus:ring-brand-200  focus:text-white shadow transition-colors;
+    @apply py-3 px-4 rounded-xl outline-none flex items-center justify-center space-x-2 border focus:ring-4 bg-gray-100  border-gray-100 hover:bg-brand-600 hover:text-white focus:bg-brand-600  focus:ring-brand-200  focus:text-white shadow transition-colors;
   }
+
+  /* .button svg {
+    @apply ml-2;
+  } */
 
   .button-primary {
     @apply text-white bg-brand-600  border-brand-600 hover:bg-brand-500 hover:text-white focus:bg-brand-500  focus:ring-brand-200  focus:text-white;

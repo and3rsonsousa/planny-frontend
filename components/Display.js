@@ -4,7 +4,7 @@ import "dayjs/locale/pt-br";
 dayjs.locale("pt-br");
 import Action from "./Action";
 
-const Display = ({ clients }) => {
+export default function Display({ clients }) {
   //Coloca todas as ações em um array e achata para ter somente uma camada
   let actions = clients.map((client) => client.actions).flat();
   //Ordena as ações por data e não por cliente
@@ -103,6 +103,4 @@ const Display = ({ clients }) => {
       </div>
     </div>
   );
-};
-
-export default Display;
+}

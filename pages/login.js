@@ -1,34 +1,27 @@
 import { useState } from "react";
-import { gql, useMutation } from "@apollo/client";
-import nookies from "nookies";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
+import request, { gql } from "graphql-request";
 import Logo from "../components/Logo";
+import nookies from "nookies";
 
 const Login = (props) => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [identifierError, setIdentifierError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
-
-  const [mutateFunction, { data, loading, error }] = useMutation(gql`
-    mutation ($loginInput: UsersPermissionsLoginInput!) {
-      login(input: $loginInput) {
+  const QUERY = gql`
+    mutation ($input: UsersPermissionsLoginInput!) {
+      login(input: $input) {
         jwt
         user {
           id
+          email
         }
       }
     }
-  `);
+  `;
 
-  if (data) {
-    nookies.set(null, "jwt", data.login.jwt, { maxAge: 3 * 24 * 60 * 60 });
-    nookies.set(null, "user", data.login.user.id, { maxAge: 3 * 24 * 60 * 60 });
-    const router = useRouter();
-    router.push("/");
-  }
-
-  const handleSubmit = function (e) {
+  const handleSubmit = async function (e) {
     e.preventDefault();
     const loginInput = {
       identifier,
@@ -45,9 +38,21 @@ const Login = (props) => {
       return false;
     }
 
-    mutateFunction({
-      variables: { loginInput },
-    });
+    const data = await request(
+      "https://cryptic-beyond-85441.herokuapp.com/graphql",
+      QUERY,
+      {
+        input: loginInput,
+      }
+    );
+    const {
+      jwt,
+      user: { id, email },
+    } = data.login;
+
+    nookies.set(null, "token", jwt, { maxAge: 3 * 24 * 60 * 60 });
+    nookies.set(null, "user", id, { maxAge: 3 * 24 * 60 * 60 });
+    Router.push("/");
   };
 
   return (
@@ -92,7 +97,21 @@ const Login = (props) => {
           </label>
           <div className="flex justify-end mt-4">
             <button type="submit" className="button button-primary">
-              Entrar
+              <span>Entrar</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                />
+              </svg>
             </button>
           </div>
         </form>
