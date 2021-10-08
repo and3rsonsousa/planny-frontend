@@ -20,7 +20,7 @@ const Home = (props) => {
         clients(sort: "name:asc") {
           id
           name
-          instagram
+          slug
           fgColor
           bgColor
           actions(sort: "date:asc") {
@@ -28,6 +28,12 @@ const Home = (props) => {
             date
             name
             status {
+              slug
+            }
+            tags {
+              slug
+            }
+            client {
               slug
             }
           }
@@ -41,6 +47,12 @@ const Home = (props) => {
           id
         }
       }
+      tags {
+        id
+        name
+        slug
+        color
+      }
     }
   `;
 
@@ -48,9 +60,9 @@ const Home = (props) => {
     userId: nookies.get("planny").user,
   });
 
-  const { user, statuses } = data || {};
+  const { user, statuses, tags } = data || {};
 
-  let [showDialog, setShowDialog] = useState(true);
+  let [showDialog, setShowDialog] = useState(false);
 
   return (
     <Authentication>
@@ -59,7 +71,14 @@ const Home = (props) => {
           <title>Carregando dados... | Planny</title>
         </Head>
 
-        {data ? (
+        {loading && <Loader />}
+        {error && (
+          <div className="p-8 text-red-400 bg-red-900 rounded-2xl mb-12">
+            <pre>{JSON.stringify(error, null, 2)}</pre>
+          </div>
+        )}
+
+        {data && (
           <div>
             <Head>
               <title>{user.name} | Planny</title>
@@ -116,9 +135,6 @@ const Home = (props) => {
                           </div>
                           ({client.actions.length})
                         </div>
-                        {/* <span className="uppercase text-xx font-semibold tracking-widest">
-                          {client.name} ({client.actions.length})
-                        </span> */}
                       </div>
                     ) : null;
                   })}
@@ -127,14 +143,14 @@ const Home = (props) => {
             </div>
             {/* Ações */}
             <div className="mb-8">
-              <Display clients={user.clients} />
+              <Display clients={user.clients} tags={tags} statuses={statuses} />
             </div>
             {/* decode */}
-            {/* <div className="p-8 text-brand-400 bg-gray-800 rounded-2xl mb-12">
+            <div className="p-8 text-brand-400 bg-gray-800 rounded-2xl mb-12">
               <pre>{JSON.stringify(data, null, 2)}</pre>
-            </div> */}
+            </div>
           </div>
-        ) : null}
+        )}
       </Layout>
 
       <Dialog

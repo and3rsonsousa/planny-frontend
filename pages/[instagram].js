@@ -1,4 +1,3 @@
-import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import nookies from "nookies";
 import Authentication from "../components/Authentication";
@@ -9,17 +8,17 @@ const Client = (props) => {
   const router = useRouter();
   const { data, loading, error } = useQuery(
     gql`
-      query ($userId: ID!, $instagram: String!) {
+      query ($userId: ID!, $slug: String!) {
         user(id: $userId) {
           id
           name
           email
-          client: clients(where: { instagram: $instagram }) {
+          client: clients(where: { slug: $slug }) {
             id
             name
             fgColor
             bgColor
-            instagram
+            slug
             actions {
               id
               name
@@ -45,7 +44,7 @@ const Client = (props) => {
           clients {
             id
             name
-            instagram
+            slug
           }
         }
       }
@@ -53,7 +52,7 @@ const Client = (props) => {
     {
       variables: {
         userId: nookies.get(null, "user").user,
-        instagram: router.query.instagram,
+        slug: router.query.slug,
       },
     }
   );

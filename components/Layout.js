@@ -48,7 +48,7 @@ const Layout = ({ children, user }) => {
                       </Menu.Button>
                       <Menu.Items className="bg-white absolute shadow-lg border mt-2 rounded-lg w-48 focus:outline-none z-10 ">
                         {clients.map((client) => (
-                          <Link href={client.instagram} key={client.instagram}>
+                          <Link href={client.slug} key={client.slug}>
                             <Menu.Item>
                               {({ active }) => (
                                 <a
@@ -72,7 +72,7 @@ const Layout = ({ children, user }) => {
               {user ? (
                 <div className="flex gap-4">
                   <div className="text-right">
-                    <h4 className="font-medium text-gray-600 flex items-center">
+                    <h4 className="font-medium text-gray-600 flex items-center mb-0">
                       <div>{user.name}</div>
                       <a
                         href="#"

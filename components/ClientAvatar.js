@@ -13,7 +13,7 @@ export default function ClientAvatar({
             : medium
             ? "w-10 h-10 text-sm"
             : "w-14 h-14 text-base"
-        } rounded-full font-extrabold bg-gray-300 flex justify-center items-center${
+        } rounded-full font-extrabold bg-gray-600 flex justify-center items-center${
           border ? " ring-2 ring-white" : ""
         }`}
         style={{ backgroundColor: client.bgColor }}

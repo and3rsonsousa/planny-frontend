@@ -4,25 +4,21 @@ import Link from "next/link";
 export default function ClientsBar({ small, medium, clients }) {
   return (
     <div className={`w-full overflow-x-auto`}>
-      <div className="flex px-2 w-full justify-center">
+      <div className="flex py-2 w-full justify-center">
         {clients.map((client, j) => (
           <div
             key={j}
             className={`transform 
-            transition-all 
-            duration-500  
-            ${small ? " w-8 p-1" : medium ? " w-12 p-2 " : "w-24 p-4 mr-2"}
-            cursor-pointer hover:text-gray-800
+            transition-transform
+            duration-500 
+            hover:-translate-y-2
+            ${small ? " w-8 p-1" : medium ? " w-12 p-2 " : "p-2"}
+            cursor-pointer
             `}
           >
-            <Link href={`/${client.instagram}`} key={client.instagram}>
+            <Link href={`/${client.slug}`} key={client.slug}>
               <div className="flex flex-col items-center">
                 <ClientAvatar client={client} small={small} medium={medium} />
-                {!(small || medium) ? (
-                  <a className="block w-full mt-2 text-sm truncate text-center">
-                    {client.instagram}
-                  </a>
-                ) : null}
               </div>
             </Link>
           </div>

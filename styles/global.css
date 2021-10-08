@@ -50,7 +50,7 @@ h5 {
   }
 
   .loader.loader-small .circle {
-    @apply h-6 w-6;
+    @apply h-6 w-6 border-2;
     animation-duration: 0.8;
   }
 
