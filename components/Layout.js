@@ -4,6 +4,8 @@ import nookies from "nookies";
 import Link from "next/link";
 import Logo from "./Logo.js";
 import Loader from "./Loader";
+import { HiLogout, HiOutlineLogout } from "react-icons/hi";
+import Router from "next/router";
 
 const Layout = ({ children, user }) => {
   let { client, clients } = user || {};
@@ -72,36 +74,22 @@ const Layout = ({ children, user }) => {
               {user ? (
                 <div className="flex gap-4">
                   <div className="text-right">
-                    <h4 className="font-medium text-gray-600 flex items-center mb-0">
-                      <div>{user.name}</div>
-                      <a
-                        href="#"
-                        className="text-gray-400 ml-2"
+                    <h4 className="font-medium flex items-center mb-0">
+                      <div className="text-gray-600">{user.name}</div>
+                      <button
+                        className="button button-small button-ghost ml-1"
                         onClick={() => {
-                          nookies.set(null, "jwt", null, {
+                          nookies.set(null, "token", null, {
                             maxAge: 0,
                           });
                           nookies.set(null, "user", null, {
                             maxAge: 0,
                           });
-                          router.reload();
+                          Router.reload();
                         }}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                          />
-                        </svg>
-                      </a>
+                        <HiOutlineLogout className="text-lg" />
+                      </button>
                     </h4>
                   </div>
                 </div>

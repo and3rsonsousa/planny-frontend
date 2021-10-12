@@ -1,7 +1,7 @@
 const Loader = ({ small }) => {
   return (
     <div>
-      <div className={`loader ${small ? "loader-small" : ""}`}>
+      {/* <div className={`loader ${small ? "loader-small" : ""}`}>
         {[1, 2, 3, 4, 5].map((i) => (
           <div
             className="circle"
@@ -9,6 +9,9 @@ const Loader = ({ small }) => {
             style={{ animationDelay: `${i / 10}s` }}
           ></div>
         ))}
+      </div> */}
+      <div className={`loader ${small ? "loader-small" : ""}`}>
+        <div className="circle"></div>
       </div>
     </div>
   );

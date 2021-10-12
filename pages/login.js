@@ -1,10 +1,15 @@
 import { useState } from "react";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
 import request, { gql } from "graphql-request";
 import Logo from "../components/Logo";
 import nookies from "nookies";
 
 const Login = (props) => {
+  if (nookies.get("planny").user && nookies.get("planny").token) {
+    setTimeout(() => {
+      Router.push("/");
+    }, 500);
+  }
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [identifierError, setIdentifierError] = useState(null);
@@ -52,6 +57,7 @@ const Login = (props) => {
 
     nookies.set(null, "token", jwt, { maxAge: 3 * 24 * 60 * 60 });
     nookies.set(null, "user", id, { maxAge: 3 * 24 * 60 * 60 });
+
     Router.push("/");
   };
 

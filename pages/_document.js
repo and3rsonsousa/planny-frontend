@@ -6,10 +6,10 @@ const MyDocument = (ctx) => {
   return (
     <Html>
       <Head>
-        <link
-          rel="stylesheet"
-          href="https://use.typekit.net/lve1wgr.css"
-        ></link>
+        <meta content="#7C3AED" name="theme-color" />
+
+        <link rel="stylesheet" href="https://use.typekit.net/lve1wgr.css" />
+        <link rel="shortcut icon" href="/favicon.png" />
       </Head>
       <body>
         <Main />

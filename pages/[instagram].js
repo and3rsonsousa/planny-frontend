@@ -1,79 +1,123 @@
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Head from "next/head";
 import nookies from "nookies";
+import { gql } from "graphql-request";
 import Authentication from "../components/Authentication";
 import Layout from "../components/Layout";
 import Loader from "../components/Loader";
+import Display from "../components/Display";
+import useUser from "../lib/useUser";
 
 const Client = (props) => {
-  const router = useRouter();
-  const { data, loading, error } = useQuery(
-    gql`
-      query ($userId: ID!, $slug: String!) {
-        user(id: $userId) {
+  const QUERY = gql`
+    query ($userId: ID!, $slug: String!) {
+      user(id: $userId) {
+        id
+        name
+        email
+        client: clients(where: { slug: $slug }) {
           id
           name
-          email
-          client: clients(where: { slug: $slug }) {
+          fgColor
+          bgColor
+          slug
+          actions {
             id
             name
-            fgColor
-            bgColor
-            slug
-            actions {
+            description
+            date
+            createdBy {
               id
               name
-              description
-              date
-              createdBy {
-                id
-                name
-              }
-              responsibles {
-                id
-                name
-              }
-              created_at
-              updated_at
-              status {
-                id
-                name
-                slug
-              }
+            }
+            responsibles {
+              id
+              name
+            }
+            created_at
+            updated_at
+            status {
+              id
+              name
+              slug
+            }
+            tags {
+              id
+              name
+              slug
             }
           }
-          clients {
-            id
-            name
-            slug
-          }
+        }
+        clients {
+          id
+          name
+          slug
         }
       }
-    `,
-    {
-      variables: {
-        userId: nookies.get(null, "user").user,
-        slug: router.query.slug,
-      },
+      statuses {
+        id
+        name
+        slug
+        actions {
+          id
+        }
+      }
+      tags {
+        id
+        name
+        slug
+        color
+      }
     }
-  );
+  `;
 
-  if (error) return JSON.stringify(error);
+  const { data, loading, error, mutate } = useUser(QUERY, {
+    userId: nookies.get("planny").user,
+    slug: props.instagram,
+  });
+
+  useEffect(() => {
+    console.log(props);
+    mutate();
+  }, [props]);
+  const { user, tags, statuses } = data || {};
+
+  let [showDialog, setShowDialog] = useState(false);
 
   return (
     <Authentication>
-      <Layout data={data}>
-        {loading && !data ? (
-          <Loader />
-        ) : (
-          <div>
-            <div className="p-8 text-brand-400 bg-gray-800 rounded-2xl mb-12">
-              <pre>{JSON.stringify(data.user, null, 2)}</pre>
-            </div>
+      <Layout user={user}>
+        <Head>
+          <title>Carregando dados... | Planny</title>
+        </Head>
+
+        {loading && <Loader />}
+        {error && (
+          <div className="p-8 text-red-400 bg-red-900 rounded-2xl mb-12">
+            <pre>{JSON.stringify(error, null, 2)}</pre>
           </div>
+        )}
+
+        {user && (
+          <Display
+            clients={user.client}
+            tags={tags}
+            statuses={statuses}
+            showDialog={showDialog}
+            setShowDialog={setShowDialog}
+          />
         )}
       </Layout>
     </Authentication>
   );
 };
+
+export function getServerSideProps(ctx) {
+  return {
+    props: {
+      instagram: ctx.params.instagram,
+    },
+  };
+}
 
 export default Client;

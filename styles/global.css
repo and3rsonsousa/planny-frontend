@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 body {
-  @apply text-gray-500 font-light;
-  font-family: museo-sans-rounded, sans-serif;
+  @apply text-gray-500 font-light font-brand;
+  font-feature-settings: "ss01";
 }
 
 p {
@@ -40,9 +40,9 @@ h5 {
   }
 
   .loader .circle {
-    @apply h-12 w-12 rounded-full border-4 border-transparent absolute animate-spin;
+    @apply h-12 w-12 rounded-full border-4 border-black border-opacity-10 absolute animate-spin;
     border-top-color: theme("colors.brand.600");
-    animation-timing-function: ease-in-out;
+    /* animation-timing-function: ease-in-out; */
   }
 
   .loader.loader-small {
@@ -59,7 +59,7 @@ h5 {
   }
 
   .input {
-    @apply py-3 px-4 border rounded-xl outline-none focus:border-brand-600 focus:ring-4 focus:ring-brand-200 focus:text-gray-800 w-full;
+    @apply py-3 px-4 border-2 rounded-xl outline-none focus:border-brand-600 focus:text-gray-800 w-full;
   }
 
   .input-error {
@@ -67,7 +67,7 @@ h5 {
   }
 
   .button {
-    @apply py-3 px-4 rounded-xl outline-none flex items-center justify-center space-x-2 border focus:ring-4 bg-gray-100  border-gray-100 hover:bg-gray-200  focus:bg-gray-200  focus:ring-brand-200   shadow transition-colors;
+    @apply py-3 px-4 rounded-xl outline-none flex items-center justify-center space-x-2 border bg-gray-100 border-gray-100 hover:bg-gray-200 shadow transition-colors focus:ring-4 focus:ring-brand-400;
   }
 
   .button-small {
@@ -105,27 +105,27 @@ h5 {
 }
 
 .idea-bg {
-  @apply bg-idea-400 text-idea-100;
+  @apply bg-idea-500 text-idea-100 hover:ring-4 hover:ring-idea-500 hover:ring-opacity-20 transition-all;
   /* text-shadow: 0 1px 10px theme("colors.idea.900"); */
 }
 .do-bg {
-  @apply bg-do-400 text-do-100;
+  @apply bg-do-400 text-do-100 hover:ring-4 hover:ring-do-500 hover:ring-opacity-20 transition-all;
   /* text-shadow: 0 1px 10px theme("colors.do.900"); */
 }
 .doing-bg {
-  @apply bg-doing-600 text-doing-100;
+  @apply bg-doing-600 text-doing-100 hover:ring-4 hover:ring-doing-500 hover:ring-opacity-20 transition-all;
   /* text-shadow: 0 1px 10px theme("colors.doing.900"); */
 }
 .review-bg {
-  @apply bg-review-500 text-review-100;
+  @apply bg-review-500 text-review-100 hover:ring-4 hover:ring-review-500 hover:ring-opacity-20 transition-all;
   /* text-shadow: 0 1px 10px theme("colors.review.900"); */
 }
 .done-bg {
-  @apply bg-done-400 text-done-100;
+  @apply bg-done-400 text-done-100 hover:ring-4 hover:ring-done-500 hover:ring-opacity-20 transition-all;
   /* text-shadow: 0 1px 10px theme("colors.done.900"); */
 }
 .accomplished-bg {
-  @apply bg-accomplished-400 text-accomplished-100;
+  @apply bg-accomplished-500 text-accomplished-100 hover:ring-4 hover:ring-accomplished-500 hover:ring-opacity-20 transition-all;
   /* text-shadow: 0 1px 10px theme("colors.accomplished.900"); */
 }
 
@@ -171,4 +171,34 @@ h5 {
 }
 .shadow-accomplished {
   box-shadow: 0 4px 10px theme("colors.accomplished.300");
+}
+
+.copy-bg {
+  @apply bg-copy-100 text-copy-600;
+}
+.shooting-bg {
+  @apply bg-shooting-100 text-shooting-600;
+}
+.post-bg {
+  @apply bg-post-100 text-post-600;
+}
+.reels-bg {
+  @apply bg-reels-100 text-reels-600;
+}
+.meeting-bg {
+  @apply bg-meeting-100 text-meeting-600;
+}
+.stories-bg {
+  @apply bg-stories-100 text-stories-600;
+}
+.video-bg {
+  @apply bg-video-100 text-video-600;
+}
+
+.instagram-grid .cell {
+  @apply border-r border-b;
+}
+
+.instagram-grid .cell:nth-child(3n + 0) {
+  @apply border-r-0;
 }
