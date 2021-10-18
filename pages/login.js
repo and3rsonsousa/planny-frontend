@@ -5,36 +5,28 @@ import Logo from "../components/Logo";
 import nookies from "nookies";
 
 const Login = (props) => {
-  if (nookies.get("planny").user && nookies.get("planny").token) {
+  if (nookies.get("planny").token) {
     setTimeout(() => {
       Router.push("/");
     }, 500);
   }
-  const [identifier, setIdentifier] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [identifierError, setIdentifierError] = useState(null);
+  const [usernameError, setUsernameError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const QUERY = gql`
-    mutation ($input: UsersPermissionsLoginInput!) {
-      login(input: $input) {
-        jwt
-        user {
-          id
-          email
-        }
+    query ($username: String!, $password: String!) {
+      profiles(where: { username: $username, password: $password }) {
+        id
       }
     }
   `;
 
   const handleSubmit = async function (e) {
     e.preventDefault();
-    const loginInput = {
-      identifier,
-      password,
-    };
 
-    if (identifier === "") {
-      setIdentifierError("Nome de usuário não pode ser em branco.");
+    if (username === "") {
+      setUsernameError("Nome de usuário não pode ser em branco.");
       return false;
     }
 
@@ -44,19 +36,20 @@ const Login = (props) => {
     }
 
     const data = await request(
-      "https://cryptic-beyond-85441.herokuapp.com/graphql",
+      // "https://cryptic-beyond-85441.herokuapp.com/graphql",
+      "https://api-us-east-1.graphcms.com/v2/ckursm70w0eq101y2982b3c14/master",
       QUERY,
       {
-        input: loginInput,
+        username,
+        password,
       }
     );
-    const {
-      jwt,
-      user: { id, email },
-    } = data.login;
 
-    nookies.set(null, "token", jwt, { maxAge: 3 * 24 * 60 * 60 });
-    nookies.set(null, "user", id, { maxAge: 3 * 24 * 60 * 60 });
+    const { id } = data.profiles[0];
+
+    nookies.set(null, "token", id, {
+      maxAge: 3 * 24 * 60 * 60,
+    });
 
     Router.push("/");
   };
@@ -74,13 +67,13 @@ const Login = (props) => {
               type="text"
               autoFocus
               className={`input ${
-                identifierError && identifier === "" ? "input-error" : ""
+                usernameError && username === "" ? "input-error" : ""
               }`}
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             ></input>
-            {identifierError && identifier === "" ? (
-              <div className="text-red-600 py-2 text-xs">{identifierError}</div>
+            {usernameError && username === "" ? (
+              <div className="text-red-600 py-2 text-xs">{usernameError}</div>
             ) : (
               ""
             )}

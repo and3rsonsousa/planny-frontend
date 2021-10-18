@@ -6,9 +6,10 @@ import Logo from "./Logo.js";
 import Loader from "./Loader";
 import { HiLogout, HiOutlineLogout } from "react-icons/hi";
 import Router from "next/router";
+import Avatar from "./Avatar.js";
 
-const Layout = ({ children, user }) => {
-  let { client, clients } = user || {};
+const Layout = ({ children, profile }) => {
+  let { client, accounts } = profile || {};
 
   return (
     <div className="bg-gray-100 overflow-x-hidden">
@@ -49,7 +50,7 @@ const Layout = ({ children, user }) => {
                         </svg>
                       </Menu.Button>
                       <Menu.Items className="bg-white absolute shadow-lg border mt-2 rounded-lg w-48 focus:outline-none z-10 ">
-                        {clients.map((client) => (
+                        {accounts.map((client) => (
                           <Link href={client.slug} key={client.slug}>
                             <Menu.Item>
                               {({ active }) => (
@@ -71,26 +72,27 @@ const Layout = ({ children, user }) => {
                   </Menu>
                 )}
               </div>
-              {user ? (
+              {profile ? (
                 <div className="flex gap-4">
                   <div className="text-right">
-                    <h4 className="font-medium flex items-center mb-0">
-                      <div className="text-gray-600">{user.name}</div>
+                    <div className="font-medium flex items-center space-x-2">
+                      <div className="rounded-full overflow-hidden">
+                        <Avatar avatar={profile} medium />
+                      </div>
+                      <div className="text-gray-700 ">{profile.name}</div>
                       <button
-                        className="button button-small button-ghost ml-1"
+                        className="button button-small button-ghost"
                         onClick={() => {
                           nookies.set(null, "token", null, {
                             maxAge: 0,
                           });
-                          nookies.set(null, "user", null, {
-                            maxAge: 0,
-                          });
+
                           Router.reload();
                         }}
                       >
                         <HiOutlineLogout className="text-lg" />
                       </button>
-                    </h4>
+                    </div>
                   </div>
                 </div>
               ) : (

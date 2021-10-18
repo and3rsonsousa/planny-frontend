@@ -1,11 +1,11 @@
-import ClientAvatar from "./ClientAvatar";
+import AccountAvatar from "./Avatar";
 import Link from "next/link";
 
-export default function ClientsBar({ small, medium, clients }) {
+export default function AccountsBar({ small, medium, accounts }) {
   return (
     <div className={`w-full overflow-x-auto`}>
-      <div className="flex py-2 w-full justify-center">
-        {clients.map((client, j) => (
+      <div className="flex justify-center w-full py-2">
+        {accounts.map((account, j) => (
           <div
             key={j}
             className={`transform 
@@ -16,9 +16,9 @@ export default function ClientsBar({ small, medium, clients }) {
             cursor-pointer
             `}
           >
-            <Link href={`/${client.slug}`} key={client.slug}>
+            <Link href={`/${account.slug}`} key={account.slug}>
               <div className="flex flex-col items-center">
-                <ClientAvatar client={client} small={small} medium={medium} />
+                <AccountAvatar avatar={account} small={small} medium={medium} />
               </div>
             </Link>
           </div>

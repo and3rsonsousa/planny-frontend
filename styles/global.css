@@ -4,7 +4,8 @@
 
 body {
   @apply text-gray-500 font-light font-brand;
-  font-feature-settings: "ss01";
+  /* Set values for OpenType feature tags */
+  /* font-feature-settings: "ss02"; */
 }
 
 p {
@@ -24,7 +25,7 @@ h4 {
   @apply text-lg font-light mb-2;
 }
 h5 {
-  @apply font-semibold uppercase tracking-wide mb-2;
+  @apply font-bold uppercase tracking-wide mb-2;
 }
 
 @layer utilities {
@@ -71,7 +72,7 @@ h5 {
   }
 
   .button-small {
-    @apply text-sm py-2 px-2 rounded-lg;
+    @apply text-sm p-1 rounded-lg;
   }
 
   .button-ghost {
@@ -92,6 +93,10 @@ h5 {
       0 1px 2px 0 theme("colors.brand.300");
   }
 
+  .button-red {
+    @apply hover:bg-red-200 hover:text-red-600;
+  }
+
   .status-demo {
     @apply flex;
   }
@@ -105,53 +110,66 @@ h5 {
 }
 
 .idea-bg {
-  @apply bg-idea-500 text-idea-100 hover:ring-4 hover:ring-idea-500 hover:ring-opacity-20 transition-all;
-  /* text-shadow: 0 1px 10px theme("colors.idea.900"); */
+  @apply bg-idea-500 text-idea-100 transition-all;
 }
 .do-bg {
-  @apply bg-do-400 text-do-100 hover:ring-4 hover:ring-do-500 hover:ring-opacity-20 transition-all;
-  /* text-shadow: 0 1px 10px theme("colors.do.900"); */
+  @apply bg-do-400 text-do-100 transition-all;
 }
 .doing-bg {
-  @apply bg-doing-600 text-doing-100 hover:ring-4 hover:ring-doing-500 hover:ring-opacity-20 transition-all;
-  /* text-shadow: 0 1px 10px theme("colors.doing.900"); */
+  @apply bg-doing-600 text-doing-100 transition-all;
 }
 .review-bg {
-  @apply bg-review-500 text-review-100 hover:ring-4 hover:ring-review-500 hover:ring-opacity-20 transition-all;
-  /* text-shadow: 0 1px 10px theme("colors.review.900"); */
+  @apply bg-review-500 text-review-100 transition-all;
 }
 .done-bg {
-  @apply bg-done-400 text-done-100 hover:ring-4 hover:ring-done-500 hover:ring-opacity-20 transition-all;
-  /* text-shadow: 0 1px 10px theme("colors.done.900"); */
+  @apply bg-done-400 text-done-100 transition-all;
 }
 .accomplished-bg {
-  @apply bg-accomplished-500 text-accomplished-100 hover:ring-4 hover:ring-accomplished-500 hover:ring-opacity-20 transition-all;
-  /* text-shadow: 0 1px 10px theme("colors.accomplished.900"); */
+  @apply bg-accomplished-500 text-accomplished-100 transition-all;
+}
+
+.hover-idea-bg {
+  /* @apply hover:ring-4 hover:ring-idea-500 hover:ring-opacity-20; */
+  @apply hover:bg-idea-600;
+}
+.hover-do-bg {
+  /* @apply hover:ring-4 hover:ring-do-500 hover:ring-opacity-20; */
+  @apply hover:bg-do-500;
+}
+.hover-doing-bg {
+  /* @apply hover:ring-4 hover:ring-doing-500 hover:ring-opacity-20; */
+  @apply hover:bg-doing-700;
+}
+.hover-review-bg {
+  /* @apply hover:ring-4 hover:ring-review-500 hover:ring-opacity-20; */
+  @apply hover:bg-review-600;
+}
+.hover-done-bg {
+  /* @apply hover:ring-4 hover:ring-done-500 hover:ring-opacity-20; */
+  @apply hover:bg-done-600;
+}
+.hover-accomplished-bg {
+  /* @apply hover:ring-4 hover:ring-accomplished-500 hover:ring-opacity-20; */
+  @apply hover:bg-accomplished-600;
 }
 
 .idea-bg-gradient {
   @apply bg-gradient-to-br from-idea-400 to-idea-600 text-idea-100;
-  /* text-shadow: 0 1px 10px theme("colors.idea.900"); */
 }
 .do-bg-gradient {
   @apply bg-gradient-to-br from-do-400 to-do-600 text-do-100;
-  /* text-shadow: 0 1px 10px theme("colors.do.900"); */
 }
 .doing-bg-gradient {
   @apply bg-gradient-to-br from-doing-400 to-doing-700 text-doing-100;
-  /* text-shadow: 0 1px 10px theme("colors.doing.900"); */
 }
 .review-bg-gradient {
   @apply bg-gradient-to-br from-review-400 to-review-600 text-review-100;
-  /* text-shadow: 0 1px 10px theme("colors.review.900"); */
 }
 .done-bg-gradient {
   @apply bg-gradient-to-br from-done-400 to-done-600 text-done-100;
-  /* text-shadow: 0 1px 10px theme("colors.done.900"); */
 }
 .accomplished-bg-gradient {
   @apply bg-gradient-to-br from-accomplished-400 to-accomplished-600 text-accomplished-50;
-  /* text-shadow: 0 1px 10px theme("colors.accomplished.900"); */
 }
 
 .shadow-idea {

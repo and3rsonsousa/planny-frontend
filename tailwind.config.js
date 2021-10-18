@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        brand: "filson-pro, sans-serif",
+        brand: "museo-sans-rounded",
       },
       colors: {
         brand: colors.violet,
