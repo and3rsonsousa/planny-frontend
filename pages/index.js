@@ -2,7 +2,6 @@ import { useState, useEffect, Fragment } from "react";
 import Head from "next/head";
 import { gql } from "graphql-request";
 import Router from "next/router";
-import nookies from "nookies";
 
 import useUser from "../lib/useUser";
 
@@ -85,6 +84,7 @@ const Home = () => {
     }
   `;
   let [showDialog, setShowDialog] = useState(false);
+  let [actionToUpdate, setActionToUpdate] = useState(null);
   const { data, error, loggedOut } = useUser(QUERY);
 
   useEffect(() => {
@@ -129,6 +129,7 @@ const Home = () => {
                   steps={steps}
                   showDialog={showDialog}
                   setShowDialog={setShowDialog}
+                  setActionToUpdate={setActionToUpdate}
                 />
               </div>
               {/* decode */}
@@ -140,7 +141,11 @@ const Home = () => {
         )}
       </Layout>
       {/* Modal */}
-      <Modal showDialog={showDialog} setShowDialog={setShowDialog} />
+      <Modal
+        actionToUpdate={actionToUpdate}
+        showDialog={showDialog}
+        setShowDialog={setShowDialog}
+      />
     </>
   );
 };

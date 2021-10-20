@@ -20,18 +20,20 @@ module.exports = {
         done: colors.teal,
         accomplished: colors.lime,
 
-        post: colors.violet,
-        stories: colors.indigo,
-        reels: colors.pink,
+        post: colors.purple,
+        stories: colors.rose,
+        reels: colors.orange,
         meeting: colors.yellow,
         copy: colors.emerald,
-        video: colors.red,
-        shooting: colors.rose,
+        video: colors.sky,
+        shooting: colors.indigo,
       },
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      transform: ["group-focus"],
+    },
   },
   plugins: [
     require("@tailwindcss/line-clamp"),

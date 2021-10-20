@@ -23,7 +23,11 @@ export default function Avatar({
         style={avatar.colors ? { backgroundColor: avatar.colors[0].hex } : null}
       >
         {avatar.image ? (
-          <img src={avatar.image.url} title={avatar.name} />
+          <img
+            src={avatar.image.url}
+            title={avatar.name}
+            className="w-full h-full object-fit"
+          />
         ) : (
           <span style={avatar.colors ? { color: avatar.colors[1].hex } : null}>
             {avatar.name

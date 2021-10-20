@@ -62,6 +62,11 @@ const Account = ({ slug }) => {
           }
         }
       }
+      accounts {
+        id
+        name
+        slug
+      }
       steps {
         id
         name
@@ -89,10 +94,14 @@ const Account = ({ slug }) => {
 
   if (loggedOut) return "Redirecionando...";
 
-  const { profile, steps, tags } = data || {};
+  const { profile, accounts, steps, tags } = data || {};
 
   return (
-    <Layout profile={profile}>
+    <Layout
+      profile={profile}
+      account={profile ? profile.accounts[0] : null}
+      accounts={accounts}
+    >
       <Head>
         <title>Carregando dados... | Planny</title>
       </Head>

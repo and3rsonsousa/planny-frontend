@@ -2,11 +2,14 @@ import dayjs from "dayjs";
 import { HiCheck, HiCheckCircle, HiX, HiXCircle } from "react-icons/hi";
 import Avatar from "./Avatar";
 
-export default function Action({ action, setShowDialog }) {
+export default function Action({ action, setShowDialog, setActionToUpdate }) {
   return (
     <div
       className={`group p-2 pl-5 mt-2 relative rounded-lg text-xs ${action.step.slug}-bg hover-${action.step.slug}-bg cursor-pointer`}
-      onClick={() => setShowDialog(true)}
+      onClick={() => {
+        setActionToUpdate(action.id);
+        setShowDialog(true);
+      }}
     >
       {/* Nome da Ação */}
       <div className="text-white text-smfont-medium line-clamp-1">

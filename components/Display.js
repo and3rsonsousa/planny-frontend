@@ -5,7 +5,6 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import "dayjs/locale/pt-br";
 import { RadioGroup, Listbox, Transition, Switch } from "@headlessui/react";
 import {
-  HiCheck,
   HiCheckCircle,
   HiOutlineCalendar,
   HiOutlineChevronDown,
@@ -13,6 +12,7 @@ import {
   HiOutlineChevronRight,
   HiOutlineFilter,
   HiOutlineViewList,
+  HiPlus,
   HiX,
 } from "react-icons/hi";
 import { MdOutlineGridOn } from "react-icons/md";
@@ -29,8 +29,7 @@ export default function Display({
   steps,
   showDialog,
   setShowDialog,
-  hideAccounts,
-  hideSteps,
+  setActionToUpdate,
 }) {
   //view state
 
@@ -119,6 +118,7 @@ export default function Display({
           account={account}
           showDialog={showDialog}
           setShowDialog={setShowDialog}
+          setActionToUpdate={setActionToUpdate}
         />
       ) : view === 2 ? (
         <Board
@@ -130,6 +130,7 @@ export default function Display({
           account={account}
           showDialog={showDialog}
           setShowDialog={setShowDialog}
+          setActionToUpdate={setActionToUpdate}
         />
       ) : view === 3 ? (
         <List
@@ -141,6 +142,7 @@ export default function Display({
           account={account}
           showDialog={showDialog}
           setShowDialog={setShowDialog}
+          setActionToUpdate={setActionToUpdate}
         />
       ) : view === 4 ? (
         <Grid
@@ -152,6 +154,7 @@ export default function Display({
           account={account}
           showDialog={showDialog}
           setShowDialog={setShowDialog}
+          setActionToUpdate={setActionToUpdate}
         />
       ) : (
         <div>Nenhuma view está selecionada</div>
@@ -469,6 +472,7 @@ const Calendar = ({
   account,
   showDialog,
   setShowDialog,
+  setActionToUpdate,
 }) => {
   return (
     <div className="w-full overflow-hidden bg-white shadow rounded-2xl">
@@ -492,7 +496,7 @@ const Calendar = ({
                     key={di}
                     className={`p-3 ${di < 6 ? " border-r" : ""} ${
                       wi < week.length ? " border-b" : ""
-                    } hover:bg-gray-50 `}
+                    } hover:bg-gray-50 relative group`}
                   >
                     {/* Número do dia */}
                     <div className="">
@@ -530,9 +534,13 @@ const Calendar = ({
                           key={action.id}
                           showDialog={showDialog}
                           setShowDialog={setShowDialog}
+                          setActionToUpdate={setActionToUpdate}
                         />
                       ) : null;
                     })}
+                    <button className="absolute flex items-center justify-center invisible w-4 h-4 text-lg text-gray-200 bg-gray-700 rounded-full right-4 top-4 group-hover:visible">
+                      <HiPlus className="text-sm" />
+                    </button>
                   </div>
                 );
               })}
