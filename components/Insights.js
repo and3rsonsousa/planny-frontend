@@ -2,7 +2,7 @@ export function StepsInsight({ steps }) {
   return (
     <div className="my-4">
       <h3 className="text-gray-700">Status</h3>
-      <div className="status-demo w-full">
+      <div className="w-full status-demo">
         {steps.map((step, index) => {
           const count = step.actions.length;
 
@@ -14,8 +14,8 @@ export function StepsInsight({ steps }) {
                 width: (count / 4) * 100 + "%",
               }}
             >
-              <div className="uppercase text-xx font-bold tracking-wider flex justify-center relative ">
-                <div className="truncate  overflow-hidden ">{step.name}</div>(
+              <div className="relative flex justify-center font-bold tracking-wider uppercase text-xx ">
+                <div className="overflow-hidden truncate ">{step.name}</div>(
                 {step.actions.length})
               </div>
             </div>
@@ -26,26 +26,30 @@ export function StepsInsight({ steps }) {
   );
 }
 
-export function AccountsInsight({ accounts }) {
+export function AccountsInsight({ accounts, actions }) {
   return (
     <div className="my-4">
       <h3 className="text-gray-700">Clientes</h3>
-      <div className="status-demo w-full">
+      <div className="w-full status-demo">
         {accounts.map((account, index) => {
-          const count = account.actions.length;
-          return count ? (
+          const total = actions.length;
+          return total ? (
             <div
               className={`p-2 overflow-hidden flex-auto`}
               key={index}
               style={{
-                width: (count / 4) * 100 + "%",
+                width: (total / 4) * 100 + "%",
                 backgroundColor: account.colors[0].hex || "#789",
                 color: account.colors[1].hex || "#fff",
               }}
             >
-              <div className="uppercase text-xx font-bold tracking-wider flex justify-center relative ">
-                <div className="truncate  overflow-hidden ">{account.name}</div>
-                ({account.actions.length})
+              <div className="relative flex justify-center font-bold tracking-wider uppercase text-xx ">
+                <div className="overflow-hidden truncate ">{account.name}</div>(
+                {
+                  actions.filter((action) => action.account.id === account.id)
+                    .length
+                }
+                )
               </div>
             </div>
           ) : null;

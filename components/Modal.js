@@ -1,4 +1,4 @@
-import { gql } from "graphql-request";
+import request, { gql } from "graphql-request";
 import { Fragment, useEffect, useState } from "react";
 import { Transition, Dialog, RadioGroup, Switch } from "@headlessui/react";
 
@@ -8,18 +8,16 @@ import dayjs from "dayjs";
 import Avatar from "./Avatar";
 import {
   HiCheckCircle,
-  HiOutlineBriefcase,
   HiOutlineCalendar,
   HiOutlineClock,
-  HiOutlineHeart,
 } from "react-icons/hi";
-import { MdOutlineRefresh, MdOutlineSlowMotionVideo } from "react-icons/md";
-import { IoPlayOutline, IoText, IoVideocamOutline } from "react-icons/io5";
-// import "dayjs/locale/pt-br";
-// dayjs.locale("pt-br");
+
+import tagsIcons from "../lib/tagsIcon";
+import { useSWRConfig } from "swr";
 
 export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
-  const QUERY = gql`
+  if (!actionToUpdate) return false;
+  const QUERY = `
     query ($id: ID!) {
       profile( where: {id: $id} ){
         id
@@ -95,11 +93,13 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
       }
     }
   `;
-  const { data, error } = useUser(QUERY);
+  const { mutate } = useSWRConfig();
+  const { data, error } = useUser("/modal", QUERY);
 
   const { profile, profiles, action, accounts, steps, tags } = data || {};
 
   const [Action, setAction] = useState({
+    id: "",
     name: "",
     description: "",
     date: dayjs(),
@@ -114,10 +114,11 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
   useEffect(() => {
     if (action) {
       setAction(() => ({
+        id: action.id,
         name: action.name,
         description: action.description,
         date: dayjs(action.date).format("YYYY-MM-DD"),
-        time: dayjs(action.date).format("H:mm"),
+        time: dayjs(action.date).format("HH:mm:ss"),
         account: action.account.id,
         profile_creator: action.profile_creator.id,
         profiles_responsible: action.profiles_responsible,
@@ -132,9 +133,107 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
     setAction(() => ({ ...Action, [name]: value }));
   }
 
+  async function handleSubmit(method, id) {
+    if (Action.name === "") {
+      console.log("Você precisa inserir um Nome par a Ação.");
+      return false;
+    }
+    if (Action.date === "" || Action.time === "") {
+      console.log("Você precisa definir uma data e Hora para a ação.");
+      return false;
+    }
+    if (Action.account === "") {
+      console.log("Você precisa selecionar uma conta para essa ação.");
+      return false;
+    }
+    if (Action.profiles_responsible.length === 0) {
+      console.log(
+        "Você precisa selecionar pelo menos um responsável por essa ação."
+      );
+      return false;
+    }
+
+    if (Action.tags.length === 0) {
+      console.log("Você precisa selecionar pelo menos uma tag para essa ação.");
+      return false;
+    }
+
+    const MUTATION_QUERY = gql`mutation{
+      updateAction(where:{id:"${Action.id}"}, data:{name:"${
+      Action.name
+    }", description:"${Action.description || ""}", date: "${
+      dayjs(Action.date + " " + Action.time).format("YYYY-MM-DD[T]HH:mm:ss") +
+      "+00:00"
+    }", account:{connect:{id:"${
+      Action.account
+    }"}}, profiles_responsible:{set:[${Action.profiles_responsible.map(
+      (responsible) => '{id:"' + responsible.id + '"}'
+    )}]}, step:{connect:{id:"${Action.step}"}}, tags:{set:[${Action.tags.map(
+      (tag) => '{id:"' + tag.id + '"}'
+    )}]} } ){
+        id
+        date
+        name
+        description
+        profile_creator{
+          id
+          name
+          image {
+            url(
+              transformation: {
+                image: { resize: { width: 70, height: 70, fit: clip } }
+              }
+            )
+          }
+        }
+        profiles_responsible {
+          id
+        }
+        step {
+          id
+          slug
+          name
+        }
+        tags {
+          id
+        }
+        account{
+          id
+          slug
+          name
+          colors {
+            hex
+          }
+        }
+      }
+    }`;
+
+    mutate(
+      "/index",
+      async (data) => {
+        const result = await request(
+          "https://api-us-east-1.graphcms.com/v2/ckursm70w0eq101y2982b3c14/master",
+          MUTATION_QUERY
+        );
+        let actions = data.actions.map((action) =>
+          action.id === result.updateAction.id ? result.updateAction : action
+        );
+
+        console.log(actions);
+        return { ...data, actions };
+      },
+      false
+    );
+
+    setShowDialog(() => {
+      mutate("index");
+      return false;
+    });
+  }
+
   return (
     <ModalLayout showDialog={showDialog} setShowDialog={setShowDialog}>
-      <div className="relative w-full max-w-xl p-8 mx-auto bg-white shadow-2xl rounded-xl">
+      <div className="relative w-full max-w-2xl p-8 mx-auto bg-white shadow-2xl rounded-xl">
         {!data && <Loader />}
         {error && <Error>{JSON.stringify(error, null, 2)}</Error>}
         {data && (
@@ -316,7 +415,7 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                 <label>
                   <div>Tags</div>
                 </label>
-                <div className="font-medium tracking-widest uppercase text-xx">
+                <div className="grid grid-cols-4 space-x-1 font-medium tracking-widest uppercase text-xx">
                   {tags.map((tag, index) => {
                     const selected =
                       Action.tags.filter((tg) => tg.id === tag.id).length > 0;
@@ -324,9 +423,9 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                       <div
                         tabIndex={index}
                         key={tag.id}
-                        className={`inline-flex flex-col items-center cursor-pointer mr-1 py-2 px-3 rounded-2xl outline-none focus:ring-2 ring-offset-2 ring-brand-600 ${
+                        className={`flex justify-center items-center cursor-pointer mb-1 py-2 px-3 rounded-2xl outline-none focus:ring-2 ring-offset-2 ring-brand-600 ${
                           selected ? tag.slug + "-bg" : "text-gray-400"
-                        }  items-center space-y-1`}
+                        }`}
                         onClick={() => {
                           setAction(() => {
                             return {
@@ -339,23 +438,7 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                         }}
                         title={tag.name}
                       >
-                        <span>
-                          {tag.slug === "post" ? (
-                            <HiOutlineHeart className="w-5 h-5" />
-                          ) : tag.slug === "stories" ? (
-                            <MdOutlineRefresh className="w-5 h-5" />
-                          ) : tag.slug === "reels" ? (
-                            <MdOutlineSlowMotionVideo className="w-5 h-5" />
-                          ) : tag.slug === "meeting" ? (
-                            <HiOutlineBriefcase className="w-5 h-5" />
-                          ) : tag.slug === "copy" ? (
-                            <IoText className="w-5 h-5" />
-                          ) : tag.slug === "video" ? (
-                            <IoPlayOutline className="w-5 h-5" />
-                          ) : tag.slug === "shooting" ? (
-                            <IoVideocamOutline className="w-5 h-5" />
-                          ) : null}
-                        </span>
+                        <span>{tagsIcons(tag.slug)}</span>
                         <span>{tag.name}</span>
                       </div>
                     );
@@ -367,7 +450,14 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
         )}
 
         <div className="flex items-center justify-between w-full pt-8 border-t">
-          <div className="text-gray-700"></div>
+          <div>
+            <button
+              className="text-xs tracking-wider uppercase button button-ghost button-red"
+              onClick={() => handleSubmit(3, Action.id)}
+            >
+              Deletar
+            </button>
+          </div>
           <div className="flex space-x-2">
             <button
               className="button button-ghost"
@@ -377,7 +467,7 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
             </button>
             <button
               className="button button-primary"
-              onClick={() => setShowDialog(false)}
+              onClick={() => handleSubmit(actionToUpdate ? 2 : 1)}
             >
               {actionToUpdate ? "Atualizar" : "Inserir"}
             </button>

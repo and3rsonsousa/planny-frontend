@@ -12,9 +12,10 @@ import Display from "../components/Display";
 import Error from "../components/Error";
 import { AccountsInsight, StepsInsight } from "../components/Insights";
 import Modal from "../components/Modal";
+import { useSWRConfig } from "swr";
 
 const Home = () => {
-  const QUERY = gql`
+  const QUERY = `
     query ($id: ID!) {
       profile(where: { id: $id }) {
         id
@@ -33,7 +34,9 @@ const Home = () => {
           colors {
             hex
           }
-          actions(orderBy: date_DESC) {
+        }
+      }
+      actions(orderBy: date_DESC) {
             id
             date
             name
@@ -66,8 +69,6 @@ const Home = () => {
               }
             }
           }
-        }
-      }
       steps {
         id
         name
@@ -85,7 +86,8 @@ const Home = () => {
   `;
   let [showDialog, setShowDialog] = useState(false);
   let [actionToUpdate, setActionToUpdate] = useState(null);
-  const { data, error, loggedOut } = useUser(QUERY);
+  const { data, error, loggedOut } = useUser("/index", QUERY);
+  console.log(data);
 
   useEffect(() => {
     if (loggedOut) {
@@ -95,7 +97,7 @@ const Home = () => {
 
   if (loggedOut) return "Redirecionando...";
 
-  const { profile, steps, tags } = data || {};
+  const { profile, actions, steps, tags } = data || {};
 
   return (
     <>
@@ -119,12 +121,16 @@ const Home = () => {
                 {/* Status / Steps */}
                 <StepsInsight steps={steps} />
                 {/* Contas / Accounts */}
-                <AccountsInsight accounts={profile.accounts} />
+                <AccountsInsight
+                  accounts={profile.accounts}
+                  actions={actions}
+                />
               </div>
               {/* Ações / Display */}
               <div className="mb-8">
                 <Display
                   accounts={profile.accounts}
+                  actions={actions}
                   tags={tags}
                   steps={steps}
                   showDialog={showDialog}

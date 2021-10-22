@@ -25,6 +25,7 @@ dayjs.extend(isSameOrBefore);
 
 export default function Display({
   accounts,
+  actions,
   tags,
   steps,
   showDialog,
@@ -39,7 +40,6 @@ export default function Display({
   const [step, setStep] = useState(steps[0]);
   const [account, setAccount] = useState(accounts[0]);
   //Coloca todas as ações em um array e achata para ter somente uma camada
-  let actions = accounts.map((account) => account.actions).flat();
   //Ordena as ações por data e não por cliente
   actions = actions.sort((a, b) => {
     return dayjs(a.date).diff(dayjs(b.date));
