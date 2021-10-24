@@ -1,26 +1,45 @@
+import { useEffect, useState } from "react";
+import useSWR from "swr";
 import request, { gql } from "graphql-request";
-import { Fragment, useEffect, useState } from "react";
-import { Transition, Dialog, RadioGroup, Switch } from "@headlessui/react";
-
-import useUser from "../lib/useUser";
-import Loader from "./Loader";
 import dayjs from "dayjs";
-import Avatar from "./Avatar";
+import "dayjs/locale/pt-br";
+import { RadioGroup } from "@headlessui/react";
+import nookies from "nookies";
 import {
   HiCheckCircle,
   HiOutlineCalendar,
   HiOutlineClock,
 } from "react-icons/hi";
 
+import Loader from "./Loader";
+import Avatar from "./Avatar";
 import tagsIcons from "../lib/tagsIcon";
-import { useSWRConfig } from "swr";
+import { deleteAction } from "../lib/mutations";
 
-export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
-  if (!actionToUpdate) return false;
-  const QUERY = `
-    query ($id: ID!) {
-      profile( where: {id: $id} ){
+dayjs.locale("pt-br");
+
+export default function Modal({
+  showDialog,
+  setShowDialog,
+  actionToUpdate,
+  setActionToUpdate,
+  mutatePage,
+  actionDate,
+}) {
+  let QUERY = "";
+
+  if (actionToUpdate) {
+    QUERY = gql`{
+      profile( where: {id: "${nookies.get("planny").token}"} ){
         id
+        accounts{
+          id
+          name
+          slug
+          colors{
+            hex
+          }
+        }
       }
       action(where:{id:"${actionToUpdate}"}) {
         id
@@ -48,6 +67,8 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
         }
         tags {
           id
+          name
+          slug
         }
         account{
           id
@@ -58,7 +79,7 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
           }
         }
       }
-      
+        
       accounts(orderBy: name_ASC){
         id
         name
@@ -67,7 +88,7 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
           hex
         }
       }
-
+      
       profiles{
         id
         name
@@ -79,12 +100,12 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
           )
         }
       }
-       
+          
       steps {
         id
         name
         slug
-
+        
       }
       tags {
         id
@@ -92,153 +113,237 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
         slug
       }
     }
-  `;
-  const { mutate } = useSWRConfig();
-  const { data, error } = useUser("/modal", QUERY);
+    `;
+  } else {
+    QUERY = gql`{
+      profile( where: {id: "${nookies.get("planny").token}"} ){
+        id
+        accounts{
+          id
+          name
+          slug
+          colors{
+            hex
+          }
+        }
+      }   
+      accounts(orderBy: name_ASC){
+        id
+        name
+        slug
+        colors{
+          hex
+        }
+      }
+      
+      profiles{
+        id
+        name
+        image {
+          url(
+            transformation: {
+              image: { resize: { width: 70, height: 70, fit: clip } }
+            }
+          )
+        }
+      }
+      
+      steps {
+        id
+        name
+        slug
+        
+      }
+      tags {
+        id
+        name
+        slug
+      }
+    }
+    `;
+  }
+
+  const { data, error } = useSWR(QUERY);
 
   const { profile, profiles, action, accounts, steps, tags } = data || {};
 
-  const [Action, setAction] = useState({
-    id: "",
+  const emptyState = {
+    id: actionDate,
     name: "",
     description: "",
-    date: dayjs(),
+    date: "",
     account: "",
     profile_creator: "",
-    profiles_responsible: "",
+    profiles_responsible: [],
     step: "",
     tags: [],
-    image: "",
-  });
+    clientOnly: true,
+  };
+  const [Action, setAction] = useState(emptyState);
 
   useEffect(() => {
-    if (action) {
+    if (action && actionToUpdate) {
       setAction(() => ({
         id: action.id,
         name: action.name,
-        description: action.description,
-        date: dayjs(action.date).format("YYYY-MM-DD"),
-        time: dayjs(action.date).format("HH:mm:ss"),
-        account: action.account.id,
+        description: action.description || "",
+        date: dayjs(action.date).format("YYYY-MM-DD[T]HH:mm:ss[-03:00]"),
+        account: action.account,
         profile_creator: action.profile_creator.id,
         profiles_responsible: action.profiles_responsible,
-        step: action.step.id,
+        step: action.step,
         tags: action.tags,
+        clientOnly: true,
+      }));
+    } else if (profile && profiles) {
+      setAction(() => ({
+        ...Action,
+        account: profile.accounts.length === 1 ? profile.accounts[0] : {},
+        date: actionDate,
+        profile_creator: profile.id,
+        profiles_responsible: profiles.filter(
+          (_profile) => _profile.id === profile.id
+        ),
+        step: steps[0],
       }));
     }
-  }, [action]);
+  }, [data, actionDate]);
 
   function handleState(event) {
     const { name, value } = event.target;
     setAction(() => ({ ...Action, [name]: value }));
   }
 
+  function handleClose() {
+    setActionToUpdate(null);
+    setShowDialog(false);
+    setAction(emptyState);
+  }
+
   async function handleSubmit(method, id) {
-    if (Action.name === "") {
-      console.log("Você precisa inserir um Nome par a Ação.");
+    let MUTATION_QUERY = "";
+    //Deletar a Ação
+    if (method === 3) {
+      deleteAction(Action, mutatePage, handleClose);
       return false;
-    }
-    if (Action.date === "" || Action.time === "") {
-      console.log("Você precisa definir uma data e Hora para a ação.");
-      return false;
-    }
-    if (Action.account === "") {
-      console.log("Você precisa selecionar uma conta para essa ação.");
-      return false;
-    }
-    if (Action.profiles_responsible.length === 0) {
-      console.log(
-        "Você precisa selecionar pelo menos um responsável por essa ação."
-      );
-      return false;
-    }
-
-    if (Action.tags.length === 0) {
-      console.log("Você precisa selecionar pelo menos uma tag para essa ação.");
-      return false;
-    }
-
-    const MUTATION_QUERY = gql`mutation{
-      updateAction(where:{id:"${Action.id}"}, data:{name:"${
-      Action.name
-    }", description:"${Action.description || ""}", date: "${
-      dayjs(Action.date + " " + Action.time).format("YYYY-MM-DD[T]HH:mm:ss") +
-      "+00:00"
-    }", account:{connect:{id:"${
-      Action.account
-    }"}}, profiles_responsible:{set:[${Action.profiles_responsible.map(
-      (responsible) => '{id:"' + responsible.id + '"}'
-    )}]}, step:{connect:{id:"${Action.step}"}}, tags:{set:[${Action.tags.map(
-      (tag) => '{id:"' + tag.id + '"}'
-    )}]} } ){
-        id
-        date
-        name
-        description
-        profile_creator{
-          id
-          name
-          image {
-            url(
-              transformation: {
-                image: { resize: { width: 70, height: 70, fit: clip } }
-              }
-            )
-          }
-        }
-        profiles_responsible {
-          id
-        }
-        step {
-          id
-          slug
-          name
-        }
-        tags {
-          id
-        }
-        account{
-          id
-          slug
-          name
-          colors {
-            hex
-          }
-        }
+      // if (window.confirm(`Deseja realmente deletar a ação "${Action.name}"?`)) {
+      //   MUTATION_QUERY = gql`mutation{
+      //     deleteAction(where:{id:"${id}"}){
+      //       id
+      //     }
+      //   }`;
+      // } else {
+      //   return false;
+      // }
+      //Atualiza a UI OPTIMISTIC
+      // mutatePage((data) => {
+      //   const actions = data.actions.map((action) =>
+      //     action.id === id ? { ...action, clientOnly: true } : action
+      //   );
+      //   return { ...data, actions };
+      // }, false);
+    } else {
+      if (Action.name === "") {
+        alert("Você precisa inserir um Nome para a Ação.");
+        return false;
       }
-    }`;
-
-    mutate(
-      "/index",
-      async (data) => {
-        const result = await request(
-          "https://api-us-east-1.graphcms.com/v2/ckursm70w0eq101y2982b3c14/master",
-          MUTATION_QUERY
+      if (Action.date === "" || Action.time === "") {
+        alert("Você precisa definir uma data e Hora para a ação.");
+        return false;
+      }
+      if (Action.account === "") {
+        alert("Você precisa selecionar uma conta para essa ação.");
+        return false;
+      }
+      if (Action.profiles_responsible.length === 0) {
+        alert(
+          "Você precisa selecionar pelo menos um responsável por essa ação."
         );
-        let actions = data.actions.map((action) =>
-          action.id === result.updateAction.id ? result.updateAction : action
-        );
+        return false;
+      }
+      if (Action.tags.length === 0) {
+        alert("Você precisa selecionar pelo menos uma tag para essa ação.");
+        return false;
+      }
 
-        console.log(actions);
-        return { ...data, actions };
-      },
-      false
+      // Mutation para inserir
+      if (method === 1) {
+        MUTATION_QUERY = gql`mutation{
+          createAction(data:{name:"${Action.name}", description:"${
+          Action.description || ""
+        }", date: "${Action.date}", account:{connect:{id:"${
+          Action.account.id
+        }"}}, profile_creator:{connect:{id:"${
+          profile.id
+        }"}}, profiles_responsible:{connect:[${Action.profiles_responsible.map(
+          (responsible) => '{id:"' + responsible.id + '"}'
+        )}]}, step:{connect:{id:"${
+          Action.step.id
+        }"}}, tags:{connect:[${Action.tags.map(
+          (tag) => '{id:"' + tag.id + '"}'
+        )}]} } ){
+            id
+          }
+        }`;
+        //Atualiza a UI OPTIMISTIC
+        mutatePage((data) => {
+          return { ...data, actions: [...data.actions, Action] };
+        }, false);
+        //Mutation para atualizar
+      } else if (method === 2) {
+        MUTATION_QUERY = gql`mutation{
+          updateAction(where:{id:"${Action.id}"}, data:{name:"${
+          Action.name
+        }", description:"${Action.description || ""}", date: "${
+          Action.date
+        }", account:{connect:{id:"${
+          Action.account.id
+        }"}}, profiles_responsible:{set:[${Action.profiles_responsible.map(
+          (responsible) => '{id:"' + responsible.id + '"}'
+        )}]}, step:{connect:{id:"${
+          Action.step.id
+        }"}}, tags:{set:[${Action.tags.map(
+          (tag) => '{id:"' + tag.id + '"}'
+        )}]} } ){
+            id
+          }
+        }`;
+        //Atualiza a UI OPTIMISTIC
+        mutatePage((data) => {
+          const index = data.actions.findIndex(
+            (action) => action.id === Action.id
+          );
+          let actions = data.actions;
+          actions[index] = Action;
+          return { ...data, actions };
+        }, false);
+      }
+    }
+
+    // Esconde o Modal
+    handleClose();
+    //Faz a mutação de acordo com o method
+    const result = await request(
+      "https://api-us-east-1.graphcms.com/v2/ckursm70w0eq101y2982b3c14/master",
+      MUTATION_QUERY
     );
-
-    setShowDialog(() => {
-      mutate("index");
-      return false;
-    });
+    //Atualiza o cache local com os dados diretamente do Banco de dados.
+    mutatePage();
   }
 
   return (
-    <ModalLayout showDialog={showDialog} setShowDialog={setShowDialog}>
+    <ModalLayout showDialog={showDialog} handleClose={handleClose}>
       <div className="relative w-full max-w-2xl p-8 mx-auto bg-white shadow-2xl rounded-xl">
-        {!data && <Loader />}
+        {!data && (
+          <div className="mb-8">
+            <Loader />
+          </div>
+        )}
         {error && <Error>{JSON.stringify(error, null, 2)}</Error>}
         {data && (
           <>
             <form className="modal-form">
+              {/* <pre>{JSON.stringify(Action, null, 2)}</pre> */}
               {/* Name */}
               <div className="mb-8">
                 <label>
@@ -255,6 +360,7 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                   />
                 </label>
               </div>
+
               {/* Description */}
               <div className="mb-8">
                 <label>
@@ -279,11 +385,23 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                   <input
                     type="date"
                     className="input"
-                    name="time"
-                    value={Action.date}
-                    onChange={handleState}
+                    name="date"
+                    value={dayjs(Action.date).format("YYYY-MM-DD")}
+                    onChange={(event) => {
+                      setAction(() => {
+                        return {
+                          ...Action,
+                          date:
+                            dayjs(event.target.value).format("YYYY-MM-DD") +
+                            "T" +
+                            dayjs(Action.date).format("HH:mm:ss") +
+                            "-03:00",
+                        };
+                      });
+                    }}
                   />
                 </label>
+
                 <div className="mt-4">
                   <HiOutlineClock className="w-6 h-6 text-gray-300" />
                 </div>
@@ -293,8 +411,23 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                     type="time"
                     className="input"
                     name="time"
-                    value={Action.time}
-                    onChange={handleState}
+                    value={dayjs(Action.date).format("HH:mm:ss")}
+                    onChange={(event) => {
+                      setAction(() => {
+                        return {
+                          ...Action,
+                          date:
+                            dayjs(Action.date).format("YYYY-MM-DD") +
+                            "T" +
+                            dayjs(
+                              dayjs(Action.date).format("YYYY-MM-DD") +
+                                " " +
+                                event.target.value
+                            ).format("HH:mm:ss") +
+                            "-03:00",
+                        };
+                      });
+                    }}
                   />
                 </label>
               </div>
@@ -303,36 +436,43 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                 <label>
                   <div>Conta</div>
                 </label>
-
-                <RadioGroup
-                  value={Action.account}
-                  onChange={(value) => {
-                    setAction(() => ({ ...Action, account: value }));
-                  }}
-                  name="account"
-                  as="div"
-                  className="flex items-center space-x-2"
-                >
-                  {accounts.map((account) => (
-                    <RadioGroup.Option
-                      key={account.id}
-                      value={account.id}
-                      name="account"
-                      className="rounded-full outline-none cursor-pointer focus:ring-2 focus:ring-brand-600 ring-offset-2"
-                    >
-                      {({ checked }) => (
-                        <div className="relative">
-                          <Avatar avatar={account} medium={!checked} />
-                          {checked ? (
-                            <div className="absolute flex items-center justify-center text-green-400 transform bg-white rounded-full -bottom-2 -right-2 ">
-                              <HiCheckCircle className="w-6 h-6" />
-                            </div>
-                          ) : null}
+                <div className="flex items-center space-x-2">
+                  {accounts ? (
+                    profile.accounts.length === 1 ? (
+                      <div className="relative rounded-full outline-none cursor-pointer focus:ring-2 focus:ring-brand-600 ring-offset-2">
+                        <Avatar avatar={profile.accounts[0]} />
+                        <div className="absolute flex items-center justify-center text-green-400 transform bg-white rounded-full -bottom-2 -right-2 ">
+                          <HiCheckCircle className="w-6 h-6" />
                         </div>
-                      )}
-                    </RadioGroup.Option>
-                  ))}
-                </RadioGroup>
+                      </div>
+                    ) : (
+                      accounts.map((account, index) => {
+                        const checked =
+                          Action.account && account.id === Action.account.id;
+                        return (
+                          <div
+                            onClick={() => {
+                              setAction({
+                                ...Action,
+                                account,
+                              });
+                            }}
+                            className="relative rounded-full outline-none cursor-pointer focus:ring-2 focus:ring-brand-600 ring-offset-2"
+                            key={account.id}
+                            tabIndex={index + 1}
+                          >
+                            <Avatar avatar={account} medium={!checked} />
+                            {checked ? (
+                              <div className="absolute flex items-center justify-center text-green-400 transform bg-white rounded-full -bottom-2 -right-2 ">
+                                <HiCheckCircle className="w-6 h-6" />
+                              </div>
+                            ) : null}
+                          </div>
+                        );
+                      })
+                    )
+                  ) : null}
+                </div>
               </div>
 
               {/* Profiles Responsible */}
@@ -342,18 +482,17 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                 </label>
 
                 <div className="flex items-center space-x-2">
-                  {profiles.map((responsible, index) => {
-                    const checked =
-                      action && Action.profiles_responsible
-                        ? Action.profiles_responsible.filter(
-                            (profile_responsible) =>
-                              profile_responsible.id === responsible.id
-                          ).length > 0
-                        : false;
+                  {profiles.map((responsible) => {
+                    const checked = Action.profiles_responsible
+                      ? Action.profiles_responsible.filter(
+                          (profile_responsible) =>
+                            profile_responsible.id === responsible.id
+                        ).length > 0
+                      : false;
 
                     return (
-                      <Switch
-                        onChange={() => {
+                      <div
+                        onClick={() => {
                           setAction({
                             ...Action,
                             profiles_responsible: checked
@@ -375,7 +514,7 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                             <HiCheckCircle className="w-6 h-6" />
                           </div>
                         ) : null}
-                      </Switch>
+                      </div>
                     );
                   })}
                 </div>
@@ -394,20 +533,21 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                   as="div"
                   className="grid items-center grid-cols-6 space-x-1"
                 >
-                  {steps.map((step) => (
-                    <RadioGroup.Option
-                      key={step.id}
-                      value={step.id}
-                      name="step"
-                      className={`px-1 py-3 uppercase text-xs font-medium tracking-wider ${
-                        step.id === Action.step
-                          ? step.slug + "-bg "
-                          : " bg-white text-gray-400"
-                      } text-center cursor-pointer outline-none focus:ring-2 ring-offset-2 ring-brand-600 rounded-xl`}
-                    >
-                      {step.name}
-                    </RadioGroup.Option>
-                  ))}
+                  {Action.step &&
+                    steps.map((step) => (
+                      <RadioGroup.Option
+                        key={step.id}
+                        value={step}
+                        name="step"
+                        className={`px-1 py-3 uppercase text-xs font-medium tracking-wider ${
+                          step.id === Action.step.id
+                            ? step.slug + "-bg "
+                            : " bg-white text-gray-400"
+                        } text-center cursor-pointer outline-none focus:ring-2 ring-offset-2 ring-brand-600 rounded-xl`}
+                      >
+                        {step.name}
+                      </RadioGroup.Option>
+                    ))}
                 </RadioGroup>
               </div>
               {/* Tags */}
@@ -416,33 +556,35 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
                   <div>Tags</div>
                 </label>
                 <div className="grid grid-cols-4 space-x-1 font-medium tracking-widest uppercase text-xx">
-                  {tags.map((tag, index) => {
-                    const selected =
-                      Action.tags.filter((tg) => tg.id === tag.id).length > 0;
-                    return (
-                      <div
-                        tabIndex={index}
-                        key={tag.id}
-                        className={`flex justify-center items-center cursor-pointer mb-1 py-2 px-3 rounded-2xl outline-none focus:ring-2 ring-offset-2 ring-brand-600 ${
-                          selected ? tag.slug + "-bg" : "text-gray-400"
-                        }`}
-                        onClick={() => {
-                          setAction(() => {
-                            return {
-                              ...Action,
-                              tags: selected
+                  {Action.tags &&
+                    tags.map((tag) => {
+                      const selected =
+                        Action.tags.filter((tg) => tg.id === tag.id).length > 0;
+                      return (
+                        <div
+                          tabIndex={tag.id}
+                          key={tag.id}
+                          className={`flex justify-center items-center cursor-pointer mb-1 py-2 px-3 rounded-2xl outline-none focus:ring-2 ring-offset-2 ring-brand-600 ${
+                            selected ? tag.slug + "-bg" : "text-gray-400"
+                          }`}
+                          onClick={() => {
+                            setAction(() => {
+                              let tags = selected
                                 ? Action.tags.filter((tg) => tg.id != tag.id)
-                                : [...Action.tags, { id: tag.id }],
-                            };
-                          });
-                        }}
-                        title={tag.name}
-                      >
-                        <span>{tagsIcons(tag.slug)}</span>
-                        <span>{tag.name}</span>
-                      </div>
-                    );
-                  })}
+                                : [...Action.tags, tag];
+                              return {
+                                ...Action,
+                                tags,
+                              };
+                            });
+                          }}
+                          title={tag.name}
+                        >
+                          <span>{tagsIcons(tag.slug, "text-base mr-2")}</span>
+                          <span>{tag.name}</span>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
             </form>
@@ -451,17 +593,19 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
 
         <div className="flex items-center justify-between w-full pt-8 border-t">
           <div>
-            <button
-              className="text-xs tracking-wider uppercase button button-ghost button-red"
-              onClick={() => handleSubmit(3, Action.id)}
-            >
-              Deletar
-            </button>
+            {actionToUpdate && (
+              <button
+                className="text-xs tracking-wider uppercase button button-ghost button-red"
+                onClick={() => handleSubmit(3, Action.id)}
+              >
+                Deletar
+              </button>
+            )}
           </div>
           <div className="flex space-x-2">
             <button
               className="button button-ghost"
-              onClick={() => setShowDialog(false)}
+              onClick={() => handleClose()}
             >
               Fechar
             </button>
@@ -478,39 +622,36 @@ export default function Modal({ showDialog, setShowDialog, actionToUpdate }) {
   );
 }
 
-const ModalLayout = ({ children, showDialog, setShowDialog }) => (
-  <Transition appear show={showDialog} as={Fragment}>
-    <Dialog
-      onClose={() => setShowDialog(false)}
-      className="fixed inset-0 z-[9999] overflow-y-auto p-8"
+const ModalLayout = ({ children, showDialog, handleClose }) => {
+  useEffect(() => {
+    document.addEventListener("keydown", function (event) {
+      if (event.code === "Escape") {
+        handleClose();
+      }
+    });
+  }, []);
+
+  return (
+    <div
+      className={`fixed inset-0 z-[9999] overflow-y-auto p-8 h-screen duration-1000 ${
+        showDialog ? "visible" : "invisible"
+      }`}
     >
-      <div className="flex items-center justify-center min-h-screen">
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <Dialog.Overlay className="fixed inset-0 bg-gray-700 bg-opacity-80" />
-        </Transition.Child>
-        <span className="inline-block h-screen align-middle" aria-hidden="true">
-          &#8203;
-        </span>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-500 transform"
-          enterFrom="opacity-0 translate-y-4 "
-          enterTo="opacity-100 translate-y-0 "
-          leave="ease-in duration-200 transform"
-          leaveFrom="opacity-100 translate-y-0"
-          leaveTo="opacity-0 translate-y-4 "
-        >
-          {children}
-        </Transition.Child>
+      <div
+        className={`fixed inset-0 bg-gray-700 bg-opacity-80 transition-opacity duration-300 ${
+          showDialog ? "opacity-100" : "opacity-0"
+        }`}
+        onClick={() => {
+          handleClose();
+        }}
+      ></div>
+      <div
+        className={`${
+          showDialog ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        } transition-all duration-500 max-w-2xl mx-auto`}
+      >
+        {children}
       </div>
-    </Dialog>
-  </Transition>
-);
+    </div>
+  );
+};

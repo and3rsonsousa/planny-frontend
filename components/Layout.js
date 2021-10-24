@@ -8,12 +8,12 @@ import { HiLogout, HiOutlineLogout } from "react-icons/hi";
 import Router from "next/router";
 import Avatar from "./Avatar.js";
 
-const Layout = ({ children, profile, accounts, account }) => {
+const Layout = ({ children, profile, accounts }) => {
   return (
     <div className="relative pt-16 overflow-x-hidden bg-gray-100">
       {/* Header  */}
 
-      <Header account={account} accounts={accounts} profile={profile} />
+      <Header accounts={accounts} profile={profile} />
       <div className="min-h-[80vh] container mx-auto px-4 py-8">{children}</div>
 
       <div className="bg-brand-600">
@@ -32,7 +32,8 @@ const Layout = ({ children, profile, accounts, account }) => {
 
 export default Layout;
 
-const Header = ({ account, accounts, profile }) => {
+const Header = ({ accounts, profile }) => {
+  const account = profile && accounts ? profile.accounts[0] : null;
   return (
     <div className="fixed w-full bg-white bg-opacity-75 z-[9999] filter backdrop-blur-lg top-0 shadow-sm">
       <div className="">
@@ -106,7 +107,7 @@ const Header = ({ account, accounts, profile }) => {
                           maxAge: 0,
                         });
 
-                        Router.reload();
+                        Router.push("/login");
                       }}
                     >
                       <HiOutlineLogout className="text-lg" />

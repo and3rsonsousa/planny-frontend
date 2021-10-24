@@ -19,6 +19,7 @@ import { MdOutlineGridOn } from "react-icons/md";
 import { CgBoard } from "react-icons/cg";
 import Action from "./Action";
 import Avatar from "./Avatar";
+import { StepName } from "./SmallComponents";
 dayjs.locale("pt-br");
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -28,7 +29,9 @@ export default function Display({
   actions,
   tags,
   steps,
+  mutate,
   showDialog,
+  setActionDate,
   setShowDialog,
   setActionToUpdate,
 }) {
@@ -40,12 +43,16 @@ export default function Display({
   const [step, setStep] = useState(steps[0]);
   const [account, setAccount] = useState(accounts[0]);
   //Coloca todas as ações em um array e achata para ter somente uma camada
-  //Ordena as ações por data e não por cliente
-  actions = actions.sort((a, b) => {
-    return dayjs(a.date).diff(dayjs(b.date));
-  });
   //Define todas as datas como objetos days()
   actions = actions.map((action) => ({ ...action, date: dayjs(action.date) }));
+  //Ordena as ações por data e não por cliente
+  // actions = actions.sort((a, b) => {
+  //   return dayjs(a.date).diff(dayjs(b.date));
+  // });
+
+  actions = actions.sort((a, b) => {
+    return a.date.diff(b.date);
+  });
 
   const [date, setDate] = useState(dayjs());
   const firstDay = date.startOf("month").startOf("week");
@@ -95,7 +102,14 @@ export default function Display({
 
   return (
     <>
-      <Header accounts={accounts} views={views} view={view} setView={setView} />
+      <Header
+        accounts={accounts}
+        views={views}
+        view={view}
+        setView={setView}
+        setShowDialog={setShowDialog}
+        setActionDate={setActionDate}
+      />
       <Filters
         view={view}
         tags={tags}
@@ -115,10 +129,12 @@ export default function Display({
           setDate={setDate}
           step={step}
           tag={tag}
+          mutate={mutate}
           account={account}
           showDialog={showDialog}
           setShowDialog={setShowDialog}
           setActionToUpdate={setActionToUpdate}
+          setActionDate={setActionDate}
         />
       ) : view === 2 ? (
         <Board
@@ -127,6 +143,7 @@ export default function Display({
           setDate={setDate}
           steps={steps}
           tag={tag}
+          mutate={mutate}
           account={account}
           showDialog={showDialog}
           setShowDialog={setShowDialog}
@@ -139,6 +156,7 @@ export default function Display({
           setDate={setDate}
           step={step}
           tag={tag}
+          mutate={mutate}
           account={account}
           showDialog={showDialog}
           setShowDialog={setShowDialog}
@@ -151,6 +169,7 @@ export default function Display({
           setDate={setDate}
           step={step}
           tag={tag}
+          mutate={mutate}
           account={account}
           showDialog={showDialog}
           setShowDialog={setShowDialog}
@@ -167,53 +186,76 @@ export default function Display({
   );
 }
 
-const Header = ({ accounts, views, view, setView }) => {
+const Header = ({
+  accounts,
+  views,
+  view,
+  setView,
+  setShowDialog,
+  setActionDate,
+}) => {
   return (
-    <div className="flex items-center py-2 mb-4">
-      <h2 className="mb-0 font-bold text-gray-900 w-52 ">
-        {views[view - 1].name}
-      </h2>
-      <RadioGroup
-        value={view}
-        className="flex ml-4 space-x-2"
-        onChange={setView}
-      >
-        {views.map((v) =>
-          v.value != 4 ? (
-            <RadioGroup.Option
-              value={v.value}
-              className="outline-none"
-              key={v.name}
-            >
-              {({ checked }) => (
-                <button
-                  className={`button button-text ${
-                    checked ? "text-brand-600" : "text-gray-300"
-                  }`}
-                >
-                  {v.icon}
-                </button>
-              )}
-            </RadioGroup.Option>
-          ) : accounts.length === 1 ? (
-            <RadioGroup.Option
-              key={v.name}
-              value={v.value}
-              className="outline-none"
-            >
-              {({ checked }) => (
-                <button
-                  className={`button button-text ${
-                    checked ? "text-brand-600" : "text-gray-300"
-                  }`}
-                >
-                  {v.icon}
-                </button>
-              )}
-            </RadioGroup.Option>
-          ) : null
-        )}
-      </RadioGroup>
+    <div className="flex justify-between space-x-4 items-center py-2 mb-4">
+      <div className="flex items-center">
+        <h2 className="mb-0 font-bold text-gray-900 w-52 ">
+          {views[view - 1].name}
+        </h2>
+        <RadioGroup
+          value={view}
+          className="flex ml-4 space-x-2"
+          onChange={setView}
+        >
+          {views.map((v) =>
+            v.value != 4 ? (
+              <RadioGroup.Option
+                value={v.value}
+                className="outline-none"
+                key={v.name}
+              >
+                {({ checked }) => (
+                  <button
+                    className={`button button-text ${
+                      checked ? "text-brand-600" : "text-gray-300"
+                    }`}
+                  >
+                    {v.icon}
+                  </button>
+                )}
+              </RadioGroup.Option>
+            ) : accounts.length === 1 ? (
+              <RadioGroup.Option
+                key={v.name}
+                value={v.value}
+                className="outline-none"
+              >
+                {({ checked }) => (
+                  <button
+                    className={`button button-text ${
+                      checked ? "text-brand-600" : "text-gray-300"
+                    }`}
+                  >
+                    {v.icon}
+                  </button>
+                )}
+              </RadioGroup.Option>
+            ) : null
+          )}
+        </RadioGroup>
+      </div>
+      <div>
+        <button
+          className="button button-primary"
+          onClick={() => {
+            setActionDate(() => {
+              setShowDialog(true);
+              return dayjs().format("YYYY-MM-DD[T]HH:mm:ss[-03:00]");
+              return "";
+            });
+          }}
+        >
+          Inserir Nova Ação
+        </button>
+      </div>
     </div>
   );
 };
@@ -249,7 +291,9 @@ const Filters = ({
           <div>
             <HiOutlineFilter className="text-xl text-gray-400" />
           </div>
-          <div>Filtrar por:</div>
+          <div className="whitespace-nowrap uppercase text-xs tracking-wider font-medium">
+            Filtrar por:
+          </div>
         </div>
         {/* Filtrar por Tags */}
         <div className="relative w-52">
@@ -263,7 +307,7 @@ const Filters = ({
                     </span>
                   )}
                   <span
-                    className={`px-4 py-1 rounded-full ${
+                    className={`px-4 py-1 rounded-full truncate ${
                       tag.slug != "all" ? tag.slug + "-bg" : ""
                     }`}
                   >
@@ -327,7 +371,7 @@ const Filters = ({
                     )}
 
                     <span
-                      className={`px-4 py-1 rounded-full ${
+                      className={`px-4 py-1 rounded-full truncate ${
                         step.slug != "all" ? step.slug + "-bg" : ""
                       }`}
                     >
@@ -398,7 +442,7 @@ const Filters = ({
                       </span>
                     )}
                     <span
-                      className="px-4 py-1 truncate rounded-full"
+                      className="px-4 py-1 whitespace-nowrap rounded-full"
                       style={
                         account.slug != "all"
                           ? {
@@ -469,10 +513,12 @@ const Calendar = ({
   setDate,
   tag,
   step,
+  mutate,
   account,
   showDialog,
   setShowDialog,
   setActionToUpdate,
+  setActionDate,
 }) => {
   return (
     <div className="w-full overflow-hidden bg-white shadow rounded-2xl">
@@ -496,7 +542,7 @@ const Calendar = ({
                     key={di}
                     className={`p-3 ${di < 6 ? " border-r" : ""} ${
                       wi < week.length ? " border-b" : ""
-                    } hover:bg-gray-50 relative group`}
+                    } hover:bg-gray-50 relative cell`}
                   >
                     {/* Número do dia */}
                     <div className="">
@@ -532,13 +578,24 @@ const Calendar = ({
                         <Action
                           action={action}
                           key={action.id}
+                          mutate={mutate}
                           showDialog={showDialog}
                           setShowDialog={setShowDialog}
                           setActionToUpdate={setActionToUpdate}
                         />
                       ) : null;
                     })}
-                    <button className="absolute flex items-center justify-center invisible w-4 h-4 text-lg text-gray-200 bg-gray-700 rounded-full right-4 top-4 group-hover:visible">
+                    <button
+                      className="absolute flex add-button items-center justify-center invisible w-4 h-4 text-lg text-gray-200 bg-gray-700 rounded-full right-4 top-4"
+                      onClick={() => {
+                        setActionDate(() => {
+                          setShowDialog(true);
+                          return day.date.format(
+                            "YYYY-MM-DD[T]HH:mm:ss[-03:00]"
+                          );
+                        });
+                      }}
+                    >
                       <HiPlus className="text-sm" />
                     </button>
                   </div>
@@ -573,6 +630,7 @@ const Board = ({
   account,
   showDialog,
   setShowDialog,
+  setActionToUpdate,
 }) => {
   return (
     <div className="overflow-hidden bg-white shadow rounded-2xl">
@@ -586,7 +644,7 @@ const Board = ({
       </div>
       <div className="grid grid-cols-6">
         {steps.map((step) => (
-          <div className="p-2 hover:bg-gray-50">
+          <div className="p-2 hover:bg-gray-50" key={step.id}>
             {actions.map((action) =>
               // Caso tag.slug seja all
               // ou o slug de alguma tag da action
@@ -606,6 +664,7 @@ const Board = ({
                   key={action.id}
                   showDialog={showDialog}
                   setShowDialog={setShowDialog}
+                  setActionToUpdate={setActionToUpdate}
                 />
               ) : null
             )}
@@ -646,9 +705,9 @@ const List = ({ actions, date, setDate, tag, step, account }) => {
             <th>Data</th>
             <th>Status</th>
             <th>Tags</th>
-            <th>Cliente</th>
-            <th>Responsáveis</th>
-            <th>Excluir</th>
+            <th className="text-center">Cliente</th>
+            <th className="text-right pr-8">Responsáveis</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -660,7 +719,7 @@ const List = ({ actions, date, setDate, tag, step, account }) => {
                   0)) &&
             (step.slug === "all" || action.step.slug === step.slug) &&
             (account.slug === "all" || action.account.slug === account.slug) ? (
-              <tr className="text-sm border-t" key={action.id}>
+              <tr className="text-sm border-t group" key={action.id}>
                 <td className="col-span-2 p-4 font-medium text-gray-600">
                   {action.name}
                 </td>
@@ -673,11 +732,7 @@ const List = ({ actions, date, setDate, tag, step, account }) => {
                   )}
                 </td>
                 <td>
-                  <span
-                    className={`py-1 px-2 inline-block rounded-lg ${action.step.slug}-bg text-xx uppercase font-bold tracking-wide `}
-                  >
-                    {action.step.name}
-                  </span>
+                  <StepName step={action.step} />
                 </td>
                 <td>
                   {action.tags.map((tag) => (
@@ -690,24 +745,26 @@ const List = ({ actions, date, setDate, tag, step, account }) => {
                   ))}
                 </td>
                 <td>
-                  <span className="flex items-center space-x-2">
+                  <div className="flex justify-center items-center">
                     <Avatar avatar={action.account} small />
-                  </span>
+                  </div>
                 </td>
                 <td>
-                  <span className="flex items-center -space-x-2">
-                    {action.profiles_responsible.map((responsible) => (
-                      <Avatar
-                        key={responsible.id}
-                        avatar={responsible}
-                        small
-                        border
-                      />
-                    ))}
-                  </span>
+                  <div className="flex justify-end items-center pr-8">
+                    <span className="flex items-center -space-x-2">
+                      {action.profiles_responsible.map((responsible) => (
+                        <Avatar
+                          key={responsible.id}
+                          avatar={responsible}
+                          small
+                          border
+                        />
+                      ))}
+                    </span>
+                  </div>
                 </td>
                 <td>
-                  <span className="flex items-center">
+                  <span className="flex items-center opacity-0 invisible translate-x-4 transition-all duration-500 group-hover:opacity-100 group-hover:visible group-hover:translate-x-0">
                     <button className="button button-ghost button-small button-red">
                       <HiX className="text-xl " />
                     </button>
@@ -734,18 +791,31 @@ const List = ({ actions, date, setDate, tag, step, account }) => {
 //
 //
 
-const Grid = ({ actions, date, setDate, tag, step, account }) => {
+const Grid = ({
+  actions,
+  date,
+  setDate,
+  tag,
+  step,
+  account,
+  setActionToUpdate,
+  setShowDialog,
+}) => {
+  const _actions = actions;
   actions = actions.filter(
-    (action) => action.tags.filter((tag) => tag.slug === "post").length > 0
+    (action) =>
+      action.tags.filter((tag) => tag.slug === "post" || tag.slug === "reels")
+        .length > 0
   );
 
   const start = date.startOf("month").startOf("week");
   const end = date.endOf("month").endOf("week");
 
   const [allActions, setAllActions] = useState(false);
+
   return (
-    <div className="grid grid-cols-4 space-x-8">
-      <div className="w-full col-span-2 overflow-hidden shadow rounded-2xl">
+    <div className="grid grid-cols-2 space-x-8">
+      <div className="w-full col-span-1 overflow-hidden shadow rounded-2xl">
         <HeaderBar
           date={date}
           allActions={allActions}
@@ -764,7 +834,12 @@ const Grid = ({ actions, date, setDate, tag, step, account }) => {
                   0)) &&
             (step.slug === "all" || action.step.slug === step.slug) &&
             (account.slug === "all" || action.account.slug === account.slug) ? (
-              <div key={i} className={`aspect-w-1 aspect-h-1 cell`}>
+              <div
+                key={i}
+                className={`aspect-w-1 aspect-h-1 cell ${
+                  action.clientOnly ? " cursor-wait opacity-25" : "  "
+                }`}
+              >
                 <div className="flex flex-col justify-between p-4 transition-colors bg-white hover:bg-gray-50">
                   <div className="flex justify-between">
                     <div className="flex items-center space-x-1">
@@ -782,7 +857,15 @@ const Grid = ({ actions, date, setDate, tag, step, account }) => {
                       className={`w-2 h-2 text-xs rounded-lg ${action.step.slug}-bg`}
                     ></div>
                   </div>
-                  <div className="font-medium text-center text-gray-700">
+                  <div
+                    className="font-medium leading-tight text-center text-gray-700 cursor-pointer"
+                    onClick={() => {
+                      if (!action.clientOnly) {
+                        setActionToUpdate(action.id);
+                        setShowDialog(true);
+                      }
+                    }}
+                  >
                     {action.name}
                   </div>
                   <div className="flex flex-wrap items-center justify-center">
@@ -801,7 +884,50 @@ const Grid = ({ actions, date, setDate, tag, step, account }) => {
         </div>
       </div>
       <div>
-        <div>Outras Ações que não são post ou Reels</div>
+        {_actions.map((action) =>
+          (dayjs(action.date).isSameOrAfter(start) &&
+            dayjs(action.date).isSameOrBefore(end)) ||
+          allActions ? (
+            <div
+              key={action.id}
+              className={`py-3 px-4 w-full rounded-lg flex space-x-4 items-center hover:bg-white transition cursor-pointer hover:shadow`}
+              onClick={() => {
+                setActionToUpdate(action.id);
+                setShowDialog(true);
+              }}
+            >
+              <div className="text-xs w-8">
+                {dayjs(action.date).format("D[/]M")}
+              </div>
+              <div
+                className={`w-full ${
+                  action.tags.find((tag) =>
+                    ["post", "reels"].find((slug) => slug === tag.slug)
+                  )
+                    ? "font-bold text-gray-700"
+                    : ""
+                }`}
+              >
+                {action.name}
+              </div>
+              <div className="w-36">
+                <StepName step={action.step} />
+              </div>
+              <div className="w-24 flex -space-x-1 justify-end">
+                {action.profiles_responsible.map((responsible) => (
+                  <Avatar avatar={responsible} small={true} border={true} />
+                ))}
+              </div>
+              <div>
+                <span className="flex items-center">
+                  <button className="button button-ghost button-small button-red">
+                    <HiX className="text-xl " />
+                  </button>
+                </span>
+              </div>
+            </div>
+          ) : null
+        )}
       </div>
     </div>
   );
@@ -820,7 +946,7 @@ const Grid = ({ actions, date, setDate, tag, step, account }) => {
 //
 
 const HeaderBar = ({ date, allActions, setAllActions, setDate }) => (
-  <div className="flex items-center justify-between p-4">
+  <div className="flex items-center justify-between p-4 bg-white">
     <div className="flex items-center space-x-4">
       {/* Mês */}
       {!allActions && (
