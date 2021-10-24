@@ -131,6 +131,7 @@ const Account = ({ slug }) => {
               actions={actions}
               tags={tags}
               steps={steps}
+              mutate={mutate}
               showDialog={showDialog}
               setShowDialog={setShowDialog}
               setActionToUpdate={setActionToUpdate}

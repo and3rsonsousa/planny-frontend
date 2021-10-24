@@ -20,6 +20,7 @@ import { CgBoard } from "react-icons/cg";
 import Action from "./Action";
 import Avatar from "./Avatar";
 import { StepName } from "./SmallComponents";
+import { deleteAction } from "../lib/mutations";
 dayjs.locale("pt-br");
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -627,6 +628,7 @@ const Board = ({
   setDate,
   tag,
   steps,
+  mutate,
   account,
   showDialog,
   setShowDialog,
@@ -662,6 +664,7 @@ const Board = ({
                 <Action
                   action={action}
                   key={action.id}
+                  mutate={mutate}
                   showDialog={showDialog}
                   setShowDialog={setShowDialog}
                   setActionToUpdate={setActionToUpdate}
@@ -687,7 +690,7 @@ const Board = ({
 //
 //
 
-const List = ({ actions, date, setDate, tag, step, account }) => {
+const List = ({ actions, date, setDate, tag, step, account, mutate }) => {
   const [allActions, setAllActions] = useState(false);
   return (
     <div className="w-full overflow-hidden bg-white shadow rounded-2xl">
@@ -765,7 +768,12 @@ const List = ({ actions, date, setDate, tag, step, account }) => {
                 </td>
                 <td>
                   <span className="flex items-center opacity-0 invisible translate-x-4 transition-all duration-500 group-hover:opacity-100 group-hover:visible group-hover:translate-x-0">
-                    <button className="button button-ghost button-small button-red">
+                    <button
+                      className="button button-ghost button-small button-red"
+                      onClick={() => {
+                        deleteAction(action, mutate);
+                      }}
+                    >
                       <HiX className="text-xl " />
                     </button>
                   </span>
@@ -797,6 +805,7 @@ const Grid = ({
   setDate,
   tag,
   step,
+  mutate,
   account,
   setActionToUpdate,
   setShowDialog,
@@ -891,10 +900,6 @@ const Grid = ({
             <div
               key={action.id}
               className={`py-3 px-4 w-full rounded-lg flex space-x-4 items-center hover:bg-white transition cursor-pointer hover:shadow`}
-              onClick={() => {
-                setActionToUpdate(action.id);
-                setShowDialog(true);
-              }}
             >
               <div className="text-xs w-8">
                 {dayjs(action.date).format("D[/]M")}
@@ -907,6 +912,10 @@ const Grid = ({
                     ? "font-bold text-gray-700"
                     : ""
                 }`}
+                onClick={() => {
+                  setActionToUpdate(action.id);
+                  setShowDialog(true);
+                }}
               >
                 {action.name}
               </div>
@@ -915,12 +924,22 @@ const Grid = ({
               </div>
               <div className="w-24 flex -space-x-1 justify-end">
                 {action.profiles_responsible.map((responsible) => (
-                  <Avatar avatar={responsible} small={true} border={true} />
+                  <Avatar
+                    key={responsible.id}
+                    avatar={responsible}
+                    small={true}
+                    border={true}
+                  />
                 ))}
               </div>
               <div>
                 <span className="flex items-center">
-                  <button className="button button-ghost button-small button-red">
+                  <button
+                    className="button button-ghost button-small button-red"
+                    onClick={() => {
+                      deleteAction(action, mutate);
+                    }}
+                  >
                     <HiX className="text-xl " />
                   </button>
                 </span>
