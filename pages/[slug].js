@@ -117,7 +117,7 @@ const Account = ({ slug }) => {
           <>
             <div className="flex items-center space-x-4">
               <Avatar avatar={profile.accounts[0]} />
-              <h2 className="text-gray-700 mb-0 font-bold">
+              <h2 className="mb-0 font-bold text-gray-700">
                 {profile.accounts[0].name}
               </h2>
             </div>

@@ -7,11 +7,17 @@ export default function AccountsBar({ small, medium, accounts }) {
     <div className="flex overflow-hidden divide-x shadow rounded-2xl">
       {accounts.map((account) => (
         <div
-          className="flex items-center justify-center px-8 py-4 space-x-2 text-xs font-medium tracking-wider uppercase truncate transition-colors duration-300 bg-white cursor-pointer hover:bg-brand-600 hover:text-white"
+          className="flex items-center justify-center p-4 space-x-2 text-xs font-medium tracking-wider uppercase truncate transition-colors duration-300 bg-white cursor-pointer hover:bg-brand-600 hover:text-white"
           key={account.id}
         >
           <Avatar small={true} avatar={account} />
-          <span>{account.name}</span>
+          <div className="truncate">
+            <Link href={`/${account.slug}`}>
+              <a>
+                <span>{account.name}</span>
+              </a>
+            </Link>
+          </div>
         </div>
       ))}
     </div>

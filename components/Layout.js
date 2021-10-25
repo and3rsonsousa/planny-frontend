@@ -4,7 +4,7 @@ import nookies from "nookies";
 import Link from "next/link";
 import Logo from "./Logo.js";
 import Loader from "./Loader";
-import { HiLogout, HiOutlineLogout } from "react-icons/hi";
+import { HiOutlineLogout } from "react-icons/hi";
 import Router from "next/router";
 import Avatar from "./Avatar.js";
 

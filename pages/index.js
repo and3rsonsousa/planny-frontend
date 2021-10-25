@@ -113,6 +113,11 @@ const Home = () => {
   const { data, error, mutate } = useSWR(QUERY);
   const { profile, actions, accounts, steps, tags } = data || [];
 
+  const fadeInUp = {
+    hidden: { opacity: 0, x: 0, y: 50 },
+    enter: { opacity: 1, x: 0, y: 0 },
+  };
+
   return (
     <>
       <Layout profile={profile}>
@@ -143,15 +148,19 @@ const Home = () => {
                     <AccountsBar accounts={profile.accounts} />
                   </div>
                 ) : (
-                  <h1 className="text-brand-700 font-bold">
+                  <h1 className="font-bold text-brand-700">
                     {profile.accounts[0].name}
                   </h1>
                 )}
                 {/* Status / Steps */}
-                <StepsInsight steps={steps} />
+                <div>
+                  <StepsInsight steps={steps} />
+                </div>
                 {/* Contas / Accounts */}
                 {profile.accounts.length > 1 && (
-                  <AccountsInsight accounts={accounts} actions={actions} />
+                  <div>
+                    <AccountsInsight accounts={accounts} actions={actions} />
+                  </div>
                 )}
               </div>
               {/* Ações / Display */}
