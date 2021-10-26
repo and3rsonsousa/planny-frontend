@@ -7,7 +7,7 @@ export default function AccountsBar({ small, medium, accounts }) {
     <div className="flex overflow-hidden divide-x shadow rounded-2xl">
       {accounts.map((account) => (
         <div
-          className="flex items-center justify-center p-4 space-x-2 text-xs font-medium tracking-wider uppercase truncate transition-colors duration-300 bg-white cursor-pointer hover:bg-brand-600 hover:text-white"
+          className="flex items-center justify-center flex-auto p-4 space-x-2 text-xs font-medium tracking-wider uppercase truncate transition-colors duration-300 bg-white cursor-pointer hover:bg-brand-600 hover:text-white"
           key={account.id}
         >
           <Avatar small={true} avatar={account} />

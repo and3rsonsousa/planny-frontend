@@ -222,26 +222,11 @@ export default function Modal({
 
   async function handleSubmit(method, id) {
     let MUTATION_QUERY = "";
+    let variables = {};
     //Deletar a Ação
     if (method === 3) {
       deleteAction(Action, mutatePage, handleClose);
       return false;
-      // if (window.confirm(`Deseja realmente deletar a ação "${Action.name}"?`)) {
-      //   MUTATION_QUERY = gql`mutation{
-      //     deleteAction(where:{id:"${id}"}){
-      //       id
-      //     }
-      //   }`;
-      // } else {
-      //   return false;
-      // }
-      //Atualiza a UI OPTIMISTIC
-      // mutatePage((data) => {
-      //   const actions = data.actions.map((action) =>
-      //     action.id === id ? { ...action, clientOnly: true } : action
-      //   );
-      //   return { ...data, actions };
-      // }, false);
     } else {
       if (Action.name === "") {
         alert("Você precisa inserir um Nome para a Ação.");
@@ -268,23 +253,42 @@ export default function Modal({
 
       // Mutation para inserir
       if (method === 1) {
-        MUTATION_QUERY = gql`mutation{
-          createAction(data:{name:"${Action.name}", description:"${
-          Action.description || ""
-        }", date: "${Action.date}", account:{connect:{id:"${
-          Action.account.id
-        }"}}, profile_creator:{connect:{id:"${
-          profile.id
-        }"}}, profiles_responsible:{connect:[${Action.profiles_responsible.map(
-          (responsible) => '{id:"' + responsible.id + '"}'
-        )}]}, step:{connect:{id:"${
-          Action.step.id
-        }"}}, tags:{connect:[${Action.tags.map(
-          (tag) => '{id:"' + tag.id + '"}'
-        )}]} } ){
+        MUTATION_QUERY = `mutation($name: String!, $description: String!, $date:  DateTime!, $account: ID!, $creator: ID!, $responsibles:  [ProfileWhereUniqueInput!], $step:  ID!, $tags:  [TagWhereUniqueInput!]){
+          createAction( data:  {name: $name, description: $description, date: $date, account: {connect: {id: $account}}, profile_creator: {connect: {id: $creator}}, profiles_responsible: {connect: $responsibles}, step: {connect: {id: $step}}, tags: {connect: $tags}}){
             id
           }
         }`;
+        variables = {
+          name: Action.name,
+          description: Action.description,
+          date: Action.date,
+          account: Action.account.id,
+          creator: profile.id,
+          responsibles: Action.profiles_responsible.map((responsible) => ({
+            id: responsible.id,
+          })),
+          step: Action.step.id,
+          tags: Action.tags.map((tag) => ({ id: tag.id })),
+        };
+
+        console.log(variables);
+        // MUTATION_QUERY = gql`mutation{
+        //   createAction(data:{name:"${Action.name}", description:'${
+        //   Action.description || ""
+        // }', date: "${Action.date}", account:{connect:{id:"${
+        //   Action.account.id
+        // }"}}, profile_creator:{connect:{id:"${
+        //   profile.id
+        // }"}}, profiles_responsible:{connect:[${Action.profiles_responsible.map(
+        //   (responsible) => '{id:"' + responsible.id + '"}'
+        // )}]}, step:{connect:{id:"${
+        //   Action.step.id
+        // }"}}, tags:{connect:[${Action.tags.map(
+        //   (tag) => '{id:"' + tag.id + '"}'
+        // )}]} } ){
+        //     id
+        //   }
+        // }`;
         //Atualiza a UI OPTIMISTIC
         mutatePage((data) => {
           return { ...data, actions: [...data.actions, Action] };
@@ -294,9 +298,9 @@ export default function Modal({
         MUTATION_QUERY = gql`mutation{
           updateAction(where:{id:"${Action.id}"}, data:{name:"${
           Action.name
-        }", description:"${Action.description || ""}", date: "${
-          Action.date
-        }", account:{connect:{id:"${
+        }", description:'${
+          Action.description.replace(/\n/, "\\n") || ""
+        }', date: "${Action.date}", account:{connect:{id:"${
           Action.account.id
         }"}}, profiles_responsible:{set:[${Action.profiles_responsible.map(
           (responsible) => '{id:"' + responsible.id + '"}'
@@ -320,12 +324,15 @@ export default function Modal({
       }
     }
 
+    console.log(MUTATION_QUERY);
+
     // Esconde o Modal
     handleClose();
     //Faz a mutação de acordo com o method
     const result = await request(
       "https://api-us-east-1.graphcms.com/v2/ckursm70w0eq101y2982b3c14/master",
-      MUTATION_QUERY
+      MUTATION_QUERY,
+      variables
     );
     //Atualiza o cache local com os dados diretamente do Banco de dados.
     mutatePage();
@@ -342,6 +349,7 @@ export default function Modal({
         {error && <Error>{JSON.stringify(error, null, 2)}</Error>}
         {data && (
           <>
+            <div>{JSON.stringify(actionDate)}</div>
             <form className="modal-form">
               {/* <pre>{JSON.stringify(Action, null, 2)}</pre> */}
               {/* Name */}
