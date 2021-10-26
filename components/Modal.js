@@ -258,6 +258,10 @@ export default function Modal({
             id
           }
         }`;
+        if (!profile.id) {
+          alert("proifle.id não está definido");
+          return false;
+        }
         variables = {
           name: Action.name,
           description: Action.description,
@@ -271,47 +275,30 @@ export default function Modal({
           tags: Action.tags.map((tag) => ({ id: tag.id })),
         };
 
-        console.log(variables);
-        // MUTATION_QUERY = gql`mutation{
-        //   createAction(data:{name:"${Action.name}", description:'${
-        //   Action.description || ""
-        // }', date: "${Action.date}", account:{connect:{id:"${
-        //   Action.account.id
-        // }"}}, profile_creator:{connect:{id:"${
-        //   profile.id
-        // }"}}, profiles_responsible:{connect:[${Action.profiles_responsible.map(
-        //   (responsible) => '{id:"' + responsible.id + '"}'
-        // )}]}, step:{connect:{id:"${
-        //   Action.step.id
-        // }"}}, tags:{connect:[${Action.tags.map(
-        //   (tag) => '{id:"' + tag.id + '"}'
-        // )}]} } ){
-        //     id
-        //   }
-        // }`;
         //Atualiza a UI OPTIMISTIC
         mutatePage((data) => {
           return { ...data, actions: [...data.actions, Action] };
         }, false);
         //Mutation para atualizar
       } else if (method === 2) {
-        MUTATION_QUERY = gql`mutation{
-          updateAction(where:{id:"${Action.id}"}, data:{name:"${
-          Action.name
-        }", description:'${
-          Action.description.replace(/\n/, "\\n") || ""
-        }', date: "${Action.date}", account:{connect:{id:"${
-          Action.account.id
-        }"}}, profiles_responsible:{set:[${Action.profiles_responsible.map(
-          (responsible) => '{id:"' + responsible.id + '"}'
-        )}]}, step:{connect:{id:"${
-          Action.step.id
-        }"}}, tags:{set:[${Action.tags.map(
-          (tag) => '{id:"' + tag.id + '"}'
-        )}]} } ){
+        MUTATION_QUERY = `mutation($id:ID!, $name: String!, $description: String!, $date:  DateTime!, $account: ID!, $responsibles:  [ProfileWhereUniqueInput!], $step:  ID!, $tags:  [TagWhereUniqueInput!]){
+          updateAction( where: {id: $id} data:  {name: $name, description: $description, date: $date, account: {connect: {id: $account}} profiles_responsible: {set: $responsibles}, step: {connect: {id: $step}}, tags: {set: $tags}}){
             id
           }
         }`;
+        variables = {
+          id: Action.id,
+          name: Action.name,
+          description: Action.description,
+          date: Action.date,
+          account: Action.account.id,
+          responsibles: Action.profiles_responsible.map((responsible) => ({
+            id: responsible.id,
+          })),
+          step: Action.step.id,
+          tags: Action.tags.map((tag) => ({ id: tag.id })),
+        };
+
         //Atualiza a UI OPTIMISTIC
         mutatePage((data) => {
           const index = data.actions.findIndex(
