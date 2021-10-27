@@ -5,6 +5,7 @@ export default function RoadMap() {
       <ul className="list-disc ">
         <li>Inserir novos usuários e testar interação com eles</li>
         <li>Corrigir campo de data de hora</li>
+        <li>Fixar erro da data no modal não aparecer direito</li>
       </ul>
     </div>
   );

@@ -198,7 +198,7 @@ export default function Modal({
     } else if (profile && profiles) {
       setAction(() => ({
         ...Action,
-        account: profile.accounts.length === 1 ? profile.accounts[0] : {},
+        account: profile.accounts.length === 1 ? profile.accounts[0] : "",
         date: actionDate,
         profile_creator: profile.id,
         profiles_responsible: profiles.filter(
