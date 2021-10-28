@@ -1,4 +1,6 @@
+import { AnimatePresence } from "framer-motion";
 import request from "graphql-request";
+import { useRouter } from "next/router";
 import { SWRConfig } from "swr";
 import "../styles/global.css";
 
@@ -18,7 +20,9 @@ function App({ Component, pageProps }) {
         fetcher: fetcher,
       }}
     >
-      <Component {...pageProps} />
+      <AnimatePresence exitBeforeEnter={true}>
+        <Component {...pageProps} key={useRouter().route} />
+      </AnimatePresence>
     </SWRConfig>
   );
 }

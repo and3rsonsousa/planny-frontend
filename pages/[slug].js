@@ -11,6 +11,7 @@ import Display from "../components/Display";
 import Modal from "../components/Modal";
 import { StepsInsight } from "../components/Insights";
 import Avatar from "../components/Avatar";
+import { motion } from "framer-motion";
 
 const Account = ({ slug }) => {
   const token = nookies.get("planny").token;
@@ -103,6 +104,46 @@ const Account = ({ slug }) => {
 
   const { profile, actions, accounts, steps, tags } = data || {};
 
+  const container = {
+    enter: { transition: { staggerChildren: 0.2 } },
+  };
+  const fadeInUp = {
+    initial: { opacity: 0, y: 50 },
+    enter: { opacity: 1, y: 0, transition: { duration: 1 } },
+    exit: {
+      opacity: 0,
+      y: 100,
+      transition: {
+        duration: 0.5,
+        easing: "circOut",
+      },
+    },
+  };
+  const fadeInLeft = {
+    initial: { opacity: 0, x: -100 },
+    enter: { opacity: 1, x: 0, transition: { duration: 1 } },
+    exit: {
+      opacity: 0,
+      x: 200,
+      transition: {
+        duration: 0.5,
+        easing: "circOut",
+      },
+    },
+  };
+  const fadeInRight = {
+    initial: { opacity: 0, x: 100 },
+    enter: { opacity: 1, x: 0, transition: { duration: 1 } },
+    exit: {
+      opacity: 0,
+      x: -200,
+      transition: {
+        duration: 0.5,
+        easing: "circOut",
+      },
+    },
+  };
+
   return (
     <>
       <Layout profile={profile} accounts={accounts}>
@@ -114,30 +155,43 @@ const Account = ({ slug }) => {
         {error && <Error>{JSON.stringify(error, null, 2)}</Error>}
 
         {data && (
-          <>
-            <div className="flex items-center space-x-4">
+          <motion.div
+            variants={container}
+            initial="initial"
+            animate="enter"
+            exit="exit"
+          >
+            <Head>
+              <title>{profile.accounts[0].name} | Planny</title>
+            </Head>
+            <motion.div
+              className="flex items-center space-x-4"
+              variants={fadeInLeft}
+            >
               <Avatar avatar={profile.accounts[0]} />
               <h2 className="mb-0 font-bold text-gray-700">
                 {profile.accounts[0].name}
               </h2>
-            </div>
+            </motion.div>
             {/* Insight por Status e por Clientes */}
-            <div className="mb-8">
+            <motion.div className="mb-8" variants={fadeInRight}>
               {/* Status / Steps */}
               <StepsInsight steps={steps} />
-            </div>
-            <Display
-              accounts={profile.accounts}
-              actions={actions}
-              tags={tags}
-              steps={steps}
-              mutate={mutate}
-              showDialog={showDialog}
-              setShowDialog={setShowDialog}
-              setActionToUpdate={setActionToUpdate}
-              setActionDate={setActionDate}
-            />{" "}
-          </>
+            </motion.div>
+            <motion.div variants={fadeInUp}>
+              <Display
+                accounts={profile.accounts}
+                actions={actions}
+                tags={tags}
+                steps={steps}
+                mutate={mutate}
+                showDialog={showDialog}
+                setShowDialog={setShowDialog}
+                setActionToUpdate={setActionToUpdate}
+                setActionDate={setActionDate}
+              />
+            </motion.div>
+          </motion.div>
         )}
       </Layout>
       <Modal

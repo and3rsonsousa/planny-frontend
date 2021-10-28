@@ -35,10 +35,10 @@ export default Layout;
 const Header = ({ accounts, profile }) => {
   const account = profile && accounts ? profile.accounts[0] : null;
   return (
-    <div className="fixed w-full bg-white bg-opacity-75 z-[9999] filter backdrop-blur-lg top-0 shadow-sm">
+    <div className="fixed w-full bg-white bg-opacity-75 z-[9999] filter backdrop-blur-lg top-0 shadow">
       <div className="">
         <div className="container mx-auto">
-          <header className="flex items-center justify-between p-4">
+          <header className="flex items-center justify-between h-16 px-4 ">
             <div
               className={`flex items-center ${
                 account ? " divide-x " : ""

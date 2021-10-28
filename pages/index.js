@@ -14,6 +14,8 @@ import useSWR from "swr";
 import nookies from "nookies";
 import dayjs from "dayjs";
 
+import { motion } from "framer-motion";
+
 const Home = () => {
   const token = nookies.get("planny").token;
   useEffect(() => {
@@ -113,9 +115,44 @@ const Home = () => {
   const { data, error, mutate } = useSWR(QUERY);
   const { profile, actions, accounts, steps, tags } = data || [];
 
+  const container = {
+    enter: { transition: { staggerChildren: 0.2 } },
+  };
   const fadeInUp = {
-    hidden: { opacity: 0, x: 0, y: 50 },
-    enter: { opacity: 1, x: 0, y: 0 },
+    initial: { opacity: 0, y: 50 },
+    enter: { opacity: 1, y: 0, transition: { duration: 1 } },
+    exit: {
+      opacity: 0,
+      y: 100,
+      transition: {
+        duration: 0.5,
+        easing: "circOut",
+      },
+    },
+  };
+  const fadeInLeft = {
+    initial: { opacity: 0, x: -100 },
+    enter: { opacity: 1, x: 0, transition: { duration: 1 } },
+    exit: {
+      opacity: 0,
+      x: -200,
+      transition: {
+        duration: 0.5,
+        easing: "circOut",
+      },
+    },
+  };
+  const fadeInRight = {
+    initial: { opacity: 0, x: 100 },
+    enter: { opacity: 1, x: 0, transition: { duration: 1 } },
+    exit: {
+      opacity: 0,
+      x: 200,
+      transition: {
+        duration: 0.5,
+        easing: "circOut",
+      },
+    },
   };
 
   return (
@@ -136,7 +173,12 @@ const Home = () => {
             {/* Barra superior com as Contas
             Caso seja apenas uma conta associada, mostra o nome da Conta
              */}
-            <>
+            <motion.div
+              initial="initial"
+              animate="enter"
+              exit="exit"
+              variants={container}
+            >
               {/* Insight por Status e por Clientes */}
               <div
                 className={`grid-cols-2 gap-8 items-center mb-8 ${
@@ -144,27 +186,30 @@ const Home = () => {
                 }`}
               >
                 {profile.accounts.length > 1 ? (
-                  <div className="col-span-2">
+                  <motion.div className="col-span-2" variants={fadeInUp}>
                     <AccountsBar accounts={profile.accounts} />
-                  </div>
+                  </motion.div>
                 ) : (
-                  <h1 className="font-bold text-brand-700">
+                  <motion.h1
+                    className="font-bold text-brand-700"
+                    variants={fadeInUp}
+                  >
                     {profile.accounts[0].name}
-                  </h1>
+                  </motion.h1>
                 )}
                 {/* Status / Steps */}
-                <div>
+                <motion.div variants={fadeInLeft}>
                   <StepsInsight steps={steps} />
-                </div>
+                </motion.div>
                 {/* Contas / Accounts */}
                 {profile.accounts.length > 1 && (
-                  <div>
+                  <motion.div variants={fadeInRight}>
                     <AccountsInsight accounts={accounts} actions={actions} />
-                  </div>
+                  </motion.div>
                 )}
               </div>
               {/* Ações / Display */}
-              <div className="mb-8">
+              <motion.div className="mb-8" variants={fadeInUp}>
                 <Display
                   accounts={profile.accounts}
                   actions={actions}
@@ -176,12 +221,12 @@ const Home = () => {
                   setActionToUpdate={setActionToUpdate}
                   setActionDate={setActionDate}
                 />
-              </div>
+              </motion.div>
               {/* decode */}
               {/* <div className="p-8 mb-12 bg-gray-800 text-brand-400 rounded-2xl">
               <pre>{JSON.stringify(data, null, 2)}</pre>
             </div> */}
-            </>
+            </motion.div>
           </>
         )}
       </Layout>
