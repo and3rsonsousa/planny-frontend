@@ -334,7 +334,6 @@ export default function Modal({
         {error && <Error>{JSON.stringify(error, null, 2)}</Error>}
         {data && (
           <>
-            <div>{JSON.stringify(actionDate)}</div>
             <form className="modal-form">
               {/* <pre>{JSON.stringify(Action, null, 2)}</pre> */}
               {/* Name */}

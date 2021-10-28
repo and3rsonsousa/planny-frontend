@@ -196,7 +196,7 @@ const Header = ({
   setActionDate,
 }) => {
   return (
-    <div className="flex justify-between space-x-4 items-center py-2 mb-4">
+    <div className="flex items-center justify-between py-2 mb-4 space-x-4">
       <div className="flex items-center">
         <h2 className="mb-0 font-bold text-gray-900 w-52 ">
           {views[view - 1].name}
@@ -292,7 +292,7 @@ const Filters = ({
           <div>
             <HiOutlineFilter className="text-xl text-gray-400" />
           </div>
-          <div className="whitespace-nowrap uppercase text-xs tracking-wider font-medium">
+          <div className="text-xs font-medium tracking-wider uppercase whitespace-nowrap">
             Filtrar por:
           </div>
         </div>
@@ -443,7 +443,7 @@ const Filters = ({
                       </span>
                     )}
                     <span
-                      className="px-4 py-1 whitespace-nowrap rounded-full"
+                      className="px-4 py-1 rounded-full whitespace-nowrap"
                       style={
                         account.slug != "all"
                           ? {
@@ -587,7 +587,7 @@ const Calendar = ({
                       ) : null;
                     })}
                     <button
-                      className="absolute flex add-button items-center justify-center invisible w-4 h-4 text-lg text-gray-200 bg-gray-700 rounded-full right-4 top-4"
+                      className="absolute flex items-center justify-center invisible w-4 h-4 text-lg text-gray-200 bg-gray-700 rounded-full add-button right-4 top-4"
                       onClick={() => {
                         setActionDate(() => {
                           setShowDialog(true);
@@ -690,7 +690,18 @@ const Board = ({
 //
 //
 
-const List = ({ actions, date, setDate, tag, step, account, mutate }) => {
+const List = ({
+  actions,
+  date,
+  setDate,
+  tag,
+  step,
+  account,
+  mutate,
+  showDialog,
+  setShowDialog,
+  setActionToUpdate,
+}) => {
   const [allActions, setAllActions] = useState(false);
   return (
     <div className="w-full overflow-hidden bg-white shadow rounded-2xl">
@@ -709,7 +720,7 @@ const List = ({ actions, date, setDate, tag, step, account, mutate }) => {
             <th>Status</th>
             <th>Tags</th>
             <th className="text-center">Cliente</th>
-            <th className="text-right pr-8">Responsáveis</th>
+            <th className="pr-8 text-right">Responsáveis</th>
             <th></th>
           </tr>
         </thead>
@@ -723,8 +734,18 @@ const List = ({ actions, date, setDate, tag, step, account, mutate }) => {
             (step.slug === "all" || action.step.slug === step.slug) &&
             (account.slug === "all" || action.account.slug === account.slug) ? (
               <tr className="text-sm border-t group" key={action.id}>
-                <td className="col-span-2 p-4 font-medium text-gray-600">
-                  {action.name}
+                <td className="col-span-2 font-medium text-gray-600">
+                  <div
+                    className="p-4 cursor-pointer "
+                    onClick={() => {
+                      if (!action.clientOnly) {
+                        setActionToUpdate(action.id);
+                        setShowDialog(true);
+                      }
+                    }}
+                  >
+                    {action.name}
+                  </div>
                 </td>
                 <td className="text-xs">
                   {dayjs(action.date).format(
@@ -748,12 +769,12 @@ const List = ({ actions, date, setDate, tag, step, account, mutate }) => {
                   ))}
                 </td>
                 <td>
-                  <div className="flex justify-center items-center">
+                  <div className="flex items-center justify-center">
                     <Avatar avatar={action.account} small />
                   </div>
                 </td>
                 <td>
-                  <div className="flex justify-end items-center pr-8">
+                  <div className="flex items-center justify-end pr-8">
                     <span className="flex items-center -space-x-2">
                       {action.profiles_responsible.map((responsible) => (
                         <Avatar
@@ -767,7 +788,7 @@ const List = ({ actions, date, setDate, tag, step, account, mutate }) => {
                   </div>
                 </td>
                 <td>
-                  <span className="flex items-center opacity-0 invisible translate-x-4 transition-all duration-500 group-hover:opacity-100 group-hover:visible group-hover:translate-x-0">
+                  <span className="flex items-center invisible transition-all duration-500 translate-x-4 opacity-0 group-hover:opacity-100 group-hover:visible group-hover:translate-x-0">
                     <button
                       className="button button-ghost button-small button-red"
                       onClick={() => {
@@ -901,7 +922,7 @@ const Grid = ({
               key={action.id}
               className={`py-3 px-4 w-full rounded-lg flex space-x-4 items-center hover:bg-white transition cursor-pointer hover:shadow`}
             >
-              <div className="text-xs w-8">
+              <div className="w-8 text-xs">
                 {dayjs(action.date).format("D[/]M")}
               </div>
               <div
@@ -922,7 +943,7 @@ const Grid = ({
               <div className="w-36">
                 <StepName step={action.step} />
               </div>
-              <div className="w-24 flex -space-x-1 justify-end">
+              <div className="flex justify-end w-24 -space-x-1">
                 {action.profiles_responsible.map((responsible) => (
                   <Avatar
                     key={responsible.id}
