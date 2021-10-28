@@ -171,7 +171,7 @@ export default function Modal({
     id: actionDate,
     name: "",
     description: "",
-    date: "",
+    date: actionDate || "",
     account: "",
     profile_creator: "",
     profiles_responsible: [],
@@ -310,8 +310,6 @@ export default function Modal({
         }, false);
       }
     }
-
-    console.log(MUTATION_QUERY);
 
     // Esconde o Modal
     handleClose();
