@@ -55,7 +55,7 @@ const Login = (props) => {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center p-8 bg-gray-100">
+    <div className="flex h-screen items-center justify-center p-8 bg-neutral-1">
       <div className="bg-white p-8 rounded-2xl shadow-sm w-72">
         <h3 className="text-xl">
           <Logo />

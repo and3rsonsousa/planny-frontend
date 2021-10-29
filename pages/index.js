@@ -223,7 +223,7 @@ const Home = () => {
                 />
               </motion.div>
               {/* decode */}
-              {/* <div className="p-8 mb-12 bg-gray-800 text-brand-400 rounded-2xl">
+              {/* <div className="p-8 mb-12 bg-neutral-5 text-brand-400 rounded-2xl">
               <pre>{JSON.stringify(data, null, 2)}</pre>
             </div> */}
             </motion.div>

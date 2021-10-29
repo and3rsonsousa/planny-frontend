@@ -2,7 +2,7 @@ export function StepsInsight({ steps }) {
   let total = 0;
   return (
     <div className="my-4">
-      <h3 className="text-gray-700">Status</h3>
+      <h3 className="text-neutral-5">Status</h3>
       <div className="w-full status-demo">
         {steps.map((step, index) => {
           const count = step.actions.length;
@@ -36,7 +36,7 @@ export function StepsInsight({ steps }) {
 export function AccountsInsight({ accounts, actions }) {
   return (
     <div className="my-4">
-      <h3 className="text-gray-700">Clientes</h3>
+      <h3 className="text-neutral-5">Clientes</h3>
       <div className="w-full status-demo">
         {accounts.map((account, index) => {
           const total = actions.filter(

@@ -17,7 +17,7 @@ export default function Avatar({
             : medium
             ? "w-9 h-9 text-sm"
             : "w-14 h-14 text-base"
-        } rounded-full overflow-hidden font-bold bg-gray-200 text-gray-400 flex justify-center items-center${
+        } rounded-full overflow-hidden font-bold bg-neutral-2 text-neutral-4 flex justify-center items-center${
           border ? " ring-2 ring-white" : ""
         }`}
         style={avatar.colors ? { backgroundColor: avatar.colors[0].hex } : null}

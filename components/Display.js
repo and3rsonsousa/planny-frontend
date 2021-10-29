@@ -180,7 +180,7 @@ export default function Display({
         <div>Nenhuma view está selecionada</div>
       )}
 
-      {/* <div className="p-8 mb-12 bg-gray-800 text-brand-400 rounded-2xl">
+      {/* <div className="p-8 mb-12 bg-neutral-5 text-brand-400 rounded-2xl">
             <pre>{JSON.stringify(month, null, 2)}</pre>
           </div> */}
     </>
@@ -198,7 +198,7 @@ const Header = ({
   return (
     <div className="flex items-center justify-between py-2 mb-4 space-x-4">
       <div className="flex items-center">
-        <h2 className="mb-0 font-bold text-gray-900 w-52 ">
+        <h2 className="mb-0 font-bold text-neutral-5 w-52 ">
           {views[view - 1].name}
         </h2>
         <RadioGroup
@@ -216,7 +216,7 @@ const Header = ({
                 {({ checked }) => (
                   <button
                     className={`button button-text ${
-                      checked ? "text-brand-600" : "text-gray-300"
+                      checked ? "text-brand-600" : "text-neutral-3"
                     }`}
                   >
                     {v.icon}
@@ -232,7 +232,7 @@ const Header = ({
                 {({ checked }) => (
                   <button
                     className={`button button-text ${
-                      checked ? "text-brand-600" : "text-gray-300"
+                      checked ? "text-brand-600" : "text-neutral-3"
                     }`}
                   >
                     {v.icon}
@@ -290,7 +290,7 @@ const Filters = ({
       <div className="relative z-10 flex items-center justify-between mb-6 space-x-4">
         <div className="flex items-center space-x-2">
           <div>
-            <HiOutlineFilter className="text-xl text-gray-400" />
+            <HiOutlineFilter className="text-xl text-neutral-4" />
           </div>
           <div className="text-xs font-medium tracking-wider uppercase whitespace-nowrap">
             Filtrar por:
@@ -303,7 +303,7 @@ const Filters = ({
               <>
                 <Listbox.Button className="relative flex items-center w-full space-x-2 text-left outline-none">
                   {tag.slug != "all" && (
-                    <span className="text-xs tracking-widest text-gray-400">
+                    <span className="text-xs tracking-widest text-neutral-4">
                       TAG:
                     </span>
                   )}
@@ -314,7 +314,7 @@ const Filters = ({
                   >
                     {tag.name}
                   </span>
-                  <HiOutlineChevronDown className="text-xl text-gray-400" />
+                  <HiOutlineChevronDown className="text-xl text-neutral-4" />
                 </Listbox.Button>
                 <Transition
                   show={open}
@@ -366,7 +366,7 @@ const Filters = ({
                 <>
                   <Listbox.Button className="relative flex items-center w-full space-x-2 text-left outline-none">
                     {step.slug != "all" && (
-                      <span className="text-xs tracking-widest text-gray-400">
+                      <span className="text-xs tracking-widest text-neutral-4">
                         STATUS:
                       </span>
                     )}
@@ -378,7 +378,7 @@ const Filters = ({
                     >
                       {step.name}
                     </span>
-                    <HiOutlineChevronDown className="text-xl text-gray-400" />
+                    <HiOutlineChevronDown className="text-xl text-neutral-4" />
                   </Listbox.Button>
                   <Transition
                     show={open}
@@ -438,7 +438,7 @@ const Filters = ({
                 <>
                   <Listbox.Button className="relative flex items-center w-full space-x-2 text-left outline-none">
                     {account.slug != "all" && (
-                      <span className="text-xs tracking-widest text-gray-400">
+                      <span className="text-xs tracking-widest text-neutral-4">
                         CONTA:
                       </span>
                     )}
@@ -455,7 +455,7 @@ const Filters = ({
                     >
                       {account.name}
                     </span>
-                    <HiOutlineChevronDown className="text-xl text-gray-400" />
+                    <HiOutlineChevronDown className="text-xl text-neutral-4" />
                   </Listbox.Button>
                   <Transition
                     show={open}
@@ -550,7 +550,7 @@ const Calendar = ({
                       <span
                         className={`h-6 w-6 flex items-center justify-center rounded-full text-xs ${
                           day.date.month() !== date.month()
-                            ? "text-gray-300 "
+                            ? "text-neutral-3 "
                             : ""
                         } ${
                           day.date.format("D/M/YYYY") ===
@@ -587,7 +587,7 @@ const Calendar = ({
                       ) : null;
                     })}
                     <button
-                      className="absolute flex items-center justify-center invisible w-4 h-4 text-lg text-gray-200 bg-gray-700 rounded-full add-button right-4 top-4"
+                      className="absolute flex items-center justify-center invisible w-4 h-4 text-lg text-neutral-2 bg-neutral-5 rounded-full add-button right-4 top-4"
                       onClick={() => {
                         setActionDate(() => {
                           setShowDialog(true);
@@ -713,7 +713,7 @@ const List = ({
       />
 
       <table className="w-full border-t">
-        <thead className="text-xs font-bold tracking-wider text-left text-gray-700 uppercase border-b">
+        <thead className="text-xs font-bold tracking-wider text-left text-neutral-5 uppercase border-b">
           <tr>
             <th className="p-4">Nome</th>
             <th>Data</th>
@@ -734,7 +734,7 @@ const List = ({
             (step.slug === "all" || action.step.slug === step.slug) &&
             (account.slug === "all" || action.account.slug === account.slug) ? (
               <tr className="text-sm border-t group" key={action.id}>
-                <td className="col-span-2 font-medium text-gray-600">
+                <td className="col-span-2 font-medium text-neutral-5">
                   <div
                     className="p-4 cursor-pointer "
                     onClick={() => {
@@ -873,11 +873,11 @@ const Grid = ({
                 <div className="flex flex-col justify-between p-4 transition-colors bg-white hover:bg-gray-50">
                   <div className="flex justify-between">
                     <div className="flex items-center space-x-1">
-                      <HiOutlineCalendar className="text-sm text-gray-300" />
-                      <div className="text-xs text-gray-400">
+                      <HiOutlineCalendar className="text-sm text-neutral-3" />
+                      <div className="text-xs text-neutral-4">
                         {dayjs(action.date).format("D/M")}
                         {dayjs(action.date).year() != dayjs().year() && (
-                          <span className="font-medium text-gray-600">
+                          <span className="font-medium text-neutral-5">
                             {dayjs(actions.date).format("/YYYY")}
                           </span>
                         )}
@@ -888,7 +888,7 @@ const Grid = ({
                     ></div>
                   </div>
                   <div
-                    className="font-medium leading-tight text-center text-gray-700 cursor-pointer"
+                    className="font-medium leading-tight text-center text-neutral-5 cursor-pointer"
                     onClick={() => {
                       if (!action.clientOnly) {
                         setActionToUpdate(action.id);
@@ -930,7 +930,7 @@ const Grid = ({
                   action.tags.find((tag) =>
                     ["post", "reels"].find((slug) => slug === tag.slug)
                   )
-                    ? "font-bold text-gray-700"
+                    ? "font-bold text-neutral-5"
                     : ""
                 }`}
                 onClick={() => {
@@ -1019,7 +1019,7 @@ const HeaderBar = ({ date, allActions, setAllActions, setDate }) => (
               checked={allActions}
               onChange={setAllActions}
               className={`${
-                allActions ? "bg-green-400" : "bg-gray-200"
+                allActions ? "bg-green-400" : "bg-neutral-2"
               } relative inline-flex items-center h-6 rounded-full w-11`}
             >
               <span

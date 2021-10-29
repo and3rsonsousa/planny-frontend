@@ -359,7 +359,7 @@ export default function Modal({
                   <div>Descrição</div>
                   <textarea
                     rows={Action.description ? 4 : 1}
-                    className="placeholder-gray-300 input"
+                    className="placeholder-neutral-3 input"
                     placeholder={actionToUpdate ? "Sem descrição" : "Descrição"}
                     value={Action.description || ""}
                     onChange={handleState}
@@ -370,7 +370,7 @@ export default function Modal({
               {/* Date and Time */}
               <div className="flex items-center mb-8 space-x-4">
                 <div className="mt-4">
-                  <HiOutlineCalendar className="w-6 h-6 text-gray-300" />
+                  <HiOutlineCalendar className="w-6 h-6 text-neutral-3" />
                 </div>
                 <label>
                   <div>Data</div>
@@ -395,7 +395,7 @@ export default function Modal({
                 </label>
 
                 <div className="mt-4">
-                  <HiOutlineClock className="w-6 h-6 text-gray-300" />
+                  <HiOutlineClock className="w-6 h-6 text-neutral-3" />
                 </div>
                 <label>
                   <div>Hora</div>
@@ -534,7 +534,7 @@ export default function Modal({
                         className={`px-1 py-3 uppercase text-xs font-medium tracking-wider ${
                           step.id === Action.step.id
                             ? step.slug + "-bg "
-                            : " bg-white text-gray-400"
+                            : " bg-white text-neutral-4"
                         } text-center cursor-pointer outline-none focus:ring-2 ring-offset-2 ring-brand-600 rounded-xl`}
                       >
                         {step.name}
@@ -557,7 +557,7 @@ export default function Modal({
                           tabIndex={tag.id}
                           key={tag.id}
                           className={`flex justify-center items-center cursor-pointer mb-1 py-2 px-3 rounded-2xl outline-none focus:ring-2 ring-offset-2 ring-brand-600 ${
-                            selected ? tag.slug + "-bg" : "text-gray-400"
+                            selected ? tag.slug + "-bg" : "text-neutral-4"
                           }`}
                           onClick={() => {
                             setAction(() => {
@@ -630,7 +630,7 @@ const ModalLayout = ({ children, showDialog, handleClose }) => {
       }`}
     >
       <div
-        className={`fixed inset-0 bg-gray-700 bg-opacity-80 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-neutral-5 bg-opacity-80 transition-opacity duration-300 ${
           showDialog ? "opacity-100" : "opacity-0"
         }`}
         onClick={() => {

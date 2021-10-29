@@ -7,11 +7,19 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        brand: "neuzeit-grotesk",
+        brand: "Ubuntu",
       },
       colors: {
         brand: colors.violet,
         accent: colors.red,
+
+        neutral: {
+          1: colors.blueGray[100],
+          2: colors.blueGray[200],
+          3: colors.blueGray[300],
+          4: colors.blueGray[500],
+          5: colors.blueGray[700],
+        },
 
         idea: colors.yellow,
         do: colors.red,

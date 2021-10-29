@@ -169,7 +169,7 @@ const Account = ({ slug }) => {
               variants={fadeInLeft}
             >
               <Avatar avatar={profile.accounts[0]} />
-              <h2 className="mb-0 font-bold text-gray-700">
+              <h2 className="mb-0 font-bold text-neutral-5">
                 {profile.accounts[0].name}
               </h2>
             </motion.div>

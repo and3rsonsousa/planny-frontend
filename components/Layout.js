@@ -10,7 +10,7 @@ import Avatar from "./Avatar.js";
 
 const Layout = ({ children, profile, accounts }) => {
   return (
-    <div className="relative pt-16 overflow-x-hidden bg-gray-100">
+    <div className="relative pt-16 overflow-x-hidden bg-neutral-1">
       {/* Header  */}
 
       <Header accounts={accounts} profile={profile} />
@@ -42,7 +42,7 @@ const Header = ({ accounts, profile }) => {
             <div
               className={`flex items-center ${
                 account ? " divide-x " : ""
-              } divide-gray-200`}
+              } divide-neutral-2`}
             >
               <div className="pr-4">
                 <Link href="/">
@@ -54,11 +54,11 @@ const Header = ({ accounts, profile }) => {
               {account && (
                 <Menu as="div" className="relative pl-4">
                   <>
-                    <Menu.Button className="flex items-center text-gray-700 focus:outline-none">
+                    <Menu.Button className="flex items-center text-neutral-5 focus:outline-none">
                       <span>{account.name}</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4 ml-2 text-gray-400"
+                        className="w-4 h-4 ml-2 text-neutral-4"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -99,7 +99,7 @@ const Header = ({ accounts, profile }) => {
                     <div className="overflow-hidden rounded-full">
                       <Avatar avatar={profile} medium />
                     </div>
-                    <div className="text-gray-700 ">{profile.name}</div>
+                    <div className="text-neutral-5 ">{profile.name}</div>
                     <button
                       className="button button-small button-ghost"
                       onClick={() => {

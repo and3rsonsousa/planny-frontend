@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 body {
-  @apply text-gray-500 font-light font-brand;
+  @apply text-neutral-4 font-light font-brand;
   /* Set values for OpenType feature tags */
-  /* font-feature-settings: "ss02"; */
+  font-feature-settings: "ss01";
 }
 
 p {
@@ -60,11 +60,11 @@ h5 {
   }
 
   .input {
-    @apply py-3 px-4 border-2 rounded-xl outline-none focus:border-brand-600 focus:text-gray-700 w-full;
+    @apply py-3 px-4 border-2 rounded-xl outline-none focus:border-brand-600 focus:text-neutral-5 w-full;
   }
 
   .input-ghost {
-    @apply pb-3 px-0 border-b-2  border-transparent hover:border-gray-100 outline-none focus:text-gray-700 focus:border-brand-600 w-full transition-all;
+    @apply pb-3 px-0 border-b-2  border-transparent hover:border-neutral-1 outline-none focus:text-neutral-5 focus:border-brand-600 w-full transition-all;
   }
 
   .input-error {
@@ -75,11 +75,11 @@ h5 {
   }
 
   .modal-form label > div {
-    @apply uppercase text-xx tracking-widest font-medium text-gray-300 mb-2;
+    @apply uppercase text-xx tracking-widest font-medium text-neutral-3 mb-2;
   }
 
   .button {
-    @apply py-3 px-4 rounded-xl outline-none flex items-center justify-center space-x-2 bg-gray-100 hover:bg-gray-200 hover:bg-opacity-50  shadow transition-colors focus:ring-4 focus:ring-brand-400;
+    @apply py-3 px-4 rounded-xl outline-none flex items-center justify-center space-x-2 bg-neutral-1 hover:bg-neutral-2 hover:bg-opacity-50  shadow transition-colors focus:ring-4 focus:ring-brand-400;
   }
 
   .button-small {
@@ -91,7 +91,7 @@ h5 {
   }
 
   .button-text {
-    @apply shadow-none bg-transparent p-0 hover:bg-transparent focus:bg-transparent hover:text-gray-700;
+    @apply shadow-none bg-transparent p-0 hover:bg-transparent focus:bg-transparent hover:text-neutral-5;
   }
 
   /* .button svg {
