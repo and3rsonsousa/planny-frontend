@@ -107,7 +107,7 @@ export default function Modal({
         slug
         
       }
-      tags {
+      tags (orderBy: name_ASC ){
         id
         name
         slug
@@ -547,7 +547,7 @@ export default function Modal({
                 <label>
                   <div>Tags</div>
                 </label>
-                <div className="grid grid-cols-4 space-x-1 font-medium tracking-widest uppercase text-xx">
+                <div className="grid grid-cols-5 space-x-1 font-medium tracking-widest uppercase text-xx">
                   {Action.tags &&
                     tags.map((tag) => {
                       const selected =
