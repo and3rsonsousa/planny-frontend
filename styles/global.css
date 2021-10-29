@@ -243,7 +243,13 @@ h5 {
   @apply bg-shooting-100 text-shooting-600 transition-all;
 }
 .press-bg {
-  @apply bg-press-100 text-blue-600 transition-all;
+  @apply bg-press-100 text-press-600 transition-all;
+}
+.task-bg {
+  @apply bg-task-100 text-task-600 transition-all;
+}
+.tiktok-bg {
+  @apply bg-tiktok-100 text-tiktok-600 transition-all;
 }
 
 .add-button {

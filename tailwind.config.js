@@ -36,6 +36,8 @@ module.exports = {
         video: colors.sky,
         shooting: colors.blue,
         press: colors.indigo,
+        task: colors.lime,
+        tiktok: colors.pink,
       },
     },
   },
