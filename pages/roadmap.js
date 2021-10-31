@@ -5,6 +5,10 @@ export default function RoadMap() {
       <ul className="list-disc ">
         <li>Inserir novos usuários e testar interação com eles</li>
         <li>Corrigir campo de data de hora</li>
+        <li>
+          Corrigir erro no Step/Status que não inicia pela segunda vez que o
+          botão foi clicado.
+        </li>
       </ul>
     </div>
   );
