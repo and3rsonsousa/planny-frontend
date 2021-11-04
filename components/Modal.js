@@ -625,12 +625,12 @@ const ModalLayout = ({ children, showDialog, handleClose }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] overflow-y-auto p-8 h-screen duration-1000 ${
+      className={`fixed inset-0 z-[9999] overflow-y-auto p-8 h-screen duration-500 ${
         showDialog ? "visible" : "invisible"
       }`}
     >
       <div
-        className={`fixed inset-0 bg-neutral-5 bg-opacity-80 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-neutral-5 bg-opacity-ß80 transition-opacity duration-300 ${
           showDialog ? "opacity-100" : "opacity-0"
         }`}
         onClick={() => {
