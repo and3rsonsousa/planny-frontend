@@ -591,8 +591,11 @@ const Calendar = ({
                       onClick={() => {
                         setActionDate(() => {
                           setShowDialog(true);
-                          return day.date.format(
-                            "YYYY-MM-DD[T]HH:mm:ss[-03:00]"
+                          return (
+                            day.date.format("YYYY-MM-DD") +
+                            "[T]" +
+                            dayjs().format("HH:mm:ss") +
+                            "[-03:00]"
                           );
                         });
                       }}
