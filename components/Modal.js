@@ -182,6 +182,8 @@ export default function Modal({
   const [Action, setAction] = useState(emptyState);
 
   useEffect(() => {
+    console.log(actionDate);
+
     if (action && actionToUpdate) {
       setAction(() => ({
         id: action.id,
@@ -374,6 +376,7 @@ export default function Modal({
                 </div>
                 <label>
                   <div>Data</div>
+
                   <input
                     type="date"
                     className="input"
