@@ -591,8 +591,11 @@ const Calendar = ({
                       onClick={() => {
                         setActionDate(() => {
                           setShowDialog(true);
-                          return day.date.format(
-                            "YYYY-MM-DD[T]HH:mm:ss[-03:00]"
+                          return (
+                            day.date.format("YYYY-MM-DD") +
+                            "T" +
+                            dayjs().format("HH:mm:ss") +
+                            "-03:00"
                           );
                         });
                       }}
@@ -844,7 +847,7 @@ const Grid = ({
   const [allActions, setAllActions] = useState(false);
 
   return (
-    <div className="grid grid-cols-2 space-x-8">
+    <div className="grid grid-cols-2 space-x-8 items-start ">
       <div className="w-full col-span-1 overflow-hidden shadow rounded-2xl">
         <HeaderBar
           date={date}
