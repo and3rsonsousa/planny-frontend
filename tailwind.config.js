@@ -6,9 +6,6 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      fontFamily: {
-        brand: "Ubuntu",
-      },
       colors: {
         brand: colors.violet,
         accent: colors.red,

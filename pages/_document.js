@@ -6,14 +6,6 @@ const MyDocument = (ctx) => {
       <Head>
         <meta content="#7C3AED" name="theme-color" />
 
-        <link rel="stylesheet" href="https://use.typekit.net/lve1wgr.css" />
-
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap"
-          rel="stylesheet"
-        ></link>
         <link rel="shortcut icon" href="/favicon.png" />
       </Head>
       <body>
