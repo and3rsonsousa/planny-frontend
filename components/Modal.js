@@ -182,8 +182,6 @@ export default function Modal({
   const [Action, setAction] = useState(emptyState);
 
   useEffect(() => {
-    console.log(actionDate);
-
     if (action && actionToUpdate) {
       setAction(() => ({
         id: action.id,
