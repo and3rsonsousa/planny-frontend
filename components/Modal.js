@@ -631,7 +631,7 @@ const ModalLayout = ({ children, showDialog, handleClose }) => {
       }`}
     >
       <div
-        className={`fixed inset-0 bg-neutral-5 bg-opacity-ß80 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-neutral-5 bg-opacity-80 transition-opacity duration-300 ${
           showDialog ? "opacity-100" : "opacity-0"
         }`}
         onClick={() => {
