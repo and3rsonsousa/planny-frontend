@@ -13,7 +13,7 @@
     "dayjs": "^1.10.7",
     "draft-js": "^0.11.7",
     "framer-motion": "^5.2.0",
-    "graphql": "^15.6.1",
+    "graphql": "^16.0.1",
     "graphql-request": "^3.5.0",
     "next": "latest",
     "nookies": "^2.5.2",

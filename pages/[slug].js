@@ -12,9 +12,19 @@ import Modal from "../components/Modal";
 import { StepsInsight } from "../components/Insights";
 import Avatar from "../components/Avatar";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 
-const Account = ({ slug }) => {
+const Account = () => {
+  const router = useRouter();
+  const slug = router.query.slug || null;
+
+  if (!slug) {
+    return null;
+  }
+
   const token = nookies.get("planny").token;
+
+  console.log(slug);
   useEffect(() => {
     if (!token) {
       Router.replace("/login");
@@ -205,13 +215,5 @@ const Account = ({ slug }) => {
     </>
   );
 };
-
-export function getServerSideProps(ctx) {
-  return {
-    props: {
-      slug: ctx.params.slug,
-    },
-  };
-}
 
 export default Account;
