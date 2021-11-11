@@ -886,10 +886,10 @@ const Grid = ({
                       <HiOutlineCalendar className="text-sm text-neutral-3" />
                       <div className="text-xs text-neutral-4">
                         {dayjs(action.date).format("D/M")}
-                        {Math.ceil(actions.length / 3) * 3 - 3} {i + 1}
+
                         {dayjs(action.date).year() != dayjs().year() && (
                           <span className="font-medium text-neutral-5">
-                            {dayjs(actions.date).format("/YYYY")}
+                            {dayjs(action.date).format("/YYYY")}
                           </span>
                         )}
                       </div>
