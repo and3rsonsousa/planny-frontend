@@ -23,8 +23,6 @@ const Account = () => {
   }
 
   const token = nookies.get("planny").token;
-
-  console.log(slug);
   useEffect(() => {
     if (!token) {
       Router.replace("/login");

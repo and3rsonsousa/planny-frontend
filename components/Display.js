@@ -587,7 +587,7 @@ const Calendar = ({
                       ) : null;
                     })}
                     <button
-                      className="absolute flex items-center justify-center invisible w-4 h-4 text-lg text-neutral-2 bg-neutral-5 rounded-full add-button right-4 top-4"
+                      className="absolute flex items-center justify-center invisible w-4 h-4 text-lg rounded-full text-neutral-2 bg-neutral-5 add-button right-4 top-4"
                       onClick={() => {
                         setActionDate(() => {
                           setShowDialog(true);
@@ -716,7 +716,7 @@ const List = ({
       />
 
       <table className="w-full border-t">
-        <thead className="text-xs font-bold tracking-wider text-left text-neutral-5 uppercase border-b">
+        <thead className="text-xs font-bold tracking-wider text-left uppercase border-b text-neutral-5">
           <tr>
             <th className="p-4">Nome</th>
             <th>Data</th>
@@ -834,20 +834,26 @@ const Grid = ({
   setActionToUpdate,
   setShowDialog,
 }) => {
-  const _actions = actions;
-  actions = actions.filter(
-    (action) =>
-      action.tags.filter((tag) => tag.slug === "post" || tag.slug === "reels")
-        .length > 0
-  );
-
   const start = date.startOf("month").startOf("week");
   const end = date.endOf("month").endOf("week");
+  const _actions = actions;
+  actions = actions.filter((action) =>
+    action.tags.filter(
+      (tag) => (tag.slug === "post" || tag.slug === "reels").length > 0
+    )
+  );
+  console.log(actions);
+  actions = actions.filter(
+    (action) =>
+      (dayjs(action.date).isSameOrAfter(start) &&
+        dayjs(action.date).isSameOrBefore(end)) ||
+      allActions
+  );
 
   const [allActions, setAllActions] = useState(false);
 
   return (
-    <div className="grid grid-cols-2 space-x-8 items-start ">
+    <div className="grid items-start grid-cols-2 space-x-8 ">
       <div className="w-full col-span-1 overflow-hidden shadow rounded-2xl">
         <HeaderBar
           date={date}
@@ -856,11 +862,8 @@ const Grid = ({
           setDate={setDate}
         />
 
-        <div className="grid grid-cols-3 border-t bg-gray-50 instagram-grid">
+        <div className="grid grid-cols-3 bg-white border-t instagram-grid">
           {actions.map((action, i) =>
-            ((dayjs(action.date).isSameOrAfter(start) &&
-              dayjs(action.date).isSameOrBefore(end)) ||
-              allActions) &&
             (tag.slug === "all" ||
               (action.tags.length > 0 &&
                 action.tags.filter((_tag) => tag.slug === _tag.slug).length >
@@ -871,6 +874,10 @@ const Grid = ({
                 key={i}
                 className={`aspect-w-1 aspect-h-1 cell ${
                   action.clientOnly ? " cursor-wait opacity-25" : "  "
+                } ${
+                  i + 1 > Math.ceil(actions.length / 3) * 3 - 3
+                    ? "  border-b-0"
+                    : ""
                 }`}
               >
                 <div className="flex flex-col justify-between p-4 transition-colors bg-white hover:bg-gray-50">
@@ -879,6 +886,7 @@ const Grid = ({
                       <HiOutlineCalendar className="text-sm text-neutral-3" />
                       <div className="text-xs text-neutral-4">
                         {dayjs(action.date).format("D/M")}
+                        {Math.ceil(actions.length / 3) * 3 - 3} {i + 1}
                         {dayjs(action.date).year() != dayjs().year() && (
                           <span className="font-medium text-neutral-5">
                             {dayjs(actions.date).format("/YYYY")}
@@ -891,7 +899,7 @@ const Grid = ({
                     ></div>
                   </div>
                   <div
-                    className="font-medium leading-tight text-center text-neutral-5 cursor-pointer"
+                    className="font-medium leading-tight text-center cursor-pointer text-neutral-5"
                     onClick={() => {
                       if (!action.clientOnly) {
                         setActionToUpdate(action.id);

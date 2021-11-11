@@ -267,3 +267,7 @@ h5 {
 .instagram-grid .cell:nth-child(3n + 0) {
   @apply border-r-0;
 }
+
+.instagram-grid .cell.border-b-0 {
+  @apply border-b-0;
+}
