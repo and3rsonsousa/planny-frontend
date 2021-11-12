@@ -885,11 +885,11 @@ const Grid = ({
                     <div className="flex items-center space-x-1">
                       <HiOutlineCalendar className="text-sm text-neutral-3" />
                       <div className="text-xs text-neutral-4">
-                        {dayjs(action.date).format("D/M")}
+                        {dayjs(action.date).format("D/M [-] ddd")}
 
                         {dayjs(action.date).year() != dayjs().year() && (
                           <span className="font-medium text-neutral-5">
-                            {dayjs(action.date).format("/YYYY")}
+                            {dayjs(action.date).format(" YYYY")}
                           </span>
                         )}
                       </div>
