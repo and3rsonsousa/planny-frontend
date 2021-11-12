@@ -837,10 +837,10 @@ const Grid = ({
   const start = date.startOf("month").startOf("week");
   const end = date.endOf("month").endOf("week");
   const _actions = actions;
-  actions = actions.filter((action) =>
-    action.tags.filter(
-      (tag) => (tag.slug === "post" || tag.slug === "reels").length > 0
-    )
+  actions = actions.filter(
+    (action) =>
+      action.tags.filter((tag) => tag.slug === "post" || tag.slug === "reels")
+        .length > 0
   );
   console.log(actions);
   actions = actions.filter(
