@@ -17,7 +17,6 @@ import { useRouter } from "next/router";
 const Account = () => {
   const router = useRouter();
   const slug = router.query.slug || null;
-
   if (!slug) {
     return null;
   }
@@ -25,7 +24,7 @@ const Account = () => {
   const token = nookies.get("planny").token;
   useEffect(() => {
     if (!token) {
-      Router.replace("/login");
+      router.replace("/login");
     }
   }, []);
   const QUERY = gql`{
@@ -209,6 +208,7 @@ const Account = () => {
         setShowDialog={setShowDialog}
         mutatePage={mutate}
         actionDate={actionDate}
+        account={profile ? profile.accounts[0] : null}
       />
     </>
   );

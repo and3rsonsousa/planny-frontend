@@ -25,6 +25,7 @@ export default function Modal({
   setActionToUpdate,
   mutatePage,
   actionDate,
+  account,
 }) {
   let QUERY = "";
 
@@ -172,7 +173,7 @@ export default function Modal({
     name: "",
     description: "",
     date: actionDate || "",
-    account: "",
+    account: account.id || "",
     profile_creator: "",
     profiles_responsible: [],
     step: "",
@@ -198,7 +199,8 @@ export default function Modal({
     } else if (profile && profiles) {
       setAction(() => ({
         ...Action,
-        account: profile.accounts.length === 1 ? profile.accounts[0] : "",
+        account:
+          profile.accounts.length === 1 ? profile.accounts[0] : account || "",
         date: actionDate,
         profile_creator: profile.id,
         profiles_responsible: profiles.filter(
