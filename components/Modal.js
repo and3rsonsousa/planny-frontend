@@ -173,7 +173,7 @@ export default function Modal({
     name: "",
     description: "",
     date: actionDate || "",
-    account: account.id || "",
+    account: account || "",
     profile_creator: "",
     profiles_responsible: [],
     step: "",
