@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import request, { gql } from "graphql-request";
 import dayjs from "dayjs";
@@ -165,6 +165,8 @@ export default function Modal({
   }
 
   const { data, error } = useSWR(QUERY);
+  const ta = useRef(null);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   const { profile, profiles, action, accounts, steps, tags } = data || {};
 
@@ -360,14 +362,37 @@ export default function Modal({
                 <label>
                   <div>Descrição</div>
                   <textarea
-                    rows={Action.description ? 4 : 1}
+                    ref={ta}
+                    rows={
+                      Action.description
+                        ? showFullDescription
+                          ? Math.ceil(ta.current.scrollHeight / 24)
+                          : 4
+                        : 1
+                    }
                     className="placeholder-neutral-3 input"
                     placeholder={actionToUpdate ? "Sem descrição" : "Descrição"}
                     value={Action.description || ""}
                     onChange={handleState}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log(ta.current.scrollHeight);
+                    }}
                     name="description"
                   />
                 </label>
+
+                <div className="flex justify-end text-sm ">
+                  {showFullDescription ? (
+                    <button onClick={() => setShowFullDescription(false)}>
+                      Mostrar apenas o esssencial
+                    </button>
+                  ) : (
+                    <button onClick={() => setShowFullDescription(true)}>
+                      Mostrar tudo
+                    </button>
+                  )}
+                </div>
               </div>
               {/* Date and Time */}
               <div className="flex items-center mb-8 space-x-4">
