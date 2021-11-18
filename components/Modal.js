@@ -166,7 +166,6 @@ export default function Modal({
 
   const { data, error } = useSWR(QUERY);
   const ta = useRef(null);
-  const [showFullDescription, setShowFullDescription] = useState(false);
 
   const { profile, profiles, action, accounts, steps, tags } = data || {};
 
@@ -183,6 +182,7 @@ export default function Modal({
     clientOnly: true,
   };
   const [Action, setAction] = useState(emptyState);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   useEffect(() => {
     if (action && actionToUpdate) {
@@ -363,35 +363,45 @@ export default function Modal({
                   <div>Descrição</div>
                   <textarea
                     ref={ta}
-                    rows={
-                      Action.description
-                        ? showFullDescription
-                          ? Math.ceil(ta.current.scrollHeight / 24)
-                          : 4
-                        : 1
-                    }
+                    rows={Action.description ? 4 : 1}
                     className="placeholder-neutral-3 input"
                     placeholder={actionToUpdate ? "Sem descrição" : "Descrição"}
                     value={Action.description || ""}
                     onChange={handleState}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      console.log(ta.current.scrollHeight);
-                    }}
                     name="description"
                   />
                 </label>
 
                 <div className="flex justify-end text-sm ">
-                  {showFullDescription ? (
-                    <button onClick={() => setShowFullDescription(false)}>
-                      Mostrar apenas o esssencial
-                    </button>
-                  ) : (
-                    <button onClick={() => setShowFullDescription(true)}>
-                      Mostrar tudo
-                    </button>
-                  )}
+                  {Action.description ? (
+                    showFullDescription ? (
+                      <button
+                        onClick={() => {
+                          setShowFullDescription(false);
+                          ta.current.rows = 4;
+                        }}
+                      >
+                        Mostrar apenas o esssencial
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setShowFullDescription(true);
+                          let i = 4;
+                          while (
+                            ta.current.clientHeight < ta.current.scrollHeight &&
+                            i < 40
+                          ) {
+                            i++;
+                            ta.current.rows = i;
+                          }
+                        }}
+                      >
+                        Mostrar tudo
+                      </button>
+                    )
+                  ) : null}
                 </div>
               </div>
               {/* Date and Time */}
