@@ -35,7 +35,7 @@ export default Layout;
 const Header = ({ accounts, profile }) => {
   const account = profile && accounts ? profile.accounts[0] : null;
   return (
-    <div className="fixed w-full bg-white bg-opacity-75 z-[9999] filter backdrop-blur-lg top-0 shadow">
+    <div className="fixed w-full bg-white bg-opacity-60 z-[9999] filter backdrop-blur-lg top-0 shadow">
       <div className="">
         <div className="container mx-auto">
           <header className="flex items-center justify-between h-16 px-4 ">
@@ -71,15 +71,15 @@ const Header = ({ accounts, profile }) => {
                         />
                       </svg>
                     </Menu.Button>
-                    <Menu.Items className="absolute z-10 w-48 mt-2 overflow-hidden bg-white bg-opacity-75 border-t-8 rounded-lg shadow-lg filter backdrop-blur-lg focus:outline-none border-accent-400 ">
+                    <Menu.Items className="absolute z-10 w-48 mt-2 overflow-hidden bg-white border-t-8 rounded-lg shadow-lg bg-opacity-60 filter backdrop-blur-lg focus:outline-none border-brand-600 ">
                       {accounts.map((account) => (
                         <Link href={account.slug} key={account.slug}>
                           <Menu.Item>
                             {({ active }) => (
                               <a
                                 className={`${
-                                  active ? " bg-accent-400 text-white " : " "
-                                }focus:bg-accent-400 focus:text-white hover:bg-accent-400 hover:text-white px-4 py-3 block text-sm cursor-pointer `}
+                                  active ? " bg-brand-600 text-white " : " "
+                                }focus:bg-brand-600 focus:text-white hover:bg-brand-600 hover:text-white px-4 py-3 block text-sm cursor-pointer `}
                               >
                                 {account.name}
                               </a>

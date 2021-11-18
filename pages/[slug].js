@@ -81,7 +81,7 @@ const Account = () => {
           }
         }
       }
-      accounts {
+      accounts (orderBy: name_ASC) {
         id
         name
         slug
