@@ -44,7 +44,12 @@ const Home = () => {
           }          
         }
       }
-      actions(where: {profiles_responsible_some: { id: "${token}"}  }, orderBy: date_DESC) { 
+      actionsConnection{
+        aggregate{
+          count
+        }
+      }
+      actions(where: {profiles_responsible_some: { id: "${token}"}  }, orderBy: date_DESC, first: 1000) { 
         id
         date
         name

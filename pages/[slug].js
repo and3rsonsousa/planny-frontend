@@ -47,7 +47,7 @@ const Account = () => {
           }
         }
       }
-      actions ( where: {profiles_responsible_some: { id: "${token}"}, account: {slug: "${slug}"}}, orderBy: date_DESC ) { 
+      actions ( where: {profiles_responsible_some: { id: "${token}"}, account: {slug: "${slug}"}}, orderBy: date_DESC) { 
         id
         date
         name
