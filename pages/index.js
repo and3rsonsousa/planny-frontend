@@ -49,7 +49,7 @@ const Home = () => {
           count
         }
       }
-      actions(where: {profiles_responsible_some: { id: "${token}"}  }, orderBy: date_DESC, first: 1000) { 
+      actions(where: {profiles_responsible_some: { id: "${token}"}  }, orderBy: date_DESC, first: 3000) { 
         id
         date
         name
