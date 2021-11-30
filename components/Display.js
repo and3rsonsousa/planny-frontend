@@ -241,42 +241,45 @@ const Header = ({
                 </button>
               </div>
             ) : accounts.length === 1 ? (
-              <RadioGroup.Option
+              <div
                 key={v.name}
-                value={v.value}
-                className="outline-none"
+                onClick={() => {
+                  setView(v.value);
+                }}
               >
                 <button
                   className={`button button-text ${
-                    true ? "text-brand-600" : "text-neutral-3"
+                    v.value == view ? "text-brand-600" : "text-neutral-3"
                   }`}
                 >
                   {v.icon}
                 </button>
-              </RadioGroup.Option>
+              </div>
             ) : null
           )}
         </div>
       </div>
-      <div className="flex space-x-2">
-        {colors.map((c) => (
-          <div
-            key={c.name}
-            onClick={() => {
-              setColor(c.value);
-            }}
-          >
-            <button
-              title={c.name}
-              className={`button button-text ${
-                c.value == color ? "text-brand-600" : "text-neutral-3"
-              }`}
+      {accounts.length > 1 ? (
+        <div className="flex space-x-2">
+          {colors.map((c) => (
+            <div
+              key={c.name}
+              onClick={() => {
+                setColor(c.value);
+              }}
             >
-              {c.icon}
-            </button>
-          </div>
-        ))}
-      </div>
+              <button
+                title={c.name}
+                className={`button button-text ${
+                  c.value == color ? "text-brand-600" : "text-neutral-3"
+                }`}
+              >
+                {c.icon}
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       <div>
         <button
