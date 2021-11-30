@@ -24,6 +24,7 @@ const Layout = ({ children, profile, accounts }) => {
               <span className="tracking-wider">ᴄαɴɪᴠeᴛe</span>
             </a>
           </Link>
+          1.2.1
         </div>
       </div>
     </div>
