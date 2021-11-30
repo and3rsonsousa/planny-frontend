@@ -55,7 +55,7 @@ export default function Action({
         )}
         {/* Tags */}
         {action.step.slug != "accomplished" && (
-          <div className="flex justify-between items-center mt-1">
+          <div className="flex items-center justify-between mt-1">
             <div className="flex flex-wrap text-xs">
               {action.tags.map((tag, i) => (
                 <div key={tag.id} className="mr-1">
@@ -63,34 +63,46 @@ export default function Action({
                 </div>
               ))}
             </div>
-            <div className="tracking-widest leading-none text-right text-white text-xx">
+            <div className="leading-none tracking-widest text-right text-white text-xx">
               {dayjs(action.date).format("H[h]m")}
             </div>
           </div>
         )}
       </div>
       {/* Deletar a Ação */}
-      <div className="absolute top-0 right-0 invisible p-1 text-white transition-all opacity-0 duration-500 rounded-lg group-hover:visible group-hover:opacity-100 bg-gradient-to-l from-[rgba(0,0,0,.8)] via-[rgba(0,0,0,.5)] to-transparent h-full pl-12 flex items-center">
-        <button>
-          <BiDuplicate
-            className="text-lg transition-opacity duration-200 cursor-pointer opacity-70 hover:opacity-100"
-            onClick={(event) => {
-              if (!action.clientOnly) {
-                setActionToDuplicate(action.id);
-                setShowDialog(true);
-              }
-            }}
-          />
-        </button>
-
-        <button
-          onClick={(event) => {
-            deleteAction(action, mutate);
-            // setShowDialog(false);
-          }}
+      <div className="absolute top-0 right-0 h-full text-white ">
+        <div
+          className={`flex items-center invisible h-full px-2 ${action.step.slug}-bg rounded-r-lg  group-hover:visible`}
+          style={
+            color == 2
+              ? {
+                  backgroundColor: action.account.colors[0].hex,
+                  color: action.account.colors[1].hex,
+                }
+              : {}
+          }
         >
-          <HiX className="text-lg transition-opacity duration-200 cursor-pointer opacity-70 hover:opacity-100" />
-        </button>
+          <button>
+            <BiDuplicate
+              className="text-lg transition-opacity duration-200 cursor-pointer opacity-70 hover:opacity-100"
+              onClick={(event) => {
+                if (!action.clientOnly) {
+                  setActionToDuplicate(action.id);
+                  setShowDialog(true);
+                }
+              }}
+            />
+          </button>
+
+          <button
+            onClick={(event) => {
+              deleteAction(action, mutate);
+              // setShowDialog(false);
+            }}
+          >
+            <HiX className="text-lg transition-opacity duration-200 cursor-pointer opacity-70 hover:opacity-100" />
+          </button>
+        </div>
       </div>
     </div>
   );
