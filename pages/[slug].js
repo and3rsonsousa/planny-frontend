@@ -107,6 +107,7 @@ const Account = () => {
     dayjs().format("YYYY-MM-DD[T]HH:mm:ss[-03:00]")
   );
   let [actionToUpdate, setActionToUpdate] = useState(null);
+  let [actionToDuplicate, setActionToDuplicate] = useState(null);
   const { data, error, mutate } = useSWR(QUERY);
 
   const { profile, actions, accounts, steps, tags } = data || {};
@@ -204,6 +205,8 @@ const Account = () => {
       <Modal
         actionToUpdate={actionToUpdate}
         setActionToUpdate={setActionToUpdate}
+        actionToDuplicate={actionToDuplicate}
+        setActionToDuplicate={setActionToDuplicate}
         showDialog={showDialog}
         setShowDialog={setShowDialog}
         mutatePage={mutate}
