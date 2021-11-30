@@ -196,6 +196,7 @@ const Account = () => {
                 showDialog={showDialog}
                 setShowDialog={setShowDialog}
                 setActionToUpdate={setActionToUpdate}
+                setActionToDuplicate={setActionToDuplicate}
                 setActionDate={setActionDate}
               />
             </motion.div>

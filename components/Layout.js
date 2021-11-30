@@ -7,6 +7,7 @@ import Loader from "./Loader";
 import { HiOutlineLogout } from "react-icons/hi";
 import Router from "next/router";
 import Avatar from "./Avatar.js";
+import pjson from "../package.json";
 
 const Layout = ({ children, profile, accounts }) => {
   return (
@@ -24,7 +25,7 @@ const Layout = ({ children, profile, accounts }) => {
               <span className="tracking-wider">ᴄαɴɪᴠeᴛe</span>
             </a>
           </Link>
-          1.2.1
+          <span className="ml-4">{pjson.version}</span>
         </div>
       </div>
     </div>
