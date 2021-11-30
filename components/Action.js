@@ -7,6 +7,7 @@ import Avatar from "./Avatar";
 export default function Action({
   action,
   mutate,
+  color,
   setShowDialog,
   setActionToUpdate,
 }) {
@@ -19,6 +20,14 @@ export default function Action({
           ? " cursor-wait opacity-25  transform scale-90"
           : " cursor-pointer "
       }`}
+      style={
+        color == 2
+          ? {
+              backgroundColor: action.account.colors[0].hex,
+              color: action.account.colors[1].hex,
+            }
+          : {}
+      }
     >
       <div
         onClick={() => {
@@ -29,13 +38,19 @@ export default function Action({
         }}
       >
         {/* Nome da Ação */}
-        <div className="text-white text-smfont-medium line-clamp-1 pl-2">
+        <div
+          className={`text-white text-smfont-medium line-clamp-1 ${
+            color === 1 ? "pl-2" : ""
+          }`}
+        >
           {action.name}
         </div>
         {/* Avatar da Conta */}
-        <div className="absolute -ml-4 top-2">
-          <Avatar smallest border avatar={action.account} />
-        </div>
+        {color === 1 && (
+          <div className="absolute -ml-4 top-2">
+            <Avatar smallest border avatar={action.account} />
+          </div>
+        )}
         {/* Tags */}
         {action.step.slug != "accomplished" && (
           <div className="flex justify-between items-center mt-1">

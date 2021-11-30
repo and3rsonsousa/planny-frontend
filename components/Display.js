@@ -4,6 +4,7 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import "dayjs/locale/pt-br";
 import { RadioGroup, Listbox, Transition, Switch } from "@headlessui/react";
+import { AiOutlineTags } from "react-icons/ai";
 import {
   HiCheckCircle,
   HiOutlineCalendar,
@@ -15,7 +16,7 @@ import {
   HiPlus,
   HiX,
 } from "react-icons/hi";
-import { MdOutlineGridOn } from "react-icons/md";
+import { MdOutlineBusinessCenter, MdOutlineGridOn } from "react-icons/md";
 import { CgBoard } from "react-icons/cg";
 import Action from "./Action";
 import Avatar from "./Avatar";
@@ -39,6 +40,7 @@ export default function Display({
   //view state
 
   const [view, setView] = useState(1);
+  const [color, setColor] = useState(1);
   //
   const [tag, setTag] = useState(tags[0]);
   const [step, setStep] = useState(steps[0]);
@@ -101,13 +103,29 @@ export default function Display({
     },
   ];
 
+  const colors = [
+    {
+      name: "Status",
+      value: 1,
+      icon: <AiOutlineTags className="text-2xl" />,
+    },
+    {
+      name: "Cliente",
+      value: 2,
+      icon: <MdOutlineBusinessCenter className="text-2xl" />,
+    },
+  ];
+
   return (
     <>
       <Header
         accounts={accounts}
         views={views}
         view={view}
+        colors={colors}
+        color={color}
         setView={setView}
+        setColor={setColor}
         setShowDialog={setShowDialog}
         setActionDate={setActionDate}
       />
@@ -129,6 +147,7 @@ export default function Display({
           date={date}
           setDate={setDate}
           step={step}
+          color={color}
           tag={tag}
           mutate={mutate}
           account={account}
@@ -191,7 +210,10 @@ const Header = ({
   accounts,
   views,
   view,
+  colors,
+  color,
   setView,
+  setColor,
   setShowDialog,
   setActionDate,
 }) => {
@@ -201,48 +223,61 @@ const Header = ({
         <h2 className="mb-0 font-bold text-neutral-5 w-52 ">
           {views[view - 1].name}
         </h2>
-        <RadioGroup
-          value={view}
-          className="flex ml-4 space-x-2"
-          onChange={setView}
-        >
+        <div className="flex ml-4 space-x-2">
           {views.map((v) =>
             v.value != 4 ? (
-              <RadioGroup.Option
-                value={v.value}
-                className="outline-none"
+              <div
                 key={v.name}
+                onClick={() => {
+                  setView(v.value);
+                }}
               >
-                {({ checked }) => (
-                  <button
-                    className={`button button-text ${
-                      checked ? "text-brand-600" : "text-neutral-3"
-                    }`}
-                  >
-                    {v.icon}
-                  </button>
-                )}
-              </RadioGroup.Option>
+                <button
+                  className={`button button-text ${
+                    v.value == view ? "text-brand-600" : "text-neutral-3"
+                  }`}
+                >
+                  {v.icon}
+                </button>
+              </div>
             ) : accounts.length === 1 ? (
               <RadioGroup.Option
                 key={v.name}
                 value={v.value}
                 className="outline-none"
               >
-                {({ checked }) => (
-                  <button
-                    className={`button button-text ${
-                      checked ? "text-brand-600" : "text-neutral-3"
-                    }`}
-                  >
-                    {v.icon}
-                  </button>
-                )}
+                <button
+                  className={`button button-text ${
+                    true ? "text-brand-600" : "text-neutral-3"
+                  }`}
+                >
+                  {v.icon}
+                </button>
               </RadioGroup.Option>
             ) : null
           )}
-        </RadioGroup>
+        </div>
       </div>
+      <div className="flex space-x-2">
+        {colors.map((c) => (
+          <div
+            key={c.name}
+            onClick={() => {
+              setColor(c.value);
+            }}
+          >
+            <button
+              title={c.name}
+              className={`button button-text ${
+                c.value == color ? "text-brand-600" : "text-neutral-3"
+              }`}
+            >
+              {c.icon}
+            </button>
+          </div>
+        ))}
+      </div>
+
       <div>
         <button
           className="button button-primary"
@@ -513,6 +548,7 @@ const Calendar = ({
   date,
   setDate,
   tag,
+  color,
   step,
   mutate,
   account,
@@ -577,6 +613,7 @@ const Calendar = ({
                         (account.slug === "all" ||
                           action.account.slug === account.slug) ? (
                         <Action
+                          color={color}
                           action={action}
                           key={action.id}
                           mutate={mutate}

@@ -1,22 +1,19 @@
 import { useState } from "react";
+import { TiSortNumerically } from "react-icons/ti";
+import { FaPercent } from "react-icons/fa";
 
 export function StepsInsight({ steps }) {
   let total = 0;
   let allActions = 0;
   steps.map((step) => (allActions += step.actions.length));
 
-  const [percentage, setPercentage] = useState(false);
+  const [percentage, setPercentage] = useState(true);
   return (
     <div className="my-4">
-      <h3 className="text-neutral-5 mb-2">Status</h3>
-      <div className="text-sm text-gray-400 mb-4 flex justify-between">
+      <h3 className="mb-2 text-neutral-5">Status</h3>
+      <div className="flex justify-between mb-4 text-sm text-gray-400">
         <div>Número de Ações por Status</div>
-        <button
-          className="uppercase text-xx tracking-wider font-medium text-gray-500"
-          onClick={() => setPercentage(!percentage)}
-        >
-          Ver {percentage ? "Total" : "Porcentagem"}
-        </button>
+        <ButtonInsights setPercentage={setPercentage} percentage={percentage} />
       </div>
       <div className="w-full status-demo">
         {steps.map((step, index) => {
@@ -30,12 +27,10 @@ export function StepsInsight({ steps }) {
                 width: (count / allActions) * 100 + "%",
               }}
             >
-              <div className="relative flex justify-center font-bold tracking-wider uppercase text-xx ">
-                <div className="overflow-hidden truncate ">{step.name}</div>(
+              <div className="font-bold tracking-wider uppercase text-xx ">
                 {percentage
                   ? Math.ceil((count / allActions) * 100) + "%"
                   : step.actions.length}
-                )
               </div>
             </div>
           ) : null;
@@ -52,18 +47,13 @@ export function StepsInsight({ steps }) {
 }
 
 export function AccountsInsight({ accounts, actions }) {
-  const [percentage, setPercentage] = useState(false);
+  const [percentage, setPercentage] = useState(true);
   return (
     <div className="my-4">
-      <h3 className="text-neutral-5 mb-2">Clientes</h3>
-      <div className="text-sm text-gray-400 mb-4 flex justify-between">
+      <h3 className="mb-2 text-neutral-5">Clientes</h3>
+      <div className="flex justify-between mb-4 text-sm text-gray-400">
         <div>Número de Ações por Clientes</div>
-        <button
-          className="uppercase text-xx tracking-wider font-medium text-gray-500"
-          onClick={() => setPercentage(!percentage)}
-        >
-          Ver {percentage ? "Total" : "Porcentagem"}
-        </button>
+        <ButtonInsights setPercentage={setPercentage} percentage={percentage} />
       </div>
 
       <div className="w-full status-demo">
@@ -92,5 +82,20 @@ export function AccountsInsight({ accounts, actions }) {
         })}
       </div>
     </div>
+  );
+}
+
+function ButtonInsights({ percentage, setPercentage }) {
+  return (
+    <button
+      className="font-medium tracking-wider text-gray-500 uppercase text-xx"
+      onClick={() => setPercentage(!percentage)}
+    >
+      {percentage ? (
+        <TiSortNumerically className="text-lg" />
+      ) : (
+        <FaPercent className="text-xx" />
+      )}
+    </button>
   );
 }
