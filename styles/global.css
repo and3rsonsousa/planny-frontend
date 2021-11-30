@@ -121,22 +121,22 @@ h5 {
 }
 
 .idea-bg {
-  @apply bg-idea-500 text-idea-100 transition-all duration-300;
+  @apply bg-idea-500 text-idea-100 /*transition-all duration-300*/;
 }
 .do-bg {
-  @apply bg-do-400 text-do-100 transition-all duration-300;
+  @apply bg-do-400 text-do-100 /*transition-all duration-300*/;
 }
 .doing-bg {
-  @apply bg-doing-600 text-doing-100 transition-all duration-300;
+  @apply bg-doing-600 text-doing-100 /*transition-all duration-300*/;
 }
 .review-bg {
-  @apply bg-review-500 text-review-100 transition-all duration-300;
+  @apply bg-review-500 text-review-100 /*transition-all duration-300*/;
 }
 .done-bg {
-  @apply bg-done-400 text-done-100 transition-all duration-300;
+  @apply bg-done-400 text-done-100 /*transition-all duration-300*/;
 }
 .accomplished-bg {
-  @apply bg-accomplished-500 text-accomplished-100 transition-all duration-300;
+  @apply bg-accomplished-500 text-accomplished-100 /*transition-all duration-300*/;
 }
 
 .idea-bg-light {

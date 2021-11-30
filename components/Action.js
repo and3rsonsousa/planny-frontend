@@ -39,7 +39,7 @@ export default function Action({
       >
         {/* Nome da Ação */}
         <div
-          className={`text-white text-smfont-medium line-clamp-1 ${
+          className={`text-smfont-medium line-clamp-1 ${
             color === 1 ? "pl-2" : ""
           }`}
         >
