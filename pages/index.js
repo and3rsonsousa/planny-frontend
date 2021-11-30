@@ -117,6 +117,7 @@ const Home = () => {
     dayjs().format("YYYY-MM-DD[T]HH:mm:ss[-03:00]")
   );
   let [actionToUpdate, setActionToUpdate] = useState(null);
+  let [actionToDuplicate, setActionToDuplicate] = useState(null);
   const { data, error, mutate } = useSWR(QUERY);
   const { profile, actions, accounts, steps, tags } = data || [];
 
@@ -224,6 +225,7 @@ const Home = () => {
                   showDialog={showDialog}
                   setShowDialog={setShowDialog}
                   setActionToUpdate={setActionToUpdate}
+                  setActionToDuplicate={setActionToDuplicate}
                   setActionDate={setActionDate}
                 />
               </motion.div>
@@ -239,6 +241,8 @@ const Home = () => {
       <Modal
         actionToUpdate={actionToUpdate}
         setActionToUpdate={setActionToUpdate}
+        actionToDuplicate={actionToDuplicate}
+        setActionToDuplicate={setActionToDuplicate}
         showDialog={showDialog}
         setShowDialog={setShowDialog}
         mutatePage={mutate}

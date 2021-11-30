@@ -23,13 +23,15 @@ export default function Modal({
   setShowDialog,
   actionToUpdate,
   setActionToUpdate,
+  actionToDuplicate,
+  setActionToDuplicate,
   mutatePage,
   actionDate,
   account,
 }) {
   let QUERY = "";
 
-  if (actionToUpdate) {
+  if (actionToUpdate || actionToDuplicate) {
     QUERY = gql`{
       profile( where: {id: "${nookies.get("planny").token}"} ){
         id
@@ -42,7 +44,7 @@ export default function Modal({
           }
         }
       }
-      action(where:{id:"${actionToUpdate}"}) {
+      action(where:{id:"${actionToUpdate || actionToDuplicate}"}) {
         id
         date
         name
@@ -198,6 +200,18 @@ export default function Modal({
         tags: action.tags,
         clientOnly: true,
       }));
+    } else if (action && actionToDuplicate) {
+      setAction(() => ({
+        name: action.name,
+        description: action.description || "",
+        date: dayjs(action.date).format("YYYY-MM-DD[T]HH:mm:ss[-03:00]"),
+        account: action.account,
+        profile_creator: action.profile_creator.id,
+        profiles_responsible: action.profiles_responsible,
+        step: action.step,
+        tags: action.tags,
+        clientOnly: true,
+      }));
     } else if (profile && profiles) {
       setAction(() => ({
         ...Action,
@@ -220,6 +234,7 @@ export default function Modal({
 
   function handleClose() {
     setActionToUpdate(null);
+    setActionToDuplicate(null);
     setShowDialog(false);
     setAction(emptyState);
   }

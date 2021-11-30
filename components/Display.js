@@ -36,6 +36,7 @@ export default function Display({
   setActionDate,
   setShowDialog,
   setActionToUpdate,
+  setActionToDuplicate,
 }) {
   //view state
 
@@ -155,6 +156,7 @@ export default function Display({
           setShowDialog={setShowDialog}
           setActionToUpdate={setActionToUpdate}
           setActionDate={setActionDate}
+          setActionToDuplicate={setActionToDuplicate}
         />
       ) : view === 2 ? (
         <Board
@@ -559,6 +561,7 @@ const Calendar = ({
   setShowDialog,
   setActionToUpdate,
   setActionDate,
+  setActionToDuplicate,
 }) => {
   return (
     <div className="w-full overflow-hidden bg-white shadow rounded-2xl">
@@ -623,6 +626,7 @@ const Calendar = ({
                           showDialog={showDialog}
                           setShowDialog={setShowDialog}
                           setActionToUpdate={setActionToUpdate}
+                          setActionToDuplicate={setActionToDuplicate}
                         />
                       ) : null;
                     })}

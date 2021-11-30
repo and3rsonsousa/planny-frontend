@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { BiDuplicate } from "react-icons/bi";
 import { HiCheck, HiCheckCircle, HiX, HiXCircle } from "react-icons/hi";
 import { deleteAction } from "../lib/mutations";
 import tagsIcons from "../lib/tagsIcon";
@@ -10,6 +11,7 @@ export default function Action({
   color,
   setShowDialog,
   setActionToUpdate,
+  setActionToDuplicate,
 }) {
   return (
     <div
@@ -68,15 +70,28 @@ export default function Action({
         )}
       </div>
       {/* Deletar a Ação */}
-      <button
-        className="absolute top-0 right-0 invisible p-1 text-white transition-all opacity-0 duration-500rounded-lg group-hover:visible group-hover:opacity-100"
-        onClick={(event) => {
-          deleteAction(action, mutate);
-          setShowDialog(false);
-        }}
-      >
-        <HiX className="text-lg transition-opacity duration-200 cursor-pointer opacity-70 hover:opacity-100" />
-      </button>
+      <div className="absolute top-0 right-0 invisible p-1 text-white transition-all opacity-0 duration-500 rounded-lg group-hover:visible group-hover:opacity-100 bg-gradient-to-l from-[rgba(0,0,0,.8)] via-[rgba(0,0,0,.5)] to-transparent h-full pl-12 flex items-center">
+        <button>
+          <BiDuplicate
+            className="text-lg transition-opacity duration-200 cursor-pointer opacity-70 hover:opacity-100"
+            onClick={(event) => {
+              if (!action.clientOnly) {
+                setActionToDuplicate(action.id);
+                setShowDialog(true);
+              }
+            }}
+          />
+        </button>
+
+        <button
+          onClick={(event) => {
+            deleteAction(action, mutate);
+            // setShowDialog(false);
+          }}
+        >
+          <HiX className="text-lg transition-opacity duration-200 cursor-pointer opacity-70 hover:opacity-100" />
+        </button>
+      </div>
     </div>
   );
 }
