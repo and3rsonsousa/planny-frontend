@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import Color from "color";
 import { BiDuplicate } from "react-icons/bi";
 import { HiCheck, HiCheckCircle, HiX, HiXCircle } from "react-icons/hi";
 import { deleteAction } from "../lib/mutations";
@@ -15,7 +16,7 @@ export default function Action({
 }) {
   return (
     <div
-      className={`group p-2 mt-2 relative rounded-lg text-xs ${
+      className={`p-2 mt-2 relative transition rounded-lg text-xs ${
         action.step.slug
       }-bg hover-${action.step.slug}-bg ${
         action.clientOnly
@@ -69,14 +70,18 @@ export default function Action({
           </div>
         )}
       </div>
-      {/* Deletar a Ação */}
-      <div className="absolute top-0 right-0 h-full text-white ">
+      {/* Ações extras */}
+      <div className="absolute top-0 right-0 h-full text-white group">
         <div
-          className={`flex items-center invisible h-full px-2 ${action.step.slug}-bg rounded-r-lg  group-hover:visible`}
+          className={`flex items-center invisible h-full pr-2 pl-8 opacity-0 ${action.step.slug}-transparent-bg rounded-r-lg group-hover:visible group-hover:opacity-100 transition-opacity duration-300`}
           style={
             color == 2
               ? {
-                  backgroundColor: action.account.colors[0].hex,
+                  backgroundImage: `linear-gradient(to left, ${
+                    action.account.colors[0].hex
+                  }, ${action.account.colors[0].hex}, ${Color(
+                    action.account.colors[0].hex
+                  ).alpha(0)})`,
                   color: action.account.colors[1].hex,
                 }
               : {}

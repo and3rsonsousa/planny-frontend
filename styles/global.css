@@ -3,29 +3,29 @@
 @tailwind utilities;
 
 body {
-  @apply text-neutral-4 font-light;
+  @apply font-light text-neutral-4;
   /* Set values for OpenType feature tags */
   /* font-feature-settings: "ss01"; */
 }
 
 p {
-  @apply leading-normal mb-2;
+  @apply mb-2 leading-normal;
 }
 
 h1 {
-  @apply text-4xl font-medium mb-4;
+  @apply mb-4 text-4xl font-medium;
 }
 h2 {
-  @apply text-2xl font-medium mb-4;
+  @apply mb-4 text-2xl font-medium;
 }
 h3 {
-  @apply text-xl font-medium mb-4;
+  @apply mb-4 text-xl font-medium;
 }
 h4 {
-  @apply text-lg font-light mb-2;
+  @apply mb-2 text-lg font-light;
 }
 h5 {
-  @apply font-bold uppercase tracking-wide mb-2;
+  @apply mb-2 font-bold tracking-wide uppercase;
 }
 
 @layer utilities {
@@ -36,12 +36,12 @@ h5 {
 
 @layer components {
   .loader {
-    @apply p-4 relative flex justify-center animate-spin;
+    @apply relative flex justify-center p-4 animate-spin;
     animation-duration: 2s;
   }
 
   .loader .circle {
-    @apply h-12 w-12 rounded-full border-4 border-brand-600  absolute animate-spin;
+    @apply absolute w-12 h-12 border-4 rounded-full border-brand-600 animate-spin;
     border-top-color: transparent;
     animation-timing-function: ease-in-out;
   }
@@ -60,38 +60,38 @@ h5 {
   }
 
   .input {
-    @apply py-3 px-4 border-2 rounded-xl outline-none focus:border-brand-600 focus:text-neutral-5 w-full;
+    @apply w-full px-4 py-3 border-2 outline-none rounded-xl focus:border-brand-600 focus:text-neutral-5;
   }
 
   .input-ghost {
-    @apply pb-3 px-0 border-b-2  border-transparent hover:border-neutral-1 outline-none focus:text-neutral-5 focus:border-brand-600 w-full transition-all;
+    @apply w-full px-0 pb-3 transition-all border-b-2 border-transparent outline-none hover:border-neutral-1 focus:text-neutral-5 focus:border-brand-600;
   }
 
   .input-error {
     @apply border-red-400 ring-4 ring-red-100;
   }
   .modal-form label {
-    @apply block relative;
+    @apply relative block;
   }
 
   .modal-form label > div {
-    @apply uppercase text-xx tracking-widest font-medium text-neutral-3 mb-2;
+    @apply mb-2 font-medium tracking-widest uppercase text-xx text-neutral-3;
   }
 
   .button {
-    @apply py-3 px-4 rounded-xl outline-none flex items-center justify-center space-x-2 bg-neutral-1 hover:bg-neutral-2 hover:bg-opacity-50  shadow transition-colors focus:ring-4 focus:ring-brand-400;
+    @apply flex items-center justify-center px-4 py-3 space-x-2 transition-colors shadow outline-none rounded-xl bg-neutral-1 hover:bg-neutral-2 hover:bg-opacity-50 focus:ring-4 focus:ring-brand-400;
   }
 
   .button-small {
-    @apply text-sm p-1 rounded-lg;
+    @apply p-1 text-sm rounded-lg;
   }
 
   .button-ghost {
-    @apply shadow-none border-transparent bg-transparent;
+    @apply bg-transparent border-transparent shadow-none;
   }
 
   .button-text {
-    @apply shadow-none bg-transparent p-0 hover:bg-transparent focus:bg-transparent hover:text-neutral-5;
+    @apply p-0 bg-transparent shadow-none hover:bg-transparent focus:bg-transparent hover:text-neutral-5;
   }
 
   /* .button svg {
@@ -99,7 +99,7 @@ h5 {
   } */
 
   .button-primary {
-    @apply text-white bg-brand-600  border-brand-600 hover:bg-brand-500 hover:text-white focus:bg-brand-500  focus:ring-brand-200  focus:text-white;
+    @apply text-white bg-brand-600 border-brand-600 hover:bg-brand-500 hover:text-white focus:bg-brand-500 focus:ring-brand-200 focus:text-white;
     box-shadow: 0 1px 3px 0 theme("colors.brand.300"),
       0 1px 2px 0 theme("colors.brand.300");
   }
@@ -140,22 +140,22 @@ h5 {
 }
 
 .idea-bg-light {
-  @apply bg-idea-100 text-idea-600 transition-all duration-300;
+  @apply transition-all duration-300 bg-idea-100 text-idea-600;
 }
 .do-bg-light {
-  @apply bg-do-100 text-do-600 transition-all duration-300;
+  @apply transition-all duration-300 bg-do-100 text-do-600;
 }
 .doing-bg-light {
-  @apply bg-doing-100 text-doing-600 transition-all duration-300;
+  @apply transition-all duration-300 bg-doing-100 text-doing-600;
 }
 .review-bg-light {
-  @apply bg-review-100 text-review-600 transition-all duration-300;
+  @apply transition-all duration-300 bg-review-100 text-review-600;
 }
 .done-bg-light {
-  @apply bg-done-100 text-done-600 transition-all duration-300;
+  @apply transition-all duration-300 bg-done-100 text-done-600;
 }
 .accomplished-bg-light {
-  @apply bg-accomplished-100 text-accomplished-600 transition-all duration-300;
+  @apply transition-all duration-300 bg-accomplished-100 text-accomplished-600;
 }
 
 .hover-idea-bg {
@@ -202,6 +202,55 @@ h5 {
   @apply bg-gradient-to-br from-accomplished-400 to-accomplished-600 text-accomplished-50;
 }
 
+.idea-transparent-bg {
+  background-image: linear-gradient(
+    to left,
+    theme("colors.idea.500"),
+    theme("colors.idea.500"),
+    color-mod(theme("colors.idea.500") alpha(0))
+  );
+}
+.do-transparent-bg {
+  background-image: linear-gradient(
+    to left,
+    theme("colors.do.400"),
+    theme("colors.do.400"),
+    color-mod(theme("colors.do.500") alpha(0))
+  );
+}
+.doing-transparent-bg {
+  background-image: linear-gradient(
+    to left,
+    theme("colors.doing.600"),
+    theme("colors.doing.600"),
+    color-mod(theme("colors.doing.500") alpha(0))
+  );
+}
+.review-transparent-bg {
+  background-image: linear-gradient(
+    to left,
+    theme("colors.review.500"),
+    theme("colors.review.500"),
+    color-mod(theme("colors.review.500") alpha(0))
+  );
+}
+.done-transparent-bg {
+  background-image: linear-gradient(
+    to left,
+    theme("colors.done.400"),
+    theme("colors.done.400"),
+    color-mod(theme("colors.done.500") alpha(0))
+  );
+}
+.accomplished-transparent-bg {
+  background-image: linear-gradient(
+    to left,
+    theme("colors.accomplished.500"),
+    theme("colors.accomplished.500"),
+    color-mod(theme("colors.accomplished.500") alpha(0))
+  );
+}
+
 .shadow-idea {
   box-shadow: 0 4px 10px theme("colors.idea.300");
 }
@@ -222,46 +271,46 @@ h5 {
 }
 
 .post-bg {
-  @apply bg-post-100 text-post-600 transition-all;
+  @apply transition-all bg-post-100 text-post-600;
 }
 .stories-bg {
-  @apply bg-stories-100 text-stories-600 transition-all;
+  @apply transition-all bg-stories-100 text-stories-600;
 }
 .reels-bg {
-  @apply bg-reels-100 text-reels-600 transition-all;
+  @apply transition-all bg-reels-100 text-reels-600;
 }
 .meeting-bg {
-  @apply bg-meeting-100 text-meeting-600 transition-all;
+  @apply transition-all bg-meeting-100 text-meeting-600;
 }
 .copy-bg {
-  @apply bg-copy-100 text-copy-600 transition-all;
+  @apply transition-all bg-copy-100 text-copy-600;
 }
 .video-bg {
-  @apply bg-video-100 text-video-600 transition-all;
+  @apply transition-all bg-video-100 text-video-600;
 }
 .shooting-bg {
-  @apply bg-shooting-100 text-shooting-600 transition-all;
+  @apply transition-all bg-shooting-100 text-shooting-600;
 }
 .press-bg {
-  @apply bg-press-100 text-press-600 transition-all;
+  @apply transition-all bg-press-100 text-press-600;
 }
 .task-bg {
-  @apply bg-task-100 text-task-600 transition-all;
+  @apply transition-all bg-task-100 text-task-600;
 }
 .tiktok-bg {
-  @apply bg-tiktok-100 text-tiktok-600 transition-all;
+  @apply transition-all bg-tiktok-100 text-tiktok-600;
 }
 
 .add-button {
-  @apply transition-all opacity-0 translate-x-2 duration-500;
+  @apply transition-all duration-500 translate-x-2 opacity-0;
 }
 
 .cell:hover .add-button {
-  @apply opacity-100 visible translate-x-0;
+  @apply visible translate-x-0 opacity-100;
 }
 
 .instagram-grid .cell {
-  @apply border-r border-b;
+  @apply border-b border-r;
 }
 
 .instagram-grid .cell:nth-child(3n + 0) {

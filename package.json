@@ -1,6 +1,6 @@
 {
   "name": "planny",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -11,6 +11,7 @@
     "@tailwindcss/aspect-ratio": "^0.3.0",
     "@tailwindcss/line-clamp": "^0.2.1",
     "autoprefixer": "^10.3.5",
+    "color": "^4.0.2",
     "dayjs": "^1.10.7",
     "draft-js": "^0.11.7",
     "framer-motion": "^5.2.0",
@@ -19,6 +20,7 @@
     "next": "latest",
     "nookies": "^2.5.2",
     "postcss": "^8.3.8",
+    "postcss-color-mod-function": "^3.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
