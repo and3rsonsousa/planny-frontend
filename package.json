@@ -14,7 +14,6 @@
     "color": "^4.0.2",
     "dayjs": "^1.10.7",
     "draft-js": "^0.11.7",
-    "framer-motion": "^5.2.0",
     "graphql": "^16.0.1",
     "graphql-request": "^3.5.0",
     "next": "latest",

@@ -3,320 +3,320 @@
 @tailwind utilities;
 
 body {
-  @apply font-light text-neutral-4;
-  /* Set values for OpenType feature tags */
-  /* font-feature-settings: "ss01"; */
+	@apply font-light text-neutral-4;
+	/* Set values for OpenType feature tags */
+	/* font-feature-settings: "ss01"; */
 }
 
 p {
-  @apply mb-2 leading-normal;
+	@apply mb-2 leading-normal;
 }
 
 h1 {
-  @apply mb-4 text-4xl font-medium;
+	@apply mb-4 text-4xl font-medium;
 }
 h2 {
-  @apply mb-4 text-2xl font-medium;
+	@apply mb-4 text-2xl font-medium;
 }
 h3 {
-  @apply mb-4 text-xl font-medium;
+	@apply mb-4 text-xl font-medium;
 }
 h4 {
-  @apply mb-2 text-lg font-light;
+	@apply mb-2 text-lg font-light;
 }
 h5 {
-  @apply mb-2 font-bold tracking-wide uppercase;
+	@apply mb-2 font-bold tracking-wide uppercase;
 }
 
 @layer utilities {
-  .text-xx {
-    font-size: 10px;
-  }
+	.text-xx {
+		font-size: 10px;
+	}
 }
 
 @layer components {
-  .loader {
-    @apply relative flex justify-center p-4 animate-spin;
-    animation-duration: 2s;
-  }
+	.loader {
+		@apply relative flex justify-center p-4 animate-spin;
+		animation-duration: 2s;
+	}
 
-  .loader .circle {
-    @apply absolute w-12 h-12 border-4 rounded-full border-brand-600 animate-spin;
-    border-top-color: transparent;
-    animation-timing-function: ease-in-out;
-  }
+	.loader .circle {
+		@apply absolute w-12 h-12 border-4 rounded-full border-brand-600 animate-spin;
+		border-top-color: transparent;
+		animation-timing-function: ease-in-out;
+	}
 
-  .loader.loader-small {
-    @apply p-0;
-  }
+	.loader.loader-small {
+		@apply p-0;
+	}
 
-  .loader.loader-small .circle {
-    @apply h-6 w-6 border-[3px];
-    animation-duration: 0.8s;
-  }
+	.loader.loader-small .circle {
+		@apply h-6 w-6 border-[3px];
+		animation-duration: 0.8s;
+	}
 
-  .loader .circle:last-child {
-    @apply relative;
-  }
+	.loader .circle:last-child {
+		@apply relative;
+	}
 
-  .input {
-    @apply w-full px-4 py-3 border-2 outline-none rounded-xl focus:border-brand-600 focus:text-neutral-5;
-  }
+	.input {
+		@apply w-full px-4 py-3 border-2 outline-none rounded-xl focus:border-brand-600 focus:text-neutral-5;
+	}
 
-  .input-ghost {
-    @apply w-full px-0 pb-3 transition-all border-b-2 border-transparent outline-none hover:border-neutral-1 focus:text-neutral-5 focus:border-brand-600;
-  }
+	.input-ghost {
+		@apply w-full px-0 pb-3 transition-all border-b-2 border-transparent outline-none hover:border-neutral-1 focus:text-neutral-5 focus:border-brand-600;
+	}
 
-  .input-error {
-    @apply border-red-400 ring-4 ring-red-100;
-  }
-  .modal-form label {
-    @apply relative block;
-  }
+	.input-error {
+		@apply border-red-400 ring-4 ring-red-100;
+	}
+	.modal-form label {
+		@apply relative block;
+	}
 
-  .modal-form label > div {
-    @apply mb-2 font-medium tracking-widest uppercase text-xx text-neutral-3;
-  }
+	.modal-form label > div {
+		@apply mb-2 font-medium tracking-widest uppercase text-xx text-neutral-3;
+	}
 
-  .button {
-    @apply flex items-center justify-center px-4 py-3 space-x-2 transition-colors shadow outline-none rounded-xl bg-neutral-1 hover:bg-neutral-2 hover:bg-opacity-50 focus:ring-4 focus:ring-brand-400;
-  }
+	.button {
+		@apply flex items-center justify-center px-4 py-3 space-x-2 transition-colors shadow outline-none rounded-xl bg-neutral-1 hover:bg-neutral-2 hover:bg-opacity-50 focus:ring-4 focus:ring-brand-400;
+	}
 
-  .button-small {
-    @apply p-1 text-sm rounded-lg;
-  }
+	.button-small {
+		@apply p-1 text-sm rounded-lg;
+	}
 
-  .button-ghost {
-    @apply bg-transparent border-transparent shadow-none;
-  }
+	.button-ghost {
+		@apply bg-transparent border-transparent shadow-none;
+	}
 
-  .button-text {
-    @apply p-0 bg-transparent shadow-none hover:bg-transparent focus:bg-transparent hover:text-neutral-5;
-  }
+	.button-text {
+		@apply p-0 bg-transparent shadow-none hover:bg-transparent focus:bg-transparent hover:text-neutral-5;
+	}
 
-  /* .button svg {
+	/* .button svg {
     @apply ml-2;
   } */
 
-  .button-primary {
-    @apply text-white bg-brand-600 border-brand-600 hover:bg-brand-500 hover:text-white focus:bg-brand-500 focus:ring-brand-200 focus:text-white;
-    box-shadow: 0 1px 3px 0 theme("colors.brand.300"),
-      0 1px 2px 0 theme("colors.brand.300");
-  }
+	.button-primary {
+		@apply text-white bg-brand-600 border-brand-600 hover:bg-brand-500 hover:text-white focus:bg-brand-500 focus:ring-brand-200 focus:text-white;
+		box-shadow: 0 1px 3px 0 theme("colors.brand.300"),
+			0 1px 2px 0 theme("colors.brand.300");
+	}
 
-  .button-red {
-    @apply hover:bg-red-500 hover:text-red-100;
-  }
+	.button-red {
+		@apply hover:bg-red-500 hover:text-red-100;
+	}
 
-  .status-demo {
-    @apply flex;
-  }
+	.status-demo {
+		@apply flex;
+	}
 
-  .status-demo > div:first-child {
-    @apply rounded-l-xl;
-  }
-  .status-demo > div:last-child {
-    @apply rounded-r-xl;
-  }
+	.status-demo > div:first-child {
+		@apply rounded-l-xl;
+	}
+	.status-demo > div:last-child {
+		@apply rounded-r-xl;
+	}
 }
 
 .idea-bg {
-  @apply bg-idea-500 text-idea-100 /*transition-all duration-300*/;
+	@apply bg-idea-500 text-idea-100 /*transition-all duration-300*/;
 }
 .do-bg {
-  @apply bg-do-400 text-do-100 /*transition-all duration-300*/;
+	@apply bg-do-400 text-do-100 /*transition-all duration-300*/;
 }
 .doing-bg {
-  @apply bg-doing-600 text-doing-100 /*transition-all duration-300*/;
+	@apply bg-doing-600 text-doing-100 /*transition-all duration-300*/;
 }
 .review-bg {
-  @apply bg-review-500 text-review-100 /*transition-all duration-300*/;
+	@apply bg-review-500 text-review-100 /*transition-all duration-300*/;
 }
 .done-bg {
-  @apply bg-done-400 text-done-100 /*transition-all duration-300*/;
+	@apply bg-done-400 text-done-100 /*transition-all duration-300*/;
 }
 .accomplished-bg {
-  @apply bg-accomplished-500 text-accomplished-100 /*transition-all duration-300*/;
+	@apply bg-accomplished-500 text-accomplished-100 /*transition-all duration-300*/;
 }
 
 .idea-bg-light {
-  @apply transition-all duration-300 bg-idea-100 text-idea-600;
+	@apply transition-all duration-300 bg-idea-100 text-idea-600;
 }
 .do-bg-light {
-  @apply transition-all duration-300 bg-do-100 text-do-600;
+	@apply transition-all duration-300 bg-do-100 text-do-600;
 }
 .doing-bg-light {
-  @apply transition-all duration-300 bg-doing-100 text-doing-600;
+	@apply transition-all duration-300 bg-doing-100 text-doing-600;
 }
 .review-bg-light {
-  @apply transition-all duration-300 bg-review-100 text-review-600;
+	@apply transition-all duration-300 bg-review-100 text-review-600;
 }
 .done-bg-light {
-  @apply transition-all duration-300 bg-done-100 text-done-600;
+	@apply transition-all duration-300 bg-done-100 text-done-600;
 }
 .accomplished-bg-light {
-  @apply transition-all duration-300 bg-accomplished-100 text-accomplished-600;
+	@apply transition-all duration-300 bg-accomplished-100 text-accomplished-600;
 }
 
 .hover-idea-bg {
-  /* @apply hover:ring-4 hover:ring-idea-500 hover:ring-opacity-20; */
-  @apply hover:bg-idea-600;
+	/* @apply hover:ring-4 hover:ring-idea-500 hover:ring-opacity-20; */
+	@apply hover:bg-idea-600;
 }
 .hover-do-bg {
-  /* @apply hover:ring-4 hover:ring-do-500 hover:ring-opacity-20; */
-  @apply hover:bg-do-500;
+	/* @apply hover:ring-4 hover:ring-do-500 hover:ring-opacity-20; */
+	@apply hover:bg-do-500;
 }
 .hover-doing-bg {
-  /* @apply hover:ring-4 hover:ring-doing-500 hover:ring-opacity-20; */
-  @apply hover:bg-doing-700;
+	/* @apply hover:ring-4 hover:ring-doing-500 hover:ring-opacity-20; */
+	@apply hover:bg-doing-700;
 }
 .hover-review-bg {
-  /* @apply hover:ring-4 hover:ring-review-500 hover:ring-opacity-20; */
-  @apply hover:bg-review-600;
+	/* @apply hover:ring-4 hover:ring-review-500 hover:ring-opacity-20; */
+	@apply hover:bg-review-600;
 }
 .hover-done-bg {
-  /* @apply hover:ring-4 hover:ring-done-500 hover:ring-opacity-20; */
-  @apply hover:bg-done-600;
+	/* @apply hover:ring-4 hover:ring-done-500 hover:ring-opacity-20; */
+	@apply hover:bg-done-600;
 }
 .hover-accomplished-bg {
-  /* @apply hover:ring-4 hover:ring-accomplished-500 hover:ring-opacity-20; */
-  @apply hover:bg-accomplished-600;
+	/* @apply hover:ring-4 hover:ring-accomplished-500 hover:ring-opacity-20; */
+	@apply hover:bg-accomplished-600;
 }
 
 .idea-bg-gradient {
-  @apply bg-gradient-to-br from-idea-400 to-idea-600 text-idea-100;
+	@apply bg-gradient-to-br from-idea-400 to-idea-600 text-idea-100;
 }
 .do-bg-gradient {
-  @apply bg-gradient-to-br from-do-400 to-do-600 text-do-100;
+	@apply bg-gradient-to-br from-do-400 to-do-600 text-do-100;
 }
 .doing-bg-gradient {
-  @apply bg-gradient-to-br from-doing-400 to-doing-700 text-doing-100;
+	@apply bg-gradient-to-br from-doing-400 to-doing-700 text-doing-100;
 }
 .review-bg-gradient {
-  @apply bg-gradient-to-br from-review-400 to-review-600 text-review-100;
+	@apply bg-gradient-to-br from-review-400 to-review-600 text-review-100;
 }
 .done-bg-gradient {
-  @apply bg-gradient-to-br from-done-400 to-done-600 text-done-100;
+	@apply bg-gradient-to-br from-done-400 to-done-600 text-done-100;
 }
 .accomplished-bg-gradient {
-  @apply bg-gradient-to-br from-accomplished-400 to-accomplished-600 text-accomplished-50;
+	@apply bg-gradient-to-br from-accomplished-400 to-accomplished-600 text-accomplished-50;
 }
 
 .idea-transparent-bg {
-  background-image: linear-gradient(
-    to left,
-    theme("colors.idea.500"),
-    theme("colors.idea.500"),
-    color-mod(theme("colors.idea.500") alpha(0))
-  );
+	background-image: linear-gradient(
+		to left,
+		theme("colors.idea.500"),
+		theme("colors.idea.500"),
+		color-mod(theme("colors.idea.500") alpha(0))
+	);
 }
 .do-transparent-bg {
-  background-image: linear-gradient(
-    to left,
-    theme("colors.do.400"),
-    theme("colors.do.400"),
-    color-mod(theme("colors.do.500") alpha(0))
-  );
+	background-image: linear-gradient(
+		to left,
+		theme("colors.do.400"),
+		theme("colors.do.400"),
+		color-mod(theme("colors.do.500") alpha(0))
+	);
 }
 .doing-transparent-bg {
-  background-image: linear-gradient(
-    to left,
-    theme("colors.doing.600"),
-    theme("colors.doing.600"),
-    color-mod(theme("colors.doing.500") alpha(0))
-  );
+	background-image: linear-gradient(
+		to left,
+		theme("colors.doing.600"),
+		theme("colors.doing.600"),
+		color-mod(theme("colors.doing.500") alpha(0))
+	);
 }
 .review-transparent-bg {
-  background-image: linear-gradient(
-    to left,
-    theme("colors.review.500"),
-    theme("colors.review.500"),
-    color-mod(theme("colors.review.500") alpha(0))
-  );
+	background-image: linear-gradient(
+		to left,
+		theme("colors.review.500"),
+		theme("colors.review.500"),
+		color-mod(theme("colors.review.500") alpha(0))
+	);
 }
 .done-transparent-bg {
-  background-image: linear-gradient(
-    to left,
-    theme("colors.done.400"),
-    theme("colors.done.400"),
-    color-mod(theme("colors.done.500") alpha(0))
-  );
+	background-image: linear-gradient(
+		to left,
+		theme("colors.done.400"),
+		theme("colors.done.400"),
+		color-mod(theme("colors.done.500") alpha(0))
+	);
 }
 .accomplished-transparent-bg {
-  background-image: linear-gradient(
-    to left,
-    theme("colors.accomplished.500"),
-    theme("colors.accomplished.500"),
-    color-mod(theme("colors.accomplished.500") alpha(0))
-  );
+	background-image: linear-gradient(
+		to left,
+		theme("colors.accomplished.500"),
+		theme("colors.accomplished.500"),
+		color-mod(theme("colors.accomplished.500") alpha(0))
+	);
 }
 
 .shadow-idea {
-  box-shadow: 0 4px 10px theme("colors.idea.300");
+	box-shadow: 0 4px 10px theme("colors.idea.300");
 }
 .shadow-do {
-  box-shadow: 0 4px 10px theme("colors.do.300");
+	box-shadow: 0 4px 10px theme("colors.do.300");
 }
 .shadow-doing {
-  box-shadow: 0 4px 10px theme("colors.doing.300");
+	box-shadow: 0 4px 10px theme("colors.doing.300");
 }
 .shadow-review {
-  box-shadow: 0 4px 10px theme("colors.review.300");
+	box-shadow: 0 4px 10px theme("colors.review.300");
 }
 .shadow-done {
-  box-shadow: 0 4px 10px theme("colors.done.300");
+	box-shadow: 0 4px 10px theme("colors.done.300");
 }
 .shadow-accomplished {
-  box-shadow: 0 4px 10px theme("colors.accomplished.300");
+	box-shadow: 0 4px 10px theme("colors.accomplished.300");
 }
 
 .post-bg {
-  @apply transition-all bg-post-100 text-post-600;
+	@apply transition-all bg-post-100 text-post-600;
 }
 .stories-bg {
-  @apply transition-all bg-stories-100 text-stories-600;
+	@apply transition-all bg-stories-100 text-stories-600;
 }
 .reels-bg {
-  @apply transition-all bg-reels-100 text-reels-600;
+	@apply transition-all bg-reels-100 text-reels-600;
 }
 .meeting-bg {
-  @apply transition-all bg-meeting-100 text-meeting-600;
+	@apply transition-all bg-meeting-100 text-meeting-600;
 }
 .copy-bg {
-  @apply transition-all bg-copy-100 text-copy-600;
+	@apply transition-all bg-copy-100 text-copy-600;
 }
 .video-bg {
-  @apply transition-all bg-video-100 text-video-600;
+	@apply transition-all bg-video-100 text-video-600;
 }
 .shooting-bg {
-  @apply transition-all bg-shooting-100 text-shooting-600;
+	@apply transition-all bg-shooting-100 text-shooting-600;
 }
 .press-bg {
-  @apply transition-all bg-press-100 text-press-600;
+	@apply transition-all bg-press-100 text-press-600;
 }
 .task-bg {
-  @apply transition-all bg-task-100 text-task-600;
+	@apply transition-all bg-task-100 text-task-600;
 }
 .tiktok-bg {
-  @apply transition-all bg-tiktok-100 text-tiktok-600;
+	@apply transition-all bg-tiktok-100 text-tiktok-600;
 }
 
 .add-button {
-  @apply transition-all duration-500 translate-x-2 opacity-0;
+	@apply transition-all duration-500 translate-x-2 opacity-0;
 }
 
 .cell:hover .add-button {
-  @apply visible translate-x-0 opacity-100;
+	@apply visible translate-x-0 opacity-100;
 }
 
 .instagram-grid .cell {
-  @apply border-b border-r;
+	@apply border-b border-r;
 }
 
 .instagram-grid .cell:nth-child(3n + 0) {
-  @apply border-r-0;
+	@apply border-r-0;
 }
 
 .instagram-grid .cell.border-b-0 {
-  @apply border-b-0;
+	@apply border-b-0;
 }
