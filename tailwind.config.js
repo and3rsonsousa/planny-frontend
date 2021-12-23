@@ -3,6 +3,7 @@ var colors = require("tailwindcss/colors");
 module.exports = {
 	mode: "jit",
 	purge: ["./pages/**/*.js", "./components/**/*.js"],
+	darkMode: "class",
 	theme: {
 		extend: {
 			colors: {
@@ -15,6 +16,7 @@ module.exports = {
 					3: colors.blueGray[300],
 					4: colors.blueGray[500],
 					5: colors.blueGray[700],
+					6: colors.blueGray[900],
 				},
 
 				idea: colors.yellow,

@@ -311,7 +311,7 @@ const Header = ({
 			{selected.length > 0 ? (
 				<div>
 					<button
-						className="text-white bg-red-500 hover:bg-red-600 hover:bg-red-100 button"
+						className="text-white bg-red-500 hover:bg-red-600 button shadow-red-500/30"
 						onClick={() => {
 							if (
 								confirm(
