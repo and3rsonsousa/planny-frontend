@@ -311,7 +311,7 @@ const Header = ({
 			{selected.length > 0 ? (
 				<div>
 					<button
-						className="text-red-600 hover:text-red-700 hover:bg-red-100 button button-ghost"
+						className="text-white bg-red-500 hover:bg-red-600 hover:bg-red-100 button"
 						onClick={() => {
 							if (
 								confirm(
@@ -1059,7 +1059,7 @@ const Grid = ({
 								} ${
 									i + 1 >
 									Math.ceil(actions.length / 3) * 3 - 3
-										? "  border-b-0"
+										? "  border-bottom-0"
 										: ""
 								}`}
 							>
