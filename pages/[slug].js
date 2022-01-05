@@ -107,13 +107,17 @@ const Account = () => {
 	);
 	let [actionToUpdate, setActionToUpdate] = useState(null);
 	let [actionToDuplicate, setActionToDuplicate] = useState(null);
-	const { data, error, mutate } = useSWR(QUERY);
+	const { data, error, mutate, isValidating } = useSWR(QUERY);
 
 	const { profile, actions, accounts, steps, tags } = data || {};
 
 	return (
 		<>
-			<Layout profile={profile} accounts={accounts}>
+			<Layout
+				profile={profile}
+				accounts={accounts}
+				isValidating={isValidating}
+			>
 				<Head>
 					<title>Carregando dados... | Planny</title>
 				</Head>

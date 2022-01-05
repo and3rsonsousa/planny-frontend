@@ -17,7 +17,6 @@ function App({ Component, pageProps }) {
 		<SWRConfig
 			value={{
 				fetcher: fetcher,
-				revalidateOnFocus: false,
 			}}
 		>
 			<Component {...pageProps} key={useRouter().route} />

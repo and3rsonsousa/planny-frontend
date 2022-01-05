@@ -99,7 +99,7 @@ h5 {
   } */
 
 	.button-primary {
-		@apply text-white bg-brand-600 border-brand-600 hover:bg-brand-500 hover:text-white focus:bg-brand-500 focus:ring-brand-200 focus:text-white shadow-brand-500/30;
+		@apply text-white bg-brand-600 border-brand-600 hover:bg-brand-500 hover:text-white focus:bg-brand-500 focus:ring-brand-200 focus:text-white shadow-brand-500/30 dark:hover:bg-brand-700;
 	}
 
 	.button-red {
